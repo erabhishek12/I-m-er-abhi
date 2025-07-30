@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1280">
+    <title>Abhishek Kumar /// Defrag Protocol v15.2 [PAYLOAD-EXPOSED]</title>
+    <link rel="shortcut icon" href="https://i.postimg.cc/CMjF69qQ/QA.png" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #000000;
+            --primary-glow: #00f2ff;
+            --secondary-glow: #ff00ff;
+            --accent-glow: #f7ff00;
+            --warning-glow: #ff4500;
+            --paid-glow: #39FF14;
+            --text-color: #b0c4de;
+            --bg-glass: rgba(10, 10, 10, 0.5);
+            --border-color: rgba(0, 242, 255, 0.2);
+            --border-hover: rgba(0, 242, 255, 0.8);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        html { scroll-behavior: smooth; }
+        body { background-color: var(--bg-color); color: var(--text-color); font-family: 'Share Tech Mono', monospace; overflow: hidden; text-shadow: 0 0 3px rgba(0,0,0,0.5); }
+        #cursor-ring, #cursor-dot { position: fixed; border-radius: 50%; pointer-events: none; transform: translate(-50%, -50%); z-index: 10001; transition: opacity 0.3s, transform 0.2s, width 0.3s, height 0.3s, border-color 0.3s, box-shadow 0.3s; opacity: 0; }
+        #cursor-ring { width: 30px; height: 30px; border: 1px solid var(--primary-glow); }
+        #cursor-dot { width: 5px; height: 5px; background-color: var(--primary-glow); }
+        body:hover > #cursor-ring, body:hover > #cursor-dot { opacity: 1; }
+        .interactive:hover ~ #cursor-ring, .grabbing { width: 50px; height: 50px; border-width: 2px; border-color: var(--secondary-glow); }
+        .interactive:hover ~ #cursor-dot { box-shadow: 0 0 10px var(--secondary-glow), 0 0 20px var(--secondary-glow); }
+        #preloader { position: fixed; width: 100vw; height: 100vh; background: #000; z-index: 10002; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s ease-out; }
+        #loader-text { font-family: 'Chakra Petch', sans-serif; font-size: clamp(1.5rem, 5vw, 2rem); color: var(--primary-glow); text-shadow: 0 0 15px var(--primary-glow); letter-spacing: 4px; }
+        #bg-scene { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; }
+        main { position: absolute; top: 0; left: 0; width: 100%; z-index: 10; overflow-y: auto; overflow-x: hidden; height: 100vh; }
+        .section { min-height: 100vh; width: 90%; max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; position: relative; padding: 5rem 0; }
+        .content-box { background: var(--bg-glass); border: 1px solid var(--border-color); padding: clamp(1.5rem, 5vw, 2.5rem); backdrop-filter: blur(10px) saturate(1.2); border-radius: 10px; box-shadow: 0 0 40px rgba(0, 0, 0, 0.5); transition: border-color 0.4s; }
+        h1, h2, h3, h4 { font-family: 'Chakra Petch', sans-serif; color: #fff; text-transform: uppercase; letter-spacing: 3px; position: relative; }
+        h1 { font-size: clamp(2.5rem, 6vw, 4rem); line-height: 1.1; margin-bottom: 1rem; }
+        h2 { font-size: clamp(2rem, 5vw, 2.5rem); margin-bottom: 3rem; }
+        h2::after { content: ''; position: absolute; left: 0; bottom: -10px; height: 2px; width: 50px; background: var(--primary-glow); box-shadow: 0 0 10px var(--primary-glow); }
+        .cta-button { font-family: 'Chakra Petch', sans-serif; display: inline-block; background: transparent; border: 2px solid var(--primary-glow); color: var(--primary-glow); padding: 12px 25px; border-radius: 5px; text-decoration: none; font-weight: 700; letter-spacing: 1px; transition: all 0.3s; text-shadow: 0 0 5px var(--primary-glow); }
+        .cta-button:hover { background: var(--primary-glow); color: #000; text-shadow: none; }
+        .cta-button:disabled { border-color: #555; color: #555; text-shadow: none; pointer-events: none; opacity: 0.5; }
+        #navigation-hud { display: block; position: fixed; right: 2rem; top: 50%; transform: translateY(-50%); z-index: 100; }
+        #navigation-hud ul { list-style: none; }
+        #navigation-hud li a { display: block; width: 12px; height: 12px; margin: 15px 0; border-radius: 50%; background: rgba(255,255,255,0.2); border: 2px solid var(--border-color); transition: all 0.3s ease; position: relative; }
+        #navigation-hud li a.active, #navigation-hud li a:hover { background: var(--primary-glow); border-color: var(--primary-glow); transform: scale(1.5); box-shadow: 0 0 15px var(--primary-glow); }
+        #navigation-hud li a .tooltip { position: absolute; right: 30px; top: 50%; transform: translateY(-50%); background: var(--bg-glass); color: #fff; padding: 5px 15px; border-radius: 4px; white-space: nowrap; opacity: 0; visibility: hidden; transition: opacity 0.3s; font-family: 'Chakra Petch', sans-serif; }
+        #navigation-hud li a:hover .tooltip { opacity: 1; visibility: visible; }
+        .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: center; }
+        .hero-img-frame { position: relative; padding: 10px; width: 100%; max-width: 300px; margin: 0 auto; }
+        .hero-img-frame::before, .hero-img-frame::after { content: ''; position: absolute; width: 30px; height: 30px; border-style: solid; border-color: var(--primary-glow); }
+        .hero-img-frame::before { top: 0; left: 0; border-width: 3px 0 0 3px; }
+        .hero-img-frame::after { bottom: 0; right: 0; border-width: 0 3px 3px 0; }
+        .hero-img-frame img { width: 100%; display: block; filter: grayscale(0.4) contrast(1.1); }
+        .testimonial-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; width: 100%; }
+        .testimonial-card .img-frame { width: 100px; height: 100px; margin: 0 auto 1.5rem auto; border-radius: 50%; overflow: hidden;}
+        .testimonial-card .img-frame img { border-radius: 50%; }
+        @keyframes auto-rotate { 100% { transform: rotateY(360deg); } }
+        .projects-wrapper { width: 100%; min-height: 500px; perspective: 3000px; position: relative; transition: min-height 0.5s ease; cursor: grab; }
+        .projects-wrapper .carousel { width: 100%; height: 500px; position: absolute; transform-style: preserve-3d; animation: auto-rotate 80s linear infinite; }
+        .projects-wrapper .carousel:hover, .projects-wrapper .carousel.dragging { animation-play-state: paused; }
+        .projects-wrapper .carousel-item { position: absolute; left: 50%; top: 50%; width: 360px; height: 420px; transform: translateX(-50%) translateY(-50%); background: rgba(5,5,5,0.8); border: 1px solid var(--border-color); border-radius: 10px; overflow: hidden; text-decoration: none; color: var(--text-color); }
+        .projects-wrapper .carousel-item img { width: 100%; height: 250px; object-fit: cover; }
+        .projects-wrapper .carousel-item-content { padding: 1.5rem; }
+        .projects-wrapper .carousel-item-content h3 { color: var(--accent-glow); margin-bottom: 0.5rem; }
+        .projects-wrapper .carousel-item-content .status { margin-top: 1rem; font-weight: bold; color: var(--primary-glow); }
+        .projects-wrapper.list-view { min-height: auto; perspective: none; cursor: default; }
+        .projects-wrapper.list-view .carousel { position: static; height: auto; transform-style: flat; animation: none; transform: none !important; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+        .projects-wrapper.list-view .carousel-item { position: static; transform: none !important; margin: 0; width: 100%; height: auto; display: flex; flex-direction: column; text-align: left; background: rgba(15,15,15,0.9); }
+        .projects-wrapper.list-view .carousel-item img { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
+        #adult-projects-wrapper .carousel-item-content h3 { color: var(--warning-glow); }
+        #adult-projects-wrapper .carousel-item-content .status { color: var(--warning-glow); }
+        .popup-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(15px); z-index: 10000; display: none; justify-content: center; align-items: center; }
+        .popup-box { max-width: 600px; background: rgba(10, 10, 10, 0.7); padding: 2.5rem; text-align: center; position: relative; }
+        #adult-popup-box { border: 1px solid var(--warning-glow); box-shadow: 0 0 30px var(--warning-glow); }
+        #key-popup-box { border: 1px solid var(--paid-glow); box-shadow: 0 0 30px var(--paid-glow); }
+        #key-input { background: rgba(0,0,0,0.5); border: 1px solid var(--paid-glow); color: var(--paid-glow); padding: 10px; text-align: center; font-family: 'Share Tech Mono', monospace; font-size: 1.2rem; margin: 1.5rem 0; }
+        .paid-project-card { border: 2px solid var(--paid-glow); box-shadow: 0 0 20px var(--paid-glow); text-align: center; padding: 3rem; backdrop-filter: blur(5px); background: rgba(57, 255, 20, 0.05); }
+        .paid-project-card.unlocked { padding: 2rem; text-align: left; }
+        .paid-project-card.unlocked img { width: 100%; border: 1px solid var(--paid-glow); margin-bottom: 1.5rem; }
+        #payment-container { border: 2px solid var(--paid-glow); box-shadow: 0 0 20px var(--paid-glow); padding: 2rem 3rem; max-width: 500px; width: 100%; }
+        #payment-container #qr-code { width: 200px; height: 200px; background: #fff; margin: 1.5rem auto; display: flex; justify-content: center; align-items: center; font-size: 0.8rem; color: #000; }
+        #payment-container #upi-id { font-weight: bold; color: #fff; background: #333; padding: 10px; border-radius: 5px; user-select: all; }
+        #payment-container input { width: 100%; padding: 10px; margin: 1.5rem 0; background: rgba(0,0,0,0.5); border: 1px solid var(--paid-glow); color: var(--paid-glow); text-align: center; font-family: 'Share Tech Mono', monospace; font-size: 1rem; }
+        .popup-close-btn { position: absolute; top: 10px; right: 15px; font-size: 2rem; color: #fff; background: none; border: none; font-family: 'Chakra Petch'; }
+    </style>
+</head>
+<body>
+    <div id="preloader"><div id="loader-text">INITIALIZING...</div></div>
+    <div id="cursor-ring"></div>
+    <div id="cursor-dot"></div>
+    <canvas id="bg-scene"></canvas>
+
+    <!-- POPUP OVERLAYS -->
+    <div id="adult-popup-overlay" class="popup-overlay">
+        <div id="adult-popup-box" class="popup-box">
+            <h3 style="color:var(--warning-glow);">RISK ACKNOWLEDGEMENT</h3>
+            <p>You are entering a restricted zone. This content is provided as-is, without warranty. The developer is not responsible for anything that happens as a result of your interaction with this content. It was made for fun and educational purposes ONLY.</p>
+            <p><strong>USE AT YOUR OWN RISK.</strong></p>
+            <div style="display: flex; align-items: center; justify-content: center; margin: 2rem 0;">
+                <input type="checkbox" id="age-gate-checkbox" class="interactive">
+                <label for="age-gate-checkbox" style="margin-left: 10px;">I understand and agree to these terms.</label>
+            </div>
+            <div style="display:flex; justify-content:center; gap:1rem;">
+                <button id="enter-adult-section" class="cta-button" disabled>I AGREE</button>
+                <button id="leave-adult-section" class="cta-button">I DISAGREE</button>
+            </div>
+        </div>
+    </div>
+    <div id="key-popup-overlay" class="popup-overlay">
+        <div id="key-popup-box" class="popup-box">
+             <button class="popup-close-btn interactive" data-target="key-popup-overlay">X</button>
+            <h3 style="color:var(--paid-glow);">AUTHENTICATION REQUIRED</h3>
+            <p>Access to this project is restricted. Please enter your purchased access key to proceed.</p>
+            <input type="text" id="key-input" placeholder="ENTER ACCESS KEY">
+            <p id="key-error" style="color:var(--warning-glow); display:none;">Invalid Key. Access Denied.</p>
+            <div style="display:flex; justify-content:center; gap:1rem; margin-top:1.5rem;">
+                <button id="submit-key-button" class="cta-button">UNLOCK</button>
+                <button id="purchase-key-button" class="cta-button">PURCHASE KEY</button>
+            </div>
+        </div>
+    </div>
+    <div id="payment-overlay" class="popup-overlay">
+        <div id="payment-container" class="popup-box">
+             <button class="popup-close-btn interactive" data-target="payment-overlay">X</button>
+            <div id="initial-view">
+                <h1 style="color:var(--paid-glow);">Payment Portal</h1>
+                <p>Scan the QR Code or use the UPI ID below to complete the payment.</p>
+               <div id="qr-code" 
+     style="width: 200px; height: 200px; 
+            background-image: url('https://i.postimg.cc/x8ZXrF27/Whats-App-Image-2025-07-23-at-14-05-41-82d99099.jpg'); 
+            background-size: cover; 
+            background-position: center; 
+            border: 2px solid #000; 
+            border-radius: 10px;">
+</div>
+                <p>UPI ID: <span id="upi-id">9546983729@fam</span></p>
+                <p>After paying, enter the 12-digit UTR/Transaction ID below and click Send.</p>
+                <input type="text" id="utr-input" placeholder="Enter UTR / Transaction ID">
+                <button id="send-button" class="cta-button">SEND</button>
+            </div>
+            <div id="success-view" style="display:none;">
+                <h2 style="color:var(--paid-glow);">Verification Pending</h2>
+                <p>Your request has been sent. Please send a screenshot of the transaction to the Telegram chat that has been opened.</p>
+                <p>The developer will verify your payment and provide the key in your PM.</p>
+            </div>
+        </div>
+    </div>
+
+    <nav id="navigation-hud">
+        <ul>
+            <li><a href="#home" class="interactive active"><span class="tooltip">Home</span></a></li>
+            <li><a href="#intel" class="interactive"><span class="tooltip">Intel</span></a></li>
+            <li><a href="#projects" class="interactive"><span class="tooltip">Projects</span></a></li>
+            <li><a href="#log" class="interactive"><span class="tooltip">Log</span></a></li>
+            <li><a href="#testimonials" class="interactive"><span class="tooltip">Testimonials</span></a></li>
+            <li><a href="#paid-project" class="interactive"><span class="tooltip">Classified</span></a></li>
+            <li><a href="#adult" class="interactive"><span class="tooltip">Adult</span></a></li>
+            <li><a href="#contact" class="interactive"><span class="tooltip">Contact</span></a></li>
+        </ul>
+    </nav>
+    
+    <main id="main-content">
+        <section id="home" class="section" data-color="#00f2ff">
+            <div class="content-box" style="max-width:100%">
+                <div class="hero-grid">
+                    <div class="hero-text" style="text-align: left;">
+                        <h1>ABHISHEK <span style="color: var(--primary-glow); text-shadow: 0 0 15px var(--primary-glow);">KUMAR</span></h1>
+                        <p style="font-size: clamp(1rem, 3vw, 1.2rem); color: var(--text-color); margin-bottom: 2rem; max-width: 500px; line-height: 1.6;">B.Tech CSE Student specializing in Cybersecurity, Advanced Programming, and Innovative Tech Solutions.</p>
+                        <a href="#projects" class="cta-button interactive">View My Work</a>
+                    </div>
+                    <div class="hero-img-frame">
+                        <img src="https://i.postimg.cc/cLPtsRZk/IMG-20250218-213248.jpg" alt="Abhishek Kumar">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="intel" class="section" data-color="#ffffff">
+            <div class="content-box" style="max-width: 800px;">
+                <h2 style="color:var(--primary-glow);">INTEL-CORE</h2>
+                <p>I am a driven Computer Science student with a core passion for the architecture of digital security and the elegance of well-written code. My academic journey at A.M.I.T Shivdham is focused on building a deep, foundational understanding of computer systems.</p>
+                <p style="margin-top: 1rem;">My primary objective is to transcend conventional problem-solving by innovating at the intersection of software development and cybersecurity, aiming to engineer robust and secure systems for the future.</p>
+            </div>
+        </section>
+
+        <section id="projects" class="section" data-color="#f7ff00">
+             <div class="content-box" style="background: none; border: none; backdrop-filter: none; box-shadow: none; max-width: 100%;">
+                <h2 style="color:var(--accent-glow); text-align: center;">PROJECT DIRECTORY</h2>
+                <button id="view-toggle" class="cta-button interactive" style="margin: 0 auto 2rem auto; display: block;">Switch to List View</button>
+                <div class="projects-wrapper" id="projects-wrapper">
+                    <div class="carousel" id="carousel"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="log" class="section" data-color="#ff00ff">
+            <div class="content-box" style="align-self: flex-end;">
+                <h2 style="color:var(--secondary-glow);">CAREER LOG</h2>
+                <ul style="list-style: none;">
+                    <li style="margin-bottom: 1.5rem; position: relative; padding-left: 25px;"><h3 style="color: var(--text-color);">Adwaita Mission Institute of Technology</h3><span style="color: var(--secondary-glow);">2024 - 2028 // B.Tech CSE</span></li>
+                    <li style="margin-bottom: 1.5rem; position: relative; padding-left: 25px;"><h3 style="color: var(--text-color);">Ethical Hacker Training</h3><span style="color: var(--secondary-glow);">2023 - Present // Self-directed</span></li>
+                    <li style="margin-bottom: 1.5rem; position: relative; padding-left: 25px;"><h3 style="color: var(--text-color);">Advanced C Programming</h3><span style="color: var(--secondary-glow);">2024 - Present // Deep Study</span></li>
+                    <li style="margin-bottom: 1.5rem; position: relative; padding-left: 25px;"><h3 style="color: var(--text-color);">M.D.N High School</h3><span style="color: var(--secondary-glow);">2022 - 2024 // 12th Grade</span></li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="testimonials" class="section" data-color="#ffffff">
+             <div class="content-box" style="max-width: 100%">
+                <h2>TESTIMONIALS</h2>
+                <div class="testimonial-grid">
+                    <div class="testimonial-card" style="background: var(--bg-glass); padding: 2rem; border-radius: 8px; border: 1px solid var(--border-color); text-align: center;">
+                        <div class="img-frame" style="width: 100px; height: 100px; margin: 0 auto 1.5rem auto; border-radius: 50%; overflow: hidden;"><img src="https://i.postimg.cc/GmKdh4X5/IMG-20250128-020501.jpg" alt="Prof. Chandan Trigunit" style="border-radius:50%; width:100%; height:100%; object-fit:cover;"></div>
+                        <h4>PRO. CHANDAN TRIGUNIT</h4>
+                        <blockquote>His teaching style is truly inspiring... he has taught me academic and life lessons that I’ll carry forward.</blockquote>
+                    </div>
+                    <div class="testimonial-card" style="background: var(--bg-glass); padding: 2rem; border-radius: 8px; border: 1px solid var(--border-color); text-align: center;">
+                        <div class="img-frame" style="width: 100px; height: 100px; margin: 0 auto 1.5rem auto; border-radius: 50%; overflow: hidden;"><img src="https://i.postimg.cc/nh29bcBH/IMG-20250128-021330.jpg" alt="Chandan Kumar" style="border-radius:50%; width:100%; height:100%; object-fit:cover;"></div>
+                        <h4>CHANDAN KUMAR</h4>
+                        <blockquote>One of the most dependable friends... His dedication and calm under pressure inspire me.</blockquote>
+                    </div>
+                    <div class="testimonial-card" style="background: var(--bg-glass); padding: 2rem; border-radius: 8px; border: 1px solid var(--border-color); text-align: center;">
+                         <div class="img-frame" style="width: 100px; height: 100px; margin: 0 auto 1.5rem auto; border-radius: 50%; overflow: hidden;"><img src="https://i.postimg.cc/R0q7gnyr/IMG-20250128-022026.jpg" alt="Ajit Kumar" style="border-radius:50%; width:100%; height:100%; object-fit:cover;"></div>
+                        <h4>AJIT KUMAR</h4>
+                        <blockquote>He knows how to keep things light. His hardworking attitude makes him an amazing companion.</blockquote>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="paid-project" class="section" data-color="#39FF14">
+            <div style="text-align:center; width:100%; max-width: 700px; margin: 0 auto;">
+                <h2 style="color:var(--paid-glow);">ADVANCED PAID PROJRCT</h2>
+                <div id="paid-project-card" class="paid-project-card interactive" data-project-name="Project Overlord">
+                    <h3 style="color:var(--paid-glow);">PROJECT OVERLORD</h3>
+                    <p>A next-generation system control framework. Access is restricted to authorized personnel only.</p>
+                    <h4 style="margin-top:2rem; color: var(--paid-glow)">[ ACCESS LOCKED ]</h4>
+                </div>
+            </div>
+        </section>
+
+        <section id="adult" class="section" data-color="#ff4500">
+            <div class="content-box" style="background: none; border: none; backdrop-filter: none; box-shadow: none; max-width: 100%;">
+               <h2 style="color:var(--warning-glow); text-align: center;">USE AT OWN RISK (DEVELOPER DEVLOP ONLY FOR FUN AND EDUCATIONAL PURPOSE )</h2>
+               <button id="adult-view-toggle" class="cta-button interactive" style="margin: 0 auto 2rem auto; display: block;">Switch to List View</button>
+               <div class="projects-wrapper" id="adult-projects-wrapper">
+                    <div class="carousel" id="adult-carousel"></div>
+               </div>
+           </div>
+        </section>
+
+        <section id="contact" class="section" data-color="#00f2ff">
+            <!-- Contact Section with Instagram -->
+<div style="text-align: center; padding: 40px; font-family: Arial, sans-serif;">
+  <p style="font-size: 18px; margin-bottom: 20px;">
+    Open for collaborations, cybersecurity consultation, and challenging development opportunities. <br>Send transmission.
+  </p>
+
+  <!-- Email Button -->
+  <a href="mailto:abhishekyadav954698@gmail.com" 
+     style="display: inline-block; margin: 10px; padding: 12px 24px; 
+            background-color: #1DA1F2; color: white; text-decoration: none; 
+            border-radius: 30px; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+            transition: background-color 0.3s;">
+    📧 EMAIL
+  </a>
+
+  <!-- Signal Button -->
+  <a href="tel:+919546983729" 
+     style="display: inline-block; margin: 10px; padding: 12px 24px; 
+            background-color: #25D366; color: white; text-decoration: none; 
+            border-radius: 30px; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+            transition: background-color 0.3s;">
+    📞 WHATSAPP
+  </a>
+
+  <!-- Instagram Button -->
+  <a href="https://www.instagram.com/naturelensbyabhi" target="_blank" 
+     style="display: inline-block; margin: 10px; padding: 12px 24px; 
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            color: white; text-decoration: none; 
+            border-radius: 30px; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+            transition: transform 0.3s;">
+    📸 INSTAGRAM
+  </a>
+</div>
+
+        </section>
+    </main>
+
+    <script type="importmap">{ "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js" } }</script>
+    <script type="module">
+        import * as THREE from 'three';
+        document.addEventListener('DOMContentLoaded', () => {
+            const preloader = document.getElementById('preloader');
+            window.addEventListener('load', () => {
+                preloader.querySelector('#loader-text').textContent = 'SYSTEM ONLINE';
+                setTimeout(() => {
+                    preloader.style.opacity = '0';
+                    document.body.style.overflow = 'auto';
+                    document.getElementById('main-content').style.overflowY = 'auto';
+                    setTimeout(() => preloader.style.display = 'none', 500);
+                }, 1000);
+            });
+
+            const cursorRing = document.getElementById('cursor-ring');
+            const cursorDot = document.getElementById('cursor-dot');
+            window.addEventListener('mousemove', e => {
+                cursorRing.style.left = e.clientX + 'px';
+                cursorRing.style.top = e.clientY + 'px';
+                cursorDot.style.left = e.clientX + 'px';
+                cursorDot.style.top = e.clientY + 'px';
+            });
+
+            const projectsData = [
+                {img:'https://i.postimg.cc/t4wzHVVr/image.png',title:'ABHI&k COMPILER',description:'A minimalist web-based compiler designed for mobile code execution.',link:'https://abhi-k-abhis-projects-bdfcc8f7.vercel.app/'},
+                {img:'https://i.postimg.cc/NMJnmjzZ/Whats-App-Image-2025-07-17-at-12-49-02-a28dd9fc.jpg',title:'MULTI FUNCTION CALCULATOR',description:'An Android app that combines a calculator with a secure media vault.',link:'https://dip-calculator.vercel.app/'},
+                {img:'https://i.postimg.cc/65JhBFmK/Whats-App-Image-2025-07-23-at-12-57-46-89fb2a7b.jpg',title:'A&K Study Helper AI',description:'A web application for study this AI Apk helping in study it support multi language , image support etc multi feature in thi ai apk .',link:'https://study-helper-ai-ten.vercel.app/'},
+                {img:'https://i.postimg.cc/0yF39g77/file-000000004eac61f5b40367b6a8758a9e.png',title:'MULTI TOOL BOX ',description:'This tool come with multiple features tools like all type calculator and student daily need timer etc 35+ TOOLS AVILABLE CHECKOUT FOR MORE',link:'https://abhi-k-multi-tool-box.vercel.app/'},
+            ];
+            const adultProjectsData = [
+                { img: 'https://i.postimg.cc/44K2ymvb/Generated-Image-July-23-2025-2-53-PM.jpg', title: 'GAALI GENRATEOR', description: 'THIS IS FOR INTROVERT , IF DONT NOW ANY ABUSIVE WORD JUST GO AND TRY WITH YOUR ENEMIES . Status: ONLINE.', link: 'https://gaali-wala-website.vercel.app/'},
+                { img: 'https://i.postimg.cc/J0f5Wv0Y/adult-2.jpg', title: 'Protocol VIOLET', description: 'Decentralized anonymous communication network. Status: In Development.', link: '#'},
+                { img: 'https://i.postimg.cc/d11G2L57/adult-3.jpg', title: 'Operation CHIMERA', description: 'Dynamic data obfuscation library. Status: Conceptual.', link: '#'},
+                { img: 'https://i.postimg.cc/pVdqn536/adult-4.jpg', title: 'Sub-routine EREBUS', description: 'Stealth file system architecture. Status: Planning Phase.', link: '#'},
+            ];
+            const paidProjectData = {
+                img: 'https://i.postimg.cc/k47g2Vqg/overlord-project.gif',
+                title: 'ADVANCED AI GIRLFRIEND ',
+                description: 'THIS IS ADVANCED VERSION AI GIRLFRIEND OR BOYFRIEND IN THIS VERSON UNDERSTAND YOUR FELLING AND REPLY ACCORDING TO YOUR MOOD LIKE ANY TYPE DIRTY TO DIRTY TALK YOU can DO WITH THIS AI LIKE YOUR REAL GF AND THIS IS UNFILTERD AI SO THIS AI REPLY ALL TYPES LIKE 18+ with 18+ img.',
+                link: '#'
+            };
+            
+            function initializeCarousel(wrapperId, carouselId, toggleId, data) {
+                const wrapper = document.getElementById(wrapperId);
+                const carousel = document.getElementById(carouselId);
+                const toggleButton = document.getElementById(toggleId);
+                let currentAngle = 0, isDragging = false, startX, startAngle;
+
+                function setup() {
+                    carousel.innerHTML = '';
+                    const numItems = data.length;
+                    const angle = 360 / numItems;
+                    data.forEach((p, i) => {
+                        const item = document.createElement('a');
+                        item.href = p.link;
+                        item.target = '_blank';
+                        item.className = 'carousel-item interactive';
+                        item.style.transform = `rotateY(${i * angle}deg) translateZ(450px)`;
+                        item.innerHTML = `<img src="${p.img}" alt="${p.title}"><div class="carousel-item-content"><h3>${p.title}</h3><p>${p.description}</p><div class="status">Status: ${p.link === '#' ? 'Conceptual' : 'Online'}</div></div>`;
+                        carousel.appendChild(item);
+                    });
+                }
+                toggleButton.addEventListener('click', () => {
+                    wrapper.classList.toggle('list-view');
+                    toggleButton.textContent = wrapper.classList.contains('list-view') ? 'Switch to 3D View' : 'Switch to List View';
+                });
+                const startDrag = e => { if (wrapper.classList.contains('list-view')) return; isDragging = true; carousel.classList.add('dragging'); startX = e.type.includes('mouse') ? e.pageX : e.touches[0].pageX; startAngle = currentAngle; wrapper.style.cursor = 'grabbing'; };
+                const onDrag = e => { if (!isDragging || wrapper.classList.contains('list-view')) return; e.preventDefault(); const x = e.type.includes('mouse') ? e.pageX : e.touches[0].pageX; const delta = startX - x; currentAngle = startAngle + delta * 0.2; carousel.style.animation = 'none'; carousel.style.transform = `rotateY(${-currentAngle}deg)`; };
+                const endDrag = () => { if (wrapper.classList.contains('list-view')) return; isDragging = false; carousel.classList.remove('dragging'); wrapper.style.cursor = 'grab'; };
+                wrapper.addEventListener('mousedown', startDrag);
+                document.addEventListener('mousemove', onDrag);
+                document.addEventListener('mouseup', endDrag);
+                wrapper.addEventListener('touchstart', startDrag, { passive: false });
+                document.addEventListener('touchmove', onDrag, { passive: false });
+                document.addEventListener('touchend', endDrag);
+                setup();
+            }
+            initializeCarousel('projects-wrapper', 'carousel', 'view-toggle', projectsData);
+            initializeCarousel('adult-projects-wrapper', 'adult-carousel', 'adult-view-toggle', adultProjectsData);
+            
+            // Popups Logic
+            const adultPopup = document.getElementById('adult-popup-overlay');
+            const ageGateCheckbox = document.getElementById('age-gate-checkbox');
+            const enterAdultBtn = document.getElementById('enter-adult-section');
+            const leaveAdultBtn = document.getElementById('leave-adult-section');
+            const adultNavLink = document.querySelector('a[href="#adult"]');
+            let isAgeVerified = sessionStorage.getItem('isAgeVerified') === 'true';
+
+            adultNavLink.addEventListener('click', (e) => { e.preventDefault(); if (isAgeVerified) { document.getElementById('adult').scrollIntoView(); } else { adultPopup.style.display = 'flex'; } });
+            ageGateCheckbox.addEventListener('change', () => { enterAdultBtn.disabled = !ageGateCheckbox.checked; });
+            enterAdultBtn.addEventListener('click', () => { isAgeVerified = true; sessionStorage.setItem('isAgeVerified', 'true'); adultPopup.style.display = 'none'; document.getElementById('adult').scrollIntoView(); ageGateCheckbox.checked = false; enterAdultBtn.disabled = true; });
+            leaveAdultBtn.addEventListener('click', () => { adultPopup.style.display = 'none'; });
+
+            const keyPopup = document.getElementById('key-popup-overlay');
+            const paidProjectCard = document.getElementById('paid-project-card');
+            const purchaseKeyBtn = document.getElementById('purchase-key-button');
+            const submitKeyBtn = document.getElementById('submit-key-button');
+            const keyInput = document.getElementById('key-input');
+            const keyError = document.getElementById('key-error');
+            let isProjectUnlocked = false;
+
+            paidProjectCard.addEventListener('click', () => { if (!isProjectUnlocked) { keyPopup.style.display = 'flex'; }});
+            submitKeyBtn.addEventListener('click', () => { 
+                if (keyInput.value === "ABHI-TURBO-2025") { 
+                    isProjectUnlocked = true;
+                    keyPopup.style.display = 'none'; 
+                    paidProjectCard.classList.remove('interactive');
+                    paidProjectCard.classList.add('unlocked');
+                    paidProjectCard.style.cursor = 'default';
+                    paidProjectCard.innerHTML = `
+                        <h3 style="color:var(--paid-glow); margin-bottom: 1.5rem; text-align:center;">[ ACCESS GRANTED ]</h3>
+                        <img src="${paidProjectData.img}" alt="${paidProjectData.title}">
+                        <div style="text-align:left; margin-top:1.5rem;">
+                             <h4 style="color:var(--paid-glow);">${paidProjectData.title}</h4>
+                             <p>${paidProjectData.description}</p>
+                             <a href="${paidProjectData.link}" class="cta-button" target="_blank" style="border-color:var(--paid-glow); color:var(--paid-glow); margin-top:1rem;">Access Project Files</a>
+                        </div>
+                    `;
+                    keyInput.value = ''; 
+                    keyError.style.display = 'none'; 
+                } else { 
+                    keyError.style.display = 'block'; 
+                } 
+            });
+            document.querySelectorAll('.popup-close-btn').forEach(btn => btn.addEventListener('click', () => { document.getElementById(btn.dataset.target).style.display = 'none'; }));
+            
+            const paymentOverlay = document.getElementById('payment-overlay');
+            const sendBtn = document.getElementById('send-button');
+            const utrInput = document.getElementById('utr-input');
+            const initialView = document.getElementById('initial-view');
+            const successView = document.getElementById('success-view');
+            let currentProjectForPayment = '';
+
+            purchaseKeyBtn.addEventListener('click', () => { currentProjectForPayment = paidProjectCard.dataset.projectName; keyPopup.style.display = 'none'; paymentOverlay.style.display = 'flex'; initialView.style.display = 'block'; successView.style.display = 'none'; utrInput.value = ''; });
+            sendBtn.addEventListener('click', () => { const utr = utrInput.value; if (utr.trim().length < 12) { alert('Please enter a valid 12-digit UTR number.'); return; } const telegramUser = 'lost_life2'; const message = `Key Purchase Request:\nProject: ${currentProjectForPayment}\nUTR: ${utr}`; const telegramUrl = `https://t.me/${telegramUser}?text=${encodeURIComponent(message)}`; window.open(telegramUrl, '_blank'); initialView.style.display = 'none'; successView.style.display = 'block'; });
+
+            // 3D Background & Scroll Logic
+            let scene, camera, renderer, wireframe;
+            function init3D() { scene = new THREE.Scene(); camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000); renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('bg-scene'), alpha: true }); renderer.setSize(window.innerWidth, window.innerHeight); const geometry = new THREE.IcosahedronGeometry(2, 2); const material = new THREE.MeshBasicMaterial({ color: 0x00f2ff, wireframe: true }); wireframe = new THREE.Mesh(geometry, material); scene.add(wireframe); camera.position.z = 5; }
+            function animate3D() { requestAnimationFrame(animate3D); wireframe.rotation.x += 0.0005; wireframe.rotation.y += 0.001; renderer.render(scene, camera); }
+            const mainContent = document.getElementById('main-content');
+            const sections = document.querySelectorAll('.section');
+            const navLinks = document.querySelectorAll('#navigation-hud a');
+            const sectionColors = {};
+            sections.forEach(sec => { sectionColors[sec.id] = sec.dataset.color; });
+            const target = { x: 0, y: 0 }, current = { x: 0, y: 0 }, ease = 0.05, clock = new THREE.Clock();
+            mainContent.addEventListener('scroll', () => { let currentSectionId = 'home'; sections.forEach(section => { if (mainContent.scrollTop >= section.offsetTop - window.innerHeight / 2) { currentSectionId = section.id; } }); navLinks.forEach(link => { link.classList.remove('active'); if (link.getAttribute('href').substring(1) === currentSectionId) { link.classList.add('active'); } }); const newColor = sectionColors[currentSectionId] || '#00f2ff'; if (wireframe.material.color.getHexString() !== newColor.substring(1)) { wireframe.material.color.set(newColor); } const scrollPercent = mainContent.scrollTop / (mainContent.scrollHeight - window.innerHeight); target.x = (scrollPercent - 0.5) * 4; if (['log', 'contact'].includes(currentSectionId)) target.y = -1.5; else if (['intel', 'projects', 'adult', 'paid-project', 'testimonials'].includes(currentSectionId)) target.y = 0; else target.y = 1.5; });
+            function updateObjectPosition() { requestAnimationFrame(updateObjectPosition); current.x += (target.x - current.x) * ease; current.y += (target.y - current.y) * ease; wireframe.position.x = current.x; wireframe.position.y = current.y + Math.sin(clock.getElapsedTime() * 0.5) * 0.25; }
+            window.addEventListener('resize', () => { camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); });
+            init3D(); animate3D(); updateObjectPosition();
+        });
+    </script>
+</body>
+</html>
