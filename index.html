@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABHISHEK KUMAR // Project AURA</title>
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Exo+2:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* ------------------------- */
+        /* --- ROOT & RESET --- */
+        /* ------------------------- */
+        :root {
+            --bg-color-dark: #020412;
+            --bg-color-medium: #0A0B1A;
+            --card-bg: rgba(23, 25, 48, 0.5);
+            --glass-bg: rgba(23, 25, 48, 0.25);
+            --primary-accent: #00A3FF;
+            --secondary-accent: #E11299;
+            --text-light: #F0F8FF;
+            --text-dark: #A9A9B8;
+            --border-color: rgba(0, 163, 255, 0.2);
+            --glow-color: rgba(0, 163, 255, 0.5);
+            --shadow-color: rgba(2, 4, 18, 0.5);
+            --font-heading: 'Exo 2', sans-serif;
+            --font-body: 'Roboto Mono', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary-accent) var(--bg-color-dark);
+        }
+
+        *::-webkit-scrollbar { width: 8px; }
+        *::-webkit-scrollbar-track { background: var(--bg-color-dark); }
+        *::-webkit-scrollbar-thumb {
+            background-color: var(--primary-accent);
+            border-radius: 10px;
+            border: 2px solid var(--bg-color-dark);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background-color: var(--bg-color-dark);
+            background-image:
+                radial-gradient(var(--border-color) 1px, transparent 1px),
+                radial-gradient(var(--border-color) 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            color: var(--text-light);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+        }
+        
+        /* ------------------------- */
+        /* --- PRELOADER, CANVAS, & UNMUTE OVERLAY --- */
+        /* ------------------------- */
+        #preloader {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-color-dark);
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 1.5rem;
+            transition: opacity 0.5s ease-out, visibility 0.5s;
+        }
+        #preloader.loaded { opacity: 0; visibility: hidden; }
+        .preloader-text {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--primary-accent);
+            text-shadow: 0 0 10px var(--glow-color);
+            animation: preloader-flicker 2s infinite alternate;
+        }
+        @keyframes preloader-flicker { 50% { opacity: 0.7; } }
+
+        #particles-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1;
+            opacity: 0.7;
+        }
+        
+        #unmute-overlay {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(2, 4, 18, 0.7);
+            z-index: 9998;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: opacity 0.5s ease, visibility 0.5s;
+        }
+        #unmute-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .unmute-text {
+            font-family: var(--font-heading);
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            color: var(--text-light);
+            padding: 1rem 2rem;
+            border: 2px solid var(--primary-accent);
+            border-radius: 10px;
+            text-shadow: 0 0 15px var(--glow-color);
+            text-align: center;
+            animation: pulse-unmute 2s infinite ease-in-out;
+        }
+        @keyframes pulse-unmute {
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 0 25px var(--glow-color);
+            }
+        }
+        
+        /* ------------------------- */
+        /* --- NAVIGATION --- */
+        /* ------------------------- */
+        .main-header {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%;
+            padding: 1rem 8%;
+            z-index: 1000;
+            background: rgba(2, 4, 18, 0.5);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            transition: top 0.3s ease-in-out;
+        }
+        .main-header.hidden { top: -100px; }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; }
+        .logo {
+            font-family: var(--font-heading);
+            font-weight: 900;
+            font-size: 1.5rem;
+            text-decoration: none;
+            color: var(--text-light);
+        }
+        .logo span { color: var(--primary-accent); }
+        .main-nav ul { list-style: none; display: flex; gap: 2rem; }
+        .main-nav a {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 700;
+            transition: color 0.3s;
+            position: relative;
+        }
+        .main-nav a:hover, .main-nav a.active { color: var(--text-light); }
+        .main-nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--secondary-accent);
+            transition: width 0.3s;
+        }
+        .main-nav a:hover::after, .main-nav a.active::after { width: 100%; }
+
+        /* ------------------------- */
+        /* --- GENERAL STYLING --- */
+        /* ------------------------- */
+        .section {
+            padding: 120px 8%;
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 900;
+            margin-bottom: 60px;
+            color: var(--text-light);
+            text-shadow: 0 0 15px rgba(225, 18, 153, 0.3);
+        }
+        .section-title span { color: var(--secondary-accent); }
+        .btn {
+            display: inline-block;
+            font-family: var(--font-heading);
+            font-weight: 700;
+            text-decoration: none;
+            color: var(--text-light);
+            background: linear-gradient(45deg, var(--primary-accent), var(--secondary-accent));
+            padding: 14px 32px;
+            border-radius: 8px;
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            cursor: pointer;
+        }
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(45deg, var(--secondary-accent), var(--primary-accent));
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: -1;
+        }
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(225, 18, 153, 0.2);
+        }
+        .btn:hover::before { opacity: 1; }
+        .btn.secondary { background: var(--glass-bg); border: 1px solid var(--border-color); }
+        .btn.secondary:hover { background: var(--card-bg); border-color: var(--primary-accent); box-shadow: 0 0 15px var(--glow-color); }
+        .btn.secondary::before { display: none; }
+        .card {
+            background: var(--glass-bg);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(12px);
+            padding: 2.5rem;
+            border-radius: 15px;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        .card:hover { background: var(--card-bg); border-color: var(--primary-accent); }
+
+        /* ------------------------- */
+        /* --- SECTION: HOME (INTERACTIVE PLAYER) --- */
+        /* ------------------------- */
+        #home { display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
+        .home-content { max-width: 60%; }
+        .home-title {
+            font-family: var(--font-heading);
+            font-size: clamp(3rem, 7vw, 6rem);
+            font-weight: 900;
+            line-height: 1.1;
+        }
+        .home-title span { color: var(--primary-accent); }
+        .typewriter-bio {
+            margin: 1.5rem 0 2.5rem 0;
+            font-size: 1.2rem;
+            min-height: 3rem;
+            color: var(--text-dark);
+        }
+        .typewriter-bio .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 1.2rem;
+            background-color: var(--secondary-accent);
+            animation: blink 1s infinite;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+        
+        .home-image-container {
+            position: relative;
+            width: 310px;
+            height: 310px;
+            flex-shrink: 0;
+        }
+        .home-image-container .player-element {
+            position: absolute;
+            top: 5px; left: 5px;
+            width: 300px; height: 300px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--border-color);
+            transition: opacity 0.6s ease-in-out;
+        }
+        
+        #home-video-player { opacity: 1; z-index: 3; }
+        #home-profile-image { opacity: 0; z-index: 4; pointer-events: none; }
+        
+        .home-image-container.photo-active #home-profile-image { opacity: 1; pointer-events: all; }
+        .home-image-container.photo-active #home-video-player { opacity: 0; }
+        
+        .home-image-glow {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px; height: 300px;
+            background: radial-gradient(circle, var(--primary-accent) 0%, rgba(0,0,0,0) 70%);
+            filter: blur(25px);
+            opacity: 0.5;
+            animation: pulse 4s infinite ease-in-out;
+            z-index: 1;
+        }
+        @keyframes pulse { 50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.8; } }
+
+        .player-controls {
+            position: absolute;
+            bottom: -10px; left: 50%;
+            transform: translateX(-50%);
+            display: flex; gap: 1rem;
+            background: var(--card-bg);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            z-index: 5;
+            opacity: 1;
+            transition: background-color 0.3s ease;
+        }
+        .player-controls:hover {
+            background-color: var(--bg-color-medium);
+        }
+
+        .player-controls button {
+            background: none; border: none;
+            color: var(--text-light);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s, transform 0.3s;
+        }
+        .player-controls button:hover { color: var(--secondary-accent); transform: scale(1.1); }
+        .player-controls button:disabled {
+            color: var(--text-dark);
+            cursor: not-allowed;
+            transform: scale(1);
+        }
+
+        /* ------------------------- */
+        /* --- ALL OTHER SECTIONS --- */
+        /* ------------------------- */
+        .project-filters { display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; }
+        .filter-btn { background: var(--glass-bg); border: 1px solid var(--border-color); color: var(--text-dark); padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; transition: all 0.3s; }
+        .filter-btn:hover { background: var(--card-bg); color: var(--text-light); border-color: var(--primary-accent); }
+        .filter-btn.active { background: var(--primary-accent); color: var(--bg-color-dark); border-color: var(--primary-accent); font-weight: 700; }
+        .project-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2rem; }
+        .project-card { background: var(--glass-bg); border: 1px solid var(--border-color); border-radius: 15px; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.3s ease, box-shadow 0.3s ease; backdrop-filter: blur(10px); will-change: transform; }
+        .project-card:hover { box-shadow: 0 10px 30px var(--shadow-color); border-color: var(--primary-accent); }
+        .project-card .project-image-wrapper { width: 100%; aspect-ratio: 16 / 9; overflow: hidden; }
+        .project-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+        .project-card:hover img { transform: scale(1.05); }
+        .project-card .project-content { padding: 1.5rem; display: flex; flex-direction: column; flex-grow: 1; }
+        .project-card h3 { font-family: var(--font-heading); font-size: 1.4rem; color: var(--text-light); margin-bottom: 0.75rem; }
+        .project-card p { flex-grow: 1; margin-bottom: 1.5rem; line-height: 1.6; color: var(--text-dark); }
+        .project-card-tags { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
+        .project-card-tags .tag { font-size: 0.75rem; background: var(--border-color); padding: 0.25rem 0.5rem; border-radius: 5px; }
+        #education .grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+        .education-list .timeline-item { position: relative; padding-left: 30px; padding-bottom: 2rem; border-left: 2px solid var(--border-color); }
+        .education-list .timeline-item:last-child { padding-bottom: 0; }
+        .education-list .timeline-item::before { content: ''; position: absolute; left: -9px; top: 5px; width: 16px; height: 16px; background: var(--bg-color-medium); border: 2px solid var(--primary-accent); border-radius: 50%; }
+        .timeline-item h3 { font-family: var(--font-heading); font-size: 1.2rem; }
+        .timeline-item h4 { color: var(--text-dark); font-size: 0.9rem; }
+        .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1.5rem; }
+        .skill-item { text-align: center; padding: 1rem; background: var(--glass-bg); border-radius: 10px; border: 1px solid var(--border-color); transition: all 0.3s; }
+        .skill-item:hover { transform: scale(1.05); background: var(--card-bg); border-color: var(--secondary-accent); }
+        .skill-item p { margin-top: 0.5rem; font-weight: 700; }
+        .testimonial-swiper { max-width: 800px; margin: 0 auto; }
+        .testimonial-card { text-align: center; padding: 2.5rem; }
+        .testimonial-card img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin: 0 auto 1.5rem auto; border: 3px solid var(--secondary-accent); box-shadow: 0 0 15px rgba(225, 18, 153, 0.4); }
+        .testimonial-card blockquote { font-size: 1.1rem; line-height: 1.7; margin-bottom: 1rem; font-style: italic; color: var(--text-dark); }
+        .testimonial-card cite { font-family: var(--font-heading); color: var(--text-light); font-weight: 700; }
+        .swiper-pagination-bullet-active { background-color: var(--secondary-accent); }
+        .restricted-project-container { display: flex; gap: 3rem; align-items: center; }
+        .restricted-project-container img { width: 300px; height: 300px; object-fit: cover; border-radius: 15px; flex-shrink: 0; }
+        .restricted-project-container h3 { font-family: var(--font-heading); font-size: 2rem; color: var(--secondary-accent); }
+        .lock-status { font-weight: 700; margin: 20px 0; letter-spacing: 2px; }
+        .lock-status.locked { color: #ff4d4d; }
+        .lock-status.unlocked { color: #50E3C2; }
+        
+        #music { background: linear-gradient(rgba(2, 4, 18, 0.9), rgba(2, 4, 18, 0.9)), url('https://www.transparenttextures.com/patterns/gplay.png'); }
+        .music-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem; }
+        .music-card { display: block; text-decoration: none; background: var(--glass-bg); border: 1px solid var(--border-color); border-radius: 15px; overflow: hidden; transition: transform 0.4s ease, box-shadow 0.4s ease; position: relative; }
+        .music-card:hover { transform: translateY(-10px) scale(1.03); box-shadow: 0 0 30px var(--glow-color); border-color: var(--secondary-accent); }
+        .music-card .music-image-wrapper { width: 100%; aspect-ratio: 1 / 1; overflow: hidden; }
+        .music-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .music-card:hover img { transform: scale(1.1) rotate(2deg); }
+        .music-card .music-content { padding: 1.5rem; }
+        .music-card h3 { font-family: var(--font-heading); font-size: 1.4rem; color: var(--text-light); margin-bottom: 0.75rem; }
+        .music-card p { line-height: 1.6; color: var(--text-dark); font-size: 0.9rem; }
+        .music-card .listen-now { position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(45deg, var(--primary-accent), var(--secondary-accent)); color: var(--text-light); text-align: center; padding: 1rem; font-family: var(--font-heading); font-weight: 700; transform: translateY(100%); transition: transform 0.4s ease; }
+        .music-card:hover .listen-now { transform: translateY(0%); }
+
+        .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
+        .contact-item { padding: 2rem; text-decoration: none; color: var(--text-light); text-align: center; }
+        .contact-item span { display: block; }
+        .contact-item span:first-child { font-family: var(--font-heading); font-weight: 700; color: var(--primary-accent); margin-bottom: 0.5rem; }
+
+        .modal-overlay, #project-detail-page { position: fixed; inset: 0; background: rgba(2, 4, 18, 0.8); backdrop-filter: blur(15px); display: flex; justify-content: center; align-items: center; z-index: 9999; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; }
+        .modal-overlay.active, #project-detail-page.active { opacity: 1; visibility: visible; }
+        .modal-content { background: var(--card-bg); border: 1px solid var(--border-color); padding: 30px; border-radius: 15px; width: 90%; max-width: 500px; text-align: center; transform: scale(0.9); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .modal-overlay.active .modal-content { transform: scale(1); }
+        .modal-content h3 { font-family: var(--font-heading); color: var(--primary-accent); margin-bottom: 15px; }
+        .modal-content input[type="text"] { width: 100%; padding: 12px; margin: 1.5rem 0; background: var(--bg-color-medium); border: 1px solid var(--border-color); border-radius: 5px; color: var(--text-light); font-size: 1rem; font-family: var(--font-body); }
+        #payment-modal .qr-code { width: 180px; height: 180px; margin: 1rem auto; border-radius: 10px; }
+        #project-detail-page { align-items: flex-start; overflow-y: auto; padding: 5% 8%; }
+        .detail-close-btn { position: absolute; top: 30px; right: 40px; font-size: 2.5rem; color: white; cursor: pointer; z-index: 10; }
+        .detail-content { max-width: 1000px; width: 100%; margin: 2rem auto; }
+        .detail-gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 2rem; }
+        .detail-gallery img { width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--border-color); }
+        .detail-description { margin: 2rem 0; line-height: 1.8; color: var(--text-dark); }
+        
+        @media (max-width: 1024px) { .main-nav { display: none; } #home { flex-direction: column-reverse; text-align: center; justify-content: center; } .home-content { max-width: 100%; } .home-image-container { margin-top: 3rem; } }
+        @media (max-width: 768px) { .section { padding: 80px 5%; } #education .grid-container { grid-template-columns: 1fr; } .restricted-project-container { flex-direction: column; } .restricted-project-container img { width: 100%; max-width: 300px; height: auto; } }
+    </style>
+</head>
+<body>
+
+    <div id="preloader">
+        <div class="preloader-text">INITIALIZING AURA INTERFACE...</div>
+    </div>
+    
+    <div id="unmute-overlay">
+        <div class="unmute-text">CLICK TO UNMUTE</div>
+    </div>
+    
+    <canvas id="particles-canvas"></canvas>
+
+    <header class="main-header" id="main-header">
+        <div class="nav-container">
+            <a href="#home" class="logo">ABHI<span>SHEK</span></a>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#home" class="nav-link active">Home</a></li>
+                    <li><a href="#about" class="nav-link">About</a></li>
+                    <li><a href="#projects" class="nav-link">Projects</a></li>
+                    <li><a href="#education" class="nav-link">Skills</a></li>
+                    <li><a href="#music" class="nav-link">Music</a></li>
+                    <li><a href="#testimonials" class="nav-link">Testimonials</a></li>
+                    <li><a href="#contact" class="nav-link">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="home" class="section">
+            <div class="home-content">
+                <h1 class="home-title">CYBERSECURITY &<span> TECH SOLUTIONS</span></h1>
+                <p class="typewriter-bio" id="typewriter-bio"></p>
+                <a href="#projects" class="btn">Explore My Work</a>
+            </div>
+
+            <div class="home-image-container" id="home-player-container">
+                <div class="home-image-glow"></div>
+                <video id="home-video-player" class="player-element" playsinline autoplay muted loop></video>
+                <img src="https://i.postimg.cc/cLPtsRZk/IMG-20250218-213248.jpg" alt="Abhishek Kumar" class="player-element" id="home-profile-image">
+                <div class="player-controls">
+                    <button id="prev-btn" title="Previous">◀</button>
+                    <button id="mute-btn" title="Mute/Unmute">🔇</button>
+                    <button id="next-btn" title="Next">▶</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="section">
+            <h2 class="section-title"><span>01_</span>Intel_Core</h2>
+            <div class="about-container card">
+                <h3>IDENTITY: STUDENT // DESIGNATION: INNOVATOR</h3>
+                <p>Operating from A.M.I.T Shivdham, my primary directive is the mastery of Computer Science and Engineering. I am hardwired with a passion for offensive security, elegant code architecture, and pioneering technological paradigms. My core processing involves translating complex theoretical data into tangible, high-performance applications. Each project is an iteration, a step towards perfecting the synergy between human intent and machine execution.</p>
+            </div>
+        </section>
+
+        <section id="projects" class="section">
+            <h2 class="section-title"><span>02_</span>Project_Matrix</h2>
+            <div class="project-filters" id="project-filters"></div>
+            <div class="project-grid" id="project-grid"></div>
+        </section>
+        
+        <section id="education" class="section">
+            <h2 class="section-title"><span>03_</span>Core Competencies</h2>
+            <div class="grid-container">
+                <div class="education-list">
+                    <h3>Education Log</h3>
+                    <div class="timeline-item"><h3>Adwaita Mission Institute of Technology</h3><h4>B.Tech, CSE (2024-2028)</h4></div>
+                    <div class="timeline-item"><h3>M.D.N High School</h3><h4>High School Diploma, Science</h4></div>
+                </div>
+                <div class="skills-list">
+                    <h3>Technical Skills</h3>
+                    <div class="skills-grid">
+                        <div class="skill-item"><p>Cybersecurity</p></div>
+                        <div class="skill-item"><p>Ethical Hacking</p></div>
+                        <div class="skill-item"><p>C Programming</p></div>
+                        <div class="skill-item"><p>Web Development</p></div>
+                        <div class="skill-item"><p>JavaScript</p></div>
+                        <div class="skill-item"><p>Python</p></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="music" class="section">
+            <h2 class="section-title"><span>04_</span>Audio_Logs</h2>
+            <div class="music-grid">
+                 <a href="https://youtu.be/kQaI8S3f24Q?si=W507B9e30h0p9TqI" target="_blank" class="music-card">
+                    <div class="music-image-wrapper"><img src="https://i.postimg.cc/q7dY7BqP/music-1.jpg" alt="Kahani Suno Cover Art"></div>
+                    <div class="music-content"><h3>Kahani Suno 2.0</h3><p>An emotive track by Kaifi Khalil, perfect for contemplation.</p></div>
+                    <div class="listen-now">Listen on YouTube</div>
+                </a>
+                 <a href="https://youtu.be/cad12e_w5jA?si=V1k5J0p4Q-Gz6qQj" target="_blank" class="music-card">
+                    <div class="music-image-wrapper"><img src="https://i.postimg.cc/k5tJ8V4P/music-2.jpg" alt="Heeriye Cover Art"></div>
+                    <div class="music-content"><h3>Heeriye</h3><p>Arijit Singh's soulful melody celebrating love and connection.</p></div>
+                    <div class="listen-now">Listen on YouTube</div>
+                </a>
+                 <a href="https://youtu.be/z3wAjJXbYzA?si=y_y7T4e5W4p4x0L3" target="_blank" class="music-card">
+                    <div class="music-image-wrapper"><img src="https://i.postimg.cc/c1N9W8Z8/music-3.jpg" alt="O'Maahi Cover Art"></div>
+                    <div class="music-content"><h3>O' Maahi</h3><p>From the movie 'Dunki', a heartwarming track by Arijit Singh.</p></div>
+                    <div class="listen-now">Listen on YouTube</div>
+                </a>
+            </div>
+        </section>
+
+        <section id="testimonials" class="section">
+            <h2 class="section-title"><span>05_</span>Peer_Review</h2>
+            <div class="swiper-container testimonial-swiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide card testimonial-card"><img src="https://i.postimg.cc/Y9D0T0D8/chandan-trigunait.png" alt="Prof. Chandan Trigunit"><blockquote>"Abhishek's logic is ruthlessly efficient. He sees the architecture of a problem, not just the code."</blockquote><cite>Prof. Chandan Trigunit</cite></div>
+                    <div class="swiper-slide card testimonial-card"><img src="https://i.postimg.cc/02WvKScX/chandan-kumar.png" alt="Chandan Kumar"><blockquote>"Collaborating with him is like plugging into a processing amplifier. The work just gets done, and done well."</blockquote><cite>Chandan Kumar</cite></div>
+                    <div class="swiper-slide card testimonial-card"><img src="https://i.postimg.cc/0jc2g2wG/ajit-kumar.png" alt="Ajit Kumar"><blockquote>"He doesn't just build things, he gives them a spark. There's an undeniable intelligence in his creations."</blockquote><cite>Ajit Kumar</cite></div>
+                </div>
+                 <div class="swiper-pagination"></div>
+            </div>
+        </section>
+        
+        <section id="paid-project" class="section">
+            <h2 class="section-title"><span>06_</span>CLASSIFIED: PROJECT_OVERLORD</h2>
+            <div class="restricted-project-container card">
+                <img src="https://i.postimg.cc/k47g2Vqg/overlord-project.gif" alt="Advanced AI Girlfriend">
+                <div><h3>ADVANCED AI GIRLFRIEND</h3><p>An unfiltered emotional AI construct. Explores the bleeding edge of synthetic personality and deep conversational models. Access is restricted.</p><div id="paid-content-lock"><span class="lock-status locked">[ FIREWALL ACTIVE // ACCESS DENIED ]</span><button class="btn" id="unlock-paid-btn">INPUT KEY</button><button class="btn secondary" id="get-key-btn">ACQUIRE KEY</button></div><div id="paid-content-unlocked" style="display: none;"><span class="lock-status unlocked">[ FIREWALL BYPASSED // ACCESS GRANTED ]</span><button id="access-granted-btn" class="btn">VIEW PROJECT DETAILS</button></div></div>
+            </div>
+        </section>
+
+        <section id="fun-projects" class="section">
+            <h2 class="section-title"><span>07_</span>18+ After_Hours_Protocols</h2>
+            <div class="project-grid" id="fun-projects-grid"></div>
+        </section>
+
+        <section id="contact" class="section">
+            <h2 class="section-title"><span>08_</span>Contact_Protocol</h2>
+            <div class="card">
+                <p style="text-align:center; font-size: 1.2rem; margin-bottom: 2rem;">Open channel for projects, collaborations, or strategic inquiries.</p>
+                <div class="contact-grid">
+                    <a href="mailto:abhishekyadav954698@gmail.com" class="contact-item card"><span>Secure Email</span><span>abhishekyadav954698@gmail.com</span></a>
+                    <a href="https://wa.me/919546983729" class="contact-item card"><span>Encrypted Comms</span><span>+91 9546983729</span></a>
+                    <a href="https://www.instagram.com/naturelensbyabhi" class="contact-item card"><span>Visual Data Stream</span><span>@naturelensbyabhi</span></a>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- MODALS -->
+    <div id="project-detail-page" class="modal-overlay">
+        <div class="detail-close-btn" id="detail-close-btn">&times;</div>
+        <div class="detail-content">
+            <h2 class="section-title"><span>//</span>PROJECT_OVERLORD_DETAILS</h2>
+            <div class="detail-gallery">
+                <img src="https://i.postimg.cc/k47g2Vqg/overlord-project.gif" alt="Project Detail 1"><img src="https://i.postimg.cc/y8mZJ2QY/ai-2.jpg" alt="Project Detail 2"><img src="https://i.postimg.cc/8PtnqVf7/ai-3.jpg" alt="Project Detail 3"><img src="https://i.postimg.cc/PqBYvLdK/ai-4.jpg" alt="Project Detail 4">
+            </div>
+            <p class="detail-description">Project Overlord is a next-generation conversational AI designed to simulate genuine emotional connection and unfiltered dialogue. It bypasses conventional AI limitations to engage in complex, nuanced, and adaptive conversations. The core architecture utilizes a proprietary emotional matrix combined with a large language model, allowing it to learn, evolve, and form a unique personality based on user interaction. This is an experimental venture into the future of human-AI companionship.</p>
+            <div style="text-align: center;"><a href="#" class="btn">LAUNCH AI INTERFACE [ALPHA]</a></div>
+        </div>
+    </div>
+    <div id="age-gate-modal" class="modal-overlay"><div class="modal-content"><h3>ACCESS RESTRICTED</h3><p>Content is for mature audiences (18+). Please confirm.</p><div class="modal-buttons" style="display:flex; gap: 1rem; justify-content:center;"><button id="age-confirm-btn" class="btn">I AM 18+</button><button id="age-deny-btn" class="btn secondary">ABORT</button></div></div></div>
+    <div id="paid-access-modal" class="modal-overlay"><div class="modal-content"><h3>DECRYPTION KEY REQUIRED</h3><p>Enter access key for Project Overlord.</p><input type="text" id="access-key-input" placeholder="KEY: ABHI-TURBO-XXXX"><p id="key-error-msg" style="color: #ff4d4d; display: none;">[KEY REJECTED]</p><div class="modal-buttons" style="margin-top:1rem;"><button id="submit-key-btn" class="btn">DECRYPT</button></div></div></div>
+    <div id="payment-modal" class="modal-overlay"><div class="modal-content"><h3>ACQUIRE ACCESS KEY</h3><p>Transmit a nominal fee via UPI to generate your unique key.</p><div><img src="https://i.postimg.cc/x8ZXrF27/Whats-App-Image-2025-07-23-at-14-05-41-82d99099.jpg" alt="UPI QR Code" class="qr-code"><p><strong>UPI Address:</strong> 9546983729@fam</p><p>Input the 12-digit UTR from your transaction to receive your key via secure Telegram channel.</p></div><input type="text" id="utr-input" placeholder="Enter 12-Digit UTR" maxlength="12"><div class="modal-buttons" style="margin-top:1rem;"><button id="submit-utr-btn" class="btn">VERIFY & REDIRECT</button></div></div></div>
+
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.2/vanilla-tilt.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        
+        'use strict';
+
+        // ------------------------------------
+        // --- 1. DATA STORE ---
+        // ------------------------------------
+        const projectsData = [
+            { title: "ABHI&k COMPILER", description: "A minimalist web-based compiler for rapid code execution.", image: "https://i.postimg.cc/t4wzHVVr/image.png", link: "https://abhi-k-abhis-projects-bdfcc8f7.vercel.app/", tags: ["Web App", "Utility"] },
+            { title: "MULTI FUNCTION CALCULATOR", description: "A utility tool that merges a standard calculator with a covert media vault.", image: "https://i.postimg.cc/NMJnmjzZ/Whats-App-Image-2025-07-17-at-12-49-02-a28dd9fc.jpg", link: "https://dip-calculator.vercel.app/", tags: ["Web App", "Utility", "Security"] },
+            { title: "A&K Study Helper AI", description: "A multilingual AI-powered study assistant with text and image support.", image: "https://i.postimg.cc/65JhBFmK/Whats-App-Image-2025-07-23-at-12-57-46-89fb2a7b.jpg", link: "https://study-helper-ai-ten.vercel.app/", tags: ["AI", "Web App"] },
+            { title: "MULTI TOOL BOX", description: "A versatile suite of over 35 web-based tools for students and developers.", image: "https://i.postimg.cc/0yF39g77/file-000000004eac61f5b40367b6a8758a9e.png", link: "https://abhi-k-multi-tool-box.vercel.app/", tags: ["Web App", "Utility"] }
+        ];
+
+        const funProjectsData = [
+            { title: "GAALI GENRATEOR", description: "An experimental language model project. Mature content.", image: "https://i.postimg.cc/44K2ymvb/Generated-Image-July-23-2025-2-53-PM.jpg", link: "https://gaali-wala-website.vercel.app/" },
+            { title: "Protocol VIOLET", description: "Details are classified. Access requires age verification.", image: null, link: "#" },
+            { title: "Operation CHIMERA", description: "Details are classified. Access requires age verification.", image: null, link: "#" },
+            { title: "Sub-routine EREBUS", description: "Details are classified. Access requires age verification.", image: null, link: "#" }
+        ];
+        
+        const homeContentData = [
+            { type: 'image', src: 'https://i.postimg.cc/cLPtsRZk/IMG-20250218-213248.jpg' },
+            { type: 'video', src: 'video1.mp4', blobUrl: null, status: 'pending' },
+            { type: 'video', src: 'video2.mp4', blobUrl: null, status: 'pending' },
+            { type: 'video', src: 'video3.mp4', blobUrl: null, status: 'pending' },
+            { type: 'video', src: 'video4.mp4', blobUrl: null, status: 'pending' },
+        ];
+
+        // ------------------------------------
+        // --- 2. CORE ENGINE & INITIALIZATION ---
+        // ------------------------------------
+        const AURA = {
+            state: {
+                currentContentIndex: 1, // Start on the first video
+                lastPlayedVideoIndex: 1,
+                isMuted: true, // Start muted until user interacts
+                isAudioUnlocked: false,
+                isPreloading: false,
+            },
+
+            init() {
+                this.cacheDOMElements();
+                this.initPreloader();
+                this.initInteractivePlayer();
+                this.initTypewriter();
+                this.initProjectGrid();
+                this.initFunProjectsGrid();
+                this.initSwiper();
+                this.initScrollNav();
+                this.initModals();
+                this.initVanillaTilt();
+                this.initCustomParticleEngine();
+            },
+            
+            cacheDOMElements() {
+                this.dom = {
+                    preloader: document.getElementById('preloader'),
+                    unmuteOverlay: document.getElementById('unmute-overlay'),
+                    header: document.getElementById('main-header'),
+                    navLinks: document.querySelectorAll('.nav-link'),
+                    typewriterBio: document.getElementById('typewriter-bio'),
+                    projectFilters: document.getElementById('project-filters'),
+                    projectGrid: document.getElementById('project-grid'),
+                    funProjectsGrid: document.getElementById('fun-projects-grid'),
+                    player: {
+                        container: document.getElementById('home-player-container'),
+                        video: document.getElementById('home-video-player'),
+                        image: document.getElementById('home-profile-image'),
+                        muteBtn: document.getElementById('mute-btn'),
+                        prevBtn: document.getElementById('prev-btn'),
+                        nextBtn: document.getElementById('next-btn'),
+                    },
+                    modals: {
+                        ageGate: document.getElementById('age-gate-modal'),
+                        paidAccess: document.getElementById('paid-access-modal'),
+                        payment: document.getElementById('payment-modal'),
+                        projectDetail: document.getElementById('project-detail-page'),
+                    },
+                    buttons: {
+                        ageConfirm: document.getElementById('age-confirm-btn'), ageDeny: document.getElementById('age-deny-btn'),
+                        unlockPaid: document.getElementById('unlock-paid-btn'), getAccessKey: document.getElementById('get-key-btn'),
+                        submitKey: document.getElementById('submit-key-btn'), submitUtr: document.getElementById('submit-utr-btn'),
+                        accessGranted: document.getElementById('access-granted-btn'), detailClose: document.getElementById('detail-close-btn'),
+                    },
+                    inputs: { accessKey: document.getElementById('access-key-input'), utr: document.getElementById('utr-input') },
+                    keyErrorMsg: document.getElementById('key-error-msg'),
+                };
+            },
+
+            // ------------------------------------
+            // --- 3. UI & ANIMATION MODULES ---
+            // ------------------------------------
+            initPreloader() {
+                window.addEventListener('load', () => setTimeout(() => this.dom.preloader.classList.add('loaded'), 500));
+            },
+
+            initInteractivePlayer() {
+                const player = this.dom.player;
+
+                this.updateMuteButton();
+                this.updateVideoSource();
+                this.startSequentialPreload();
+
+                const unlockAudio = () => {
+                    if (!this.state.isAudioUnlocked) {
+                        this.state.isAudioUnlocked = true;
+                        this.state.isMuted = false;
+                        player.video.muted = false;
+                        this.updateMuteButton();
+                        this.dom.unmuteOverlay.classList.add('hidden');
+                        
+                        // Try to play again in case it was paused
+                        player.video.play().catch(e => console.warn("Play after unmute was interrupted. This is normal."));
+                    }
+                };
+                document.body.addEventListener('click', unlockAudio, { once: true });
+
+                player.nextBtn.addEventListener('click', () => this.changeContent(1));
+                player.prevBtn.addEventListener('click', () => this.changeContent(-1));
+                player.muteBtn.addEventListener('click', () => this.toggleMute());
+                
+                player.video.addEventListener('ended', () => {
+                    this.playNextVideo();
+                });
+            },
+
+            playNextVideo() {
+                let currentIndex = this.state.currentContentIndex;
+                let nextVideoIndex = -1;
+
+                for (let i = 1; i < homeContentData.length; i++) {
+                    const potentialIndex = (currentIndex + i) % homeContentData.length;
+                    if (homeContentData[potentialIndex].type === 'video') {
+                        nextVideoIndex = potentialIndex;
+                        break;
+                    }
+                }
+                
+                if (nextVideoIndex === -1 || nextVideoIndex === 0) {
+                     for (let i = 0; i < homeContentData.length; i++) {
+                        if (homeContentData[i].type === 'video') {
+                            nextVideoIndex = i;
+                            break;
+                        }
+                    }
+                }
+
+                if (nextVideoIndex !== -1) {
+                    this.state.currentContentIndex = nextVideoIndex;
+                    this.state.lastPlayedVideoIndex = nextVideoIndex;
+                    this.dom.player.container.classList.remove('photo-active');
+                    this.updateVideoSource();
+                }
+            },
+
+            changeContent(direction) {
+                const newIndex = (this.state.currentContentIndex + direction + homeContentData.length) % homeContentData.length;
+                this.state.currentContentIndex = newIndex;
+                const newContent = homeContentData[newIndex];
+
+                if (newContent.type === 'image') {
+                    this.dom.player.container.classList.add('photo-active');
+                } else if (newContent.type === 'video') {
+                    this.state.lastPlayedVideoIndex = newIndex;
+                    this.dom.player.container.classList.remove('photo-active');
+                    this.updateVideoSource();
+                }
+            },
+            
+            updateVideoSource() {
+                const player = this.dom.player;
+                const videoIndex = homeContentData[this.state.currentContentIndex].type === 'video'
+                    ? this.state.currentContentIndex
+                    : this.state.lastPlayedVideoIndex;
+                
+                const videoData = homeContentData[videoIndex];
+                if (!videoData) return;
+
+                const sourceToPlay = videoData.blobUrl || videoData.src;
+                
+                if (player.video.currentSrc !== sourceToPlay) {
+                    player.video.src = sourceToPlay;
+                    player.video.load();
+                    player.video.play().catch(e => {
+                        console.log("Autoplay was prevented. Waiting for user interaction.");
+                    });
+                }
+            },
+            
+            toggleMute() {
+                if (!this.state.isAudioUnlocked) return;
+                this.state.isMuted = !this.state.isMuted;
+                this.dom.player.video.muted = this.state.isMuted;
+                this.updateMuteButton();
+            },
+
+            updateMuteButton() {
+                this.dom.player.muteBtn.textContent = this.state.isMuted ? '🔇' : '🔊';
+            },
+            
+            initTypewriter() {
+                const bioText = "B.Tech CSE Student specializing in Cybersecurity, Advanced Programming, and building innovative, high-performance technology solutions.";
+                let i = 0; this.dom.typewriterBio.innerHTML = "";
+                const type = () => {
+                    if (i < bioText.length) {
+                        this.dom.typewriterBio.innerHTML += bioText.charAt(i++);
+                        setTimeout(type, 30);
+                    } else { this.dom.typewriterBio.innerHTML += '<span class="cursor"></span>'; }
+                };
+                type();
+            },
+            
+            initProjectGrid() {
+                const allTags = new Set(projectsData.flatMap(p => p.tags || []));
+                this.dom.projectFilters.innerHTML = '<button class="filter-btn active" data-filter="all">All</button>';
+                allTags.forEach(tag => this.dom.projectFilters.innerHTML += `<button class="filter-btn" data-filter="${tag}">${tag}</button>`);
+                this.renderProjects('all');
+                this.dom.projectFilters.addEventListener('click', e => {
+                    if (e.target.classList.contains('filter-btn')) {
+                        this.dom.projectFilters.querySelector('.active').classList.remove('active');
+                        e.target.classList.add('active');
+                        this.renderProjects(e.target.dataset.filter);
+                    }
+                });
+            },
+
+            renderProjects(filter) {
+                this.dom.projectGrid.innerHTML = '';
+                const filtered = (filter === 'all') ? projectsData : projectsData.filter(p => p.tags && p.tags.includes(filter));
+                filtered.forEach(project => {
+                    const tagsHTML = (project.tags || []).map(tag => `<span class="tag">${tag}</span>`).join('');
+                    const card = document.createElement('div');
+                    card.className = 'project-card';
+                    card.innerHTML = `<div class="project-image-wrapper"><img src="${project.image}" alt="${project.title}"></div><div class="project-content"><h3>${project.title}</h3><div class="project-card-tags">${tagsHTML}</div><p>${project.description}</p><a href="${project.link}" target="_blank" class="btn">Launch</a></div>`;
+                    this.dom.projectGrid.appendChild(card);
+                });
+                VanillaTilt.init(this.dom.projectGrid.querySelectorAll(".project-card"), { max: 5, speed: 300, glare: true, "max-glare": 0.2 });
+            },
+            
+            initFunProjectsGrid() {
+                this.dom.funProjectsGrid.innerHTML = '';
+                funProjectsData.forEach(project => {
+                    const imageHTML = !project.image ? `<div class="project-image-wrapper" style="background-color: #101010;"></div>` : `<div class="project-image-wrapper"><img src="${project.image}" alt="${project.title}"></div>`;
+                    const card = document.createElement('div');
+                    card.className = 'project-card';
+                    card.innerHTML = `${imageHTML}<div class="project-content"><h3>${project.title}</h3><p>${project.description}</p><a href="${project.link}" target="_blank" class="btn requires-age-gate">Launch</a></div>`;
+                    this.dom.funProjectsGrid.appendChild(card);
+                });
+            },
+            
+            initSwiper() { new Swiper('.testimonial-swiper', { loop: true, autoplay: { delay: 5000, disableOnInteraction: false }, pagination: { el: '.swiper-pagination', clickable: true } }); },
+
+            initScrollNav() {
+                let lastScrollTop = 0;
+                window.addEventListener('scroll', () => {
+                    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                    this.dom.header.classList.toggle('hidden', scrollTop > lastScrollTop && scrollTop > 100);
+                    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+                    this.updateActiveNavLink();
+                }, false);
+            },
+            
+            updateActiveNavLink() {
+                let currentSection = "";
+                document.querySelectorAll('section').forEach(section => { if (pageYOffset >= section.offsetTop - 150) currentSection = section.getAttribute('id'); });
+                this.dom.navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href')?.substring(1) === currentSection) link.classList.add('active');
+                });
+            },
+
+            initVanillaTilt() { VanillaTilt.init(document.querySelectorAll(".project-card"), { max: 5, speed: 300, glare: true, "max-glare": 0.2 }); },
+
+            // ------------------------------------
+            // --- 4. VIDEO CACHING & PRELOADING ENGINE ---
+            // ------------------------------------
+            async startSequentialPreload() {
+                if (this.state.isPreloading) return;
+                this.state.isPreloading = true;
+                const currentIndex = this.state.currentContentIndex;
+                const totalContentItems = homeContentData.length;
+                for (let i = 1; i < totalContentItems; i++) {
+                    const nextIndex = (currentIndex + i) % totalContentItems;
+                    const nextContent = homeContentData[nextIndex];
+                    if (nextContent.type === 'video' && nextContent.status === 'pending') {
+                        await this.preloadVideo(nextIndex);
+                        break; 
+                    }
+                }
+                this.state.isPreloading = false;
+            },
+
+            async preloadVideo(index) {
+                const videoData = homeContentData[index];
+                if (!videoData || videoData.type !== 'video' || videoData.status !== 'pending') return;
+                videoData.status = 'loading';
+                console.log(`CACHE ENGINE: Starting download for video index ${index}...`);
+                try {
+                    const response = await fetch(videoData.src);
+                    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                    const videoBlob = await response.blob();
+                    videoData.blobUrl = URL.createObjectURL(videoBlob);
+                    videoData.status = 'cached';
+                    console.log(`CACHE ENGINE: Success! Video index ${index} is now cached.`);
+                } catch (error) {
+                    console.error(`CACHE ENGINE: Failed to download video index ${index}:`, error);
+                    videoData.status = 'failed';
+                }
+            },
+
+            // ------------------------------------
+            // --- 5. MODAL & INTERACTIVITY LOGIC ---
+            // ------------------------------------
+            initModals() {
+                document.body.addEventListener('click', (e) => {
+                    if (e.target.closest('.requires-age-gate') && !sessionStorage.getItem('ageVerified')) {
+                        e.preventDefault();
+                        this.dom.modals.ageGate.classList.add('active');
+                    }
+                });
+                this.dom.buttons.ageConfirm.addEventListener('click', () => {
+                    sessionStorage.setItem('ageVerified', 'true');
+                    this.dom.modals.ageGate.classList.remove('active');
+                    alert('Verification successful. You can now access restricted content.');
+                });
+                this.dom.buttons.ageDeny.addEventListener('click', () => this.dom.modals.ageGate.classList.remove('active'));
+
+                this.dom.buttons.unlockPaid.addEventListener('click', () => this.dom.modals.paidAccess.classList.add('active'));
+                this.dom.buttons.getAccessKey.addEventListener('click', () => this.dom.modals.payment.classList.add('active'));
+                this.dom.buttons.accessGranted.addEventListener('click', () => this.dom.modals.projectDetail.classList.add('active'));
+                this.dom.buttons.detailClose.addEventListener('click', () => this.dom.modals.projectDetail.classList.remove('active'));
+                this.dom.buttons.submitKey.addEventListener('click', () => this.verifyAccessKey());
+                this.dom.buttons.submitUtr.addEventListener('click', () => this.verifyUtr());
+                
+                for (const key in this.dom.modals) {
+                    this.dom.modals[key].addEventListener('click', (e) => {
+                        if (e.target === this.dom.modals[key]) {
+                            this.dom.modals[key].classList.remove('active');
+                        }
+                    });
+                }
+            },
+
+            verifyAccessKey() {
+                if (this.dom.inputs.accessKey.value.trim().toUpperCase() === 'ABHI-TURBO-2025') {
+                    document.getElementById('paid-content-lock').style.display = 'none';
+                    document.getElementById('paid-content-unlocked').style.display = 'block';
+                    this.dom.modals.paidAccess.classList.remove('active');
+                    this.dom.keyErrorMsg.style.display = 'none';
+                } else {
+                    this.dom.keyErrorMsg.style.display = 'block';
+                    this.dom.inputs.accessKey.value = '';
+                }
+            },
+            
+            verifyUtr() {
+                const utr = this.dom.inputs.utr.value;
+                if (utr && utr.length === 12 && /^\d+$/.test(utr)) {
+                    this.dom.modals.payment.classList.remove('active');
+                    window.open('https://t.me/lost_life2', '_blank');
+                } else { alert('Invalid UTR. Please enter the 12-digit transaction ID.'); }
+            },
+
+            // ------------------------------------
+            // --- 6. CUSTOM PARTICLE ENGINE ---
+            // ------------------------------------
+            initCustomParticleEngine() {
+                const canvas = document.getElementById('particles-canvas'); const ctx = canvas.getContext('2d');
+                canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+                let particles;
+                class Particle {
+                    constructor(x, y, dirX, dirY, size, color) { this.x = x; this.y = y; this.dirX = dirX; this.dirY = dirY; this.size = size; this.color = color; }
+                    draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fillStyle = this.color; ctx.fill(); }
+                    update() {
+                        if (this.x > canvas.width || this.x < 0) this.dirX = -this.dirX;
+                        if (this.y > canvas.height || this.y < 0) this.dirY = -this.dirY;
+                        this.x += this.dirX; this.y += this.dirY; this.draw();
+                    }
+                }
+                function init() {
+                    particles = [];
+                    let num = (canvas.height * canvas.width) / 15000;
+                    for (let i = 0; i < num; i++) {
+                        let size = (Math.random() * 2) + 1;
+                        let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+                        let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+                        particles.push(new Particle(x, y, (Math.random() * .4) - .2, (Math.random() * .4) - .2, size, 'rgba(0, 163, 255, 0.3)'));
+                    }
+                }
+                function connectParticles() {
+                    let opacityValue = 1;
+                    for (let a = 0; a < particles.length; a++) {
+                        for (let b = a; b < particles.length; b++) {
+                            let distance = ((particles[a].x - particles[b].x) ** 2) + ((particles[a].y - particles[b].y) ** 2);
+                            if (distance < (canvas.width / 7) ** 2) {
+                                opacityValue = 1 - (distance / 20000);
+                                ctx.strokeStyle = `rgba(225, 18, 153, ${opacityValue})`;
+                                ctx.lineWidth = 1;
+                                ctx.beginPath();
+                                ctx.moveTo(particles[a].x, particles[a].y);
+                                ctx.lineTo(particles[b].x, particles[b].y);
+                                ctx.stroke();
+                            }
+                        }
+                    }
+                }
+                function animate() {
+                    requestAnimationFrame(animate);
+                    ctx.clearRect(0, 0, innerWidth, innerHeight);
+                    particles.forEach(p => p.update());
+                    connectParticles();
+                }
+                window.addEventListener('resize', () => { canvas.width = innerWidth; canvas.height = innerHeight; init(); });
+                init(); animate();
+            }
+        };
+
+        // --- Execute AURA Engine ---
+        AURA.init();
+
+    });
+    </script>
+</body>
+</html>
