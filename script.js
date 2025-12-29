@@ -92,7 +92,7 @@ function hidePreloader() {
     if (preloaderHidden) return; // Prevent multiple calls
     preloaderHidden = true;
     
-    const preloader = document.getElementById('preloader');
+    const preloaderElement = document.getElementById('preloader');
 
     if (preloader) {
         preloader.classList.add('loaded');
@@ -1420,5 +1420,6 @@ document.addEventListener('DOMContentLoaded', checkSharedProject);
 setTimeout(checkSharedProject, 2000);
 
 console.log('✅ Share feature initialized');
+
 
 
