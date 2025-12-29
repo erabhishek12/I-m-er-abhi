@@ -1,34 +1,42 @@
-(function() {
+/* ============================================
+   ABHISHEK KUMAR - PORTFOLIO WEBSITE
+   Complete JavaScript - All Features Included
    
+   Features:
+   - Preloader
+   - Custom Cursor
+   - Theme Toggle
+   - Navigation & Mobile Menu
+   - Scroll Progress Bar
+   - Typing Animation
+   - Counter Animation
+   - Skill Bars Animation
+   - Project Filtering
+   - Project Share Feature
+   - Testimonials Swiper
+   - Timeline Animation
+   - Age Verification
+   - Copy to Clipboard
+   - Toast Notifications
+   - Back to Top Button
+   - Floating Contact Button
+   - Parallax Effects
+   - Profile Card Tilt
+   - Easter Egg (Konami Code)
+   - Contact Form
+   - AOS & GSAP Animations
+   
+   Author: Abhishek Kumar
+   Version: 2.0.0 - Complete Edition
+============================================ */
+
 'use strict';
 
 /* ============================================
-   1. DOM ELEMENTS & VARIABLES
+   1. CONFIGURATION & VARIABLES
 ============================================ */
 
-// Preloader
-const preloader = document.getElementById('preloader');
-
-// Cursor
-const cursorDot = document.getElementById('cursorDot');
-const cursorOutline = document.getElementById('cursorOutline');
-
-// Navigation
-const header = document.getElementById('header');
-const navMenu = document.getElementById('navMenu');
-const navToggle = document.getElementById('navToggle');
-const navClose = document.getElementById('navClose');
-const navLinks = document.querySelectorAll('.nav-link');
-
-// Theme
-const themeToggle = document.getElementById('themeToggle');
-const themeToggleMobile = document.getElementById('themeToggleMobile');
-
-// Scroll Progress
-const scrollProgress = document.getElementById('scrollProgress');
-
-// Typing Animation
-const typingText = document.getElementById('typingText');
+// Typing Animation Phrases
 const typingPhrases = [
     'Building Cool Projects 🚀',
     'Learning Cybersecurity 🛡️',
@@ -37,130 +45,135 @@ const typingPhrases = [
     'Solving Problems 🎯'
 ];
 
-// Counters
-const counterNumbers = document.querySelectorAll('.counter-number[data-target]');
+// Share Quotes for Project Sharing
+const shareQuotes = [
+    "Check out this amazing project! 🚀",
+    "This is what creativity looks like! ✨",
+    "Wow! You need to see this project! 🔥",
+    "Built with passion and code! 💻",
+    "Innovation at its finest! 🌟",
+    "This project blew my mind! 🤯",
+    "Talent + Hard work = This masterpiece! 💪",
+    "From idea to reality - Check this out! 💡",
+    "When coding becomes art! 🎨",
+    "Future developer in action! 🎯",
+    "This deserves your attention! 👀",
+    "Impressive work by a student developer! 📚",
+    "Simple yet powerful! ⚡",
+    "Clean code, beautiful design! 🎭",
+    "Technology meets creativity! 🔮"
+];
 
-// Skill Bars
-const skillBars = document.querySelectorAll('.skill-progress');
+// Konami Code
+const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
 
-// Project Filters
-const filterBtns = document.querySelectorAll('.filter-btn');
-const projectCards = document.querySelectorAll('.project-card');
-
-// Profile Card
-const profileCard = document.getElementById('profileCard');
-
-// Back to Top
-const backToTop = document.getElementById('backToTop');
-
-// Floating Contact
-const floatingContact = document.getElementById('floatingContact');
-const floatingMainBtn = document.getElementById('floatingMainBtn');
-
-// Modals
-const ageModal = document.getElementById('ageModal');
-const verifyAgeBtn = document.getElementById('verifyAgeBtn');
-const ageConfirm = document.getElementById('ageConfirm');
-const ageDeny = document.getElementById('ageDeny');
-
-// Toast Container
-const toastContainer = document.getElementById('toastContainer');
-
-// Contact Form
-const contactForm = document.getElementById('contactForm');
-
-// Copy Buttons
-const copyBtns = document.querySelectorAll('.copy-btn');
-
-// Timeline
-const timelineProgress = document.getElementById('timelineProgress');
-
-// Current Year
-const currentYear = document.getElementById('currentYear');
-
-/* ============================================
-   2. PRELOADER - FIXED VERSION
-============================================ */
-
+// State Variables
 let preloaderHidden = false;
-
-function preloaderElement() {
-    if (preloaderHidden) return; // Prevent multiple calls
-    preloaderHidden = true;
-    
-    const preloaderElement = document.getElementById('preloader');
-
-    if (preloader) {
-        preloader.classList.add('loaded');
-        document.body.classList.remove('no-scroll');
-        
-        // Remove preloader from DOM after animation
-        setTimeout(() => {
-            preloader.style.display = 'none';
-        }, 600);
-    }
-    
-    // Initialize animations
-    setTimeout(() => {
-        if (typeof initAOS === 'function') initAOS();
-        if (typeof startTypingAnimation === 'function') startTypingAnimation();
-        if (typeof initParticles === 'function') initParticles();
-        if (typeof initGSAPAnimations === 'function') initGSAPAnimations();
-    }, 100);
-    
-    console.log('✅ Preloader hidden successfully');
-}
-
-// Multiple fallback methods to ensure preloader hides
-
-// Method 1: After DOMContentLoaded + small delay
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('📄 DOM Content Loaded');
-    setTimeout(hidePreloader, 1500);
-});
-
-// Method 2: After full page load
-window.addEventListener('load', () => {
-    console.log('🌐 Window Loaded');
-    setTimeout(hidePreloader, 300);
-});
-
-// Method 3: Ultimate fallback - always hide after 4 seconds
-setTimeout(() => {
-    console.log('⏰ Fallback timer triggered');
-    hidePreloader();
-}, 4000);
-
-/* ============================================
-   3. CUSTOM CURSOR
-============================================ */
-
+let typingIndex = 0;
+let charIndex = 0;
+let isDeleting = false;
+let typingDelay = 100;
+let typingStarted = false;
+let konamiIndex = 0;
 let cursorX = 0;
 let cursorY = 0;
 let outlineX = 0;
 let outlineY = 0;
 
+// Current Project for Share
+let currentShareProject = {
+    id: '',
+    name: '',
+    desc: '',
+    url: '',
+    image: ''
+};
+
+/* ============================================
+   2. DOM ELEMENTS
+============================================ */
+
+// Get DOM Elements safely
+function getElement(id) {
+    return document.getElementById(id);
+}
+
+function getElements(selector) {
+    return document.querySelectorAll(selector);
+}
+
+/* ============================================
+   3. PRELOADER
+============================================ */
+
+function hidePreloader() {
+    if (preloaderHidden) return;
+    preloaderHidden = true;
+    
+    const preloader = getElement('preloader');
+    
+    if (preloader) {
+        preloader.classList.add('loaded');
+        document.body.classList.remove('no-scroll');
+        
+        setTimeout(() => {
+            preloader.style.display = 'none';
+        }, 600);
+    }
+    
+    // Initialize animations after preloader
+    setTimeout(() => {
+        initAOS();
+        startTypingAnimation();
+        initParticles();
+        initGSAPAnimations();
+    }, 100);
+    
+    console.log('✅ Preloader hidden');
+}
+
+// Multiple fallback methods for preloader
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('📄 DOM Content Loaded');
+    setTimeout(hidePreloader, 1500);
+});
+
+window.addEventListener('load', () => {
+    console.log('🌐 Window Loaded');
+    setTimeout(hidePreloader, 300);
+});
+
+// Ultimate fallback
+setTimeout(() => {
+    console.log('⏰ Fallback timer');
+    hidePreloader();
+}, 4000);
+
+/* ============================================
+   4. CUSTOM CURSOR
+============================================ */
+
 function initCustomCursor() {
+    const cursorDot = getElement('cursorDot');
+    const cursorOutline = getElement('cursorOutline');
+    
     if (!cursorDot || !cursorOutline) return;
     
-    // Check if device supports hover (not touch device)
+    // Check for touch device
     if (window.matchMedia('(hover: none)').matches) {
         cursorDot.style.display = 'none';
         cursorOutline.style.display = 'none';
         return;
     }
     
-    // Mouse move handler
     document.addEventListener('mousemove', (e) => {
         cursorX = e.clientX;
         cursorY = e.clientY;
         
-        // Update dot immediately
         cursorDot.style.left = `${cursorX}px`;
         cursorDot.style.top = `${cursorY}px`;
     });
     
-    // Smooth outline following
     function animateOutline() {
         outlineX += (cursorX - outlineX) * 0.15;
         outlineY += (cursorY - outlineY) * 0.15;
@@ -172,29 +185,17 @@ function initCustomCursor() {
     }
     animateOutline();
     
-    // Hover effects on interactive elements
-    const interactiveElements = document.querySelectorAll('a, button, input, textarea, .project-card, .skill-card, .tech-icon');
+    // Hover effects
+    const interactiveElements = getElements('a, button, input, textarea, .project-card, .skill-card, .tech-icon, .share-btn');
     
     interactiveElements.forEach(el => {
-        el.addEventListener('mouseenter', () => {
-            cursorOutline.classList.add('hover');
-        });
-        
-        el.addEventListener('mouseleave', () => {
-            cursorOutline.classList.remove('hover');
-        });
+        el.addEventListener('mouseenter', () => cursorOutline.classList.add('hover'));
+        el.addEventListener('mouseleave', () => cursorOutline.classList.remove('hover'));
     });
     
-    // Click effect
-    document.addEventListener('mousedown', () => {
-        cursorOutline.classList.add('click');
-    });
+    document.addEventListener('mousedown', () => cursorOutline.classList.add('click'));
+    document.addEventListener('mouseup', () => cursorOutline.classList.remove('click'));
     
-    document.addEventListener('mouseup', () => {
-        cursorOutline.classList.remove('click');
-    });
-    
-    // Hide cursor when leaving window
     document.addEventListener('mouseleave', () => {
         cursorDot.style.opacity = '0';
         cursorOutline.style.opacity = '0';
@@ -206,11 +207,8 @@ function initCustomCursor() {
     });
 }
 
-// Initialize cursor after a short delay
-setTimeout(initCustomCursor, 100);
-
 /* ============================================
-   4. THEME TOGGLE (DARK/LIGHT)
+   5. THEME TOGGLE
 ============================================ */
 
 function initTheme() {
@@ -236,83 +234,83 @@ function toggleTheme() {
     showToast('success', 'Theme Changed', `Switched to ${newTheme} mode`);
 }
 
-// Initialize theme immediately
-initTheme();
-
-// Theme toggle click handlers
-if (themeToggle) {
-    themeToggle.addEventListener('click', toggleTheme);
-}
-
-if (themeToggleMobile) {
-    themeToggleMobile.addEventListener('click', toggleTheme);
-}
-
-// Listen for system theme changes
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-    if (!localStorage.getItem('theme')) {
-        document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
-    }
-});
-
-/* ============================================
-   5. NAVIGATION & MOBILE MENU
-============================================ */
-
-function openMobileMenu() {
-    if (navMenu) navMenu.classList.add('show');
-    if (navToggle) navToggle.classList.add('active');
-    document.body.classList.add('no-scroll');
-}
-
-function closeMobileMenu() {
-    if (navMenu) navMenu.classList.remove('show');
-    if (navToggle) navToggle.classList.remove('active');
-    document.body.classList.remove('no-scroll');
-}
-
-// Toggle mobile menu
-if (navToggle) {
-    navToggle.addEventListener('click', () => {
-        if (navMenu && navMenu.classList.contains('show')) {
-            closeMobileMenu();
-        } else {
-            openMobileMenu();
+function setupThemeToggle() {
+    const themeToggle = getElement('themeToggle');
+    const themeToggleMobile = getElement('themeToggleMobile');
+    
+    if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
+    if (themeToggleMobile) themeToggleMobile.addEventListener('click', toggleTheme);
+    
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+        if (!localStorage.getItem('theme')) {
+            document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
         }
     });
 }
 
-// Close mobile menu
-if (navClose) {
-    navClose.addEventListener('click', closeMobileMenu);
+/* ============================================
+   6. NAVIGATION & MOBILE MENU
+============================================ */
+
+function setupNavigation() {
+    const navMenu = getElement('navMenu');
+    const navToggle = getElement('navToggle');
+    const navClose = getElement('navClose');
+    const navLinks = getElements('.nav-link');
+    
+    function openMobileMenu() {
+        if (navMenu) navMenu.classList.add('show');
+        if (navToggle) navToggle.classList.add('active');
+        document.body.classList.add('no-scroll');
+    }
+    
+    function closeMobileMenu() {
+        if (navMenu) navMenu.classList.remove('show');
+        if (navToggle) navToggle.classList.remove('active');
+        document.body.classList.remove('no-scroll');
+    }
+    
+    if (navToggle) {
+        navToggle.addEventListener('click', () => {
+            if (navMenu && navMenu.classList.contains('show')) {
+                closeMobileMenu();
+            } else {
+                openMobileMenu();
+            }
+        });
+    }
+    
+    if (navClose) {
+        navClose.addEventListener('click', closeMobileMenu);
+    }
+    
+    navLinks.forEach(link => {
+        link.addEventListener('click', closeMobileMenu);
+    });
+    
+    document.addEventListener('click', (e) => {
+        if (navMenu && navMenu.classList.contains('show') && 
+            !navMenu.contains(e.target) && 
+            navToggle && !navToggle.contains(e.target)) {
+            closeMobileMenu();
+        }
+    });
+    
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && navMenu && navMenu.classList.contains('show')) {
+            closeMobileMenu();
+        }
+    });
 }
 
-// Close menu when clicking nav links
-navLinks.forEach(link => {
-    link.addEventListener('click', closeMobileMenu);
-});
-
-// Close menu when clicking outside
-document.addEventListener('click', (e) => {
-    if (navMenu && navMenu.classList.contains('show') && 
-        !navMenu.contains(e.target) && 
-        navToggle && !navToggle.contains(e.target)) {
-        closeMobileMenu();
-    }
-});
-
-// Close menu on escape key
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && navMenu && navMenu.classList.contains('show')) {
-        closeMobileMenu();
-    }
-});
-
 /* ============================================
-   6. SCROLL PROGRESS BAR
+   7. SCROLL EFFECTS
 ============================================ */
 
 function updateScrollProgress() {
+    const scrollProgress = getElement('scrollProgress');
+    const backToTop = getElement('backToTop');
+    
     const scrollTop = window.scrollY;
     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
     const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
@@ -321,7 +319,6 @@ function updateScrollProgress() {
         scrollProgress.style.width = `${scrollPercent}%`;
     }
     
-    // Update back to top button progress ring
     if (backToTop) {
         const circle = backToTop.querySelector('.progress-ring-circle');
         if (circle) {
@@ -332,32 +329,52 @@ function updateScrollProgress() {
     }
 }
 
-window.addEventListener('scroll', updateScrollProgress);
-
-/* ============================================
-   7. HEADER SCROLL EFFECT
-============================================ */
-
 function handleHeaderScroll() {
+    const header = getElement('header');
     if (!header) return;
     
-    const scrollY = window.scrollY;
-    
-    if (scrollY > 50) {
+    if (window.scrollY > 50) {
         header.classList.add('scrolled');
     } else {
         header.classList.remove('scrolled');
     }
 }
 
-window.addEventListener('scroll', handleHeaderScroll);
+function handleBackToTop() {
+    const backToTop = getElement('backToTop');
+    if (!backToTop) return;
+    
+    if (window.scrollY > 500) {
+        backToTop.classList.add('visible');
+    } else {
+        backToTop.classList.remove('visible');
+    }
+}
+
+function setupScrollEffects() {
+    window.addEventListener('scroll', () => {
+        updateScrollProgress();
+        handleHeaderScroll();
+        handleBackToTop();
+        updateActiveNavLink();
+    });
+    
+    const backToTop = getElement('backToTop');
+    if (backToTop) {
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+}
 
 /* ============================================
    8. SMOOTH SCROLLING
 ============================================ */
 
 function smoothScroll(target) {
+    const header = getElement('header');
     const element = document.querySelector(target);
+    
     if (element) {
         const headerHeight = header ? header.offsetHeight : 80;
         const elementPosition = element.getBoundingClientRect().top;
@@ -370,23 +387,25 @@ function smoothScroll(target) {
     }
 }
 
-// Handle anchor links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-        const href = this.getAttribute('href');
-        if (href && href !== '#') {
-            e.preventDefault();
-            smoothScroll(href);
-        }
+function setupSmoothScroll() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (href && href !== '#') {
+                e.preventDefault();
+                smoothScroll(href);
+            }
+        });
     });
-});
+}
 
 /* ============================================
    9. ACTIVE NAVIGATION LINK
 ============================================ */
 
 function updateActiveNavLink() {
-    const sections = document.querySelectorAll('section[id]');
+    const sections = getElements('section[id]');
+    const navLinks = getElements('.nav-link');
     const scrollY = window.scrollY;
     
     sections.forEach(section => {
@@ -405,19 +424,12 @@ function updateActiveNavLink() {
     });
 }
 
-window.addEventListener('scroll', updateActiveNavLink);
-
 /* ============================================
    10. TYPING ANIMATION
 ============================================ */
 
-let typingIndex = 0;
-let charIndex = 0;
-let isDeleting = false;
-let typingDelay = 100;
-let typingStarted = false;
-
 function typeText() {
+    const typingText = getElement('typingText');
     if (!typingText) return;
     
     const currentPhrase = typingPhrases[typingIndex];
@@ -476,6 +488,7 @@ function animateCounter(counter) {
 }
 
 function initCounterAnimation() {
+    const counterNumbers = getElements('.counter-number[data-target]');
     if (counterNumbers.length === 0) return;
     
     const observer = new IntersectionObserver((entries) => {
@@ -490,13 +503,12 @@ function initCounterAnimation() {
     counterNumbers.forEach(counter => observer.observe(counter));
 }
 
-initCounterAnimation();
-
 /* ============================================
    12. SKILL BAR ANIMATION
 ============================================ */
 
-function animateSkillBars() {
+function initSkillBars() {
+    const skillBars = getElements('.skill-progress');
     if (skillBars.length === 0) return;
     
     const observer = new IntersectionObserver((entries) => {
@@ -513,13 +525,13 @@ function animateSkillBars() {
     skillBars.forEach(bar => observer.observe(bar));
 }
 
-animateSkillBars();
-
 /* ============================================
    13. PROJECT FILTERING
 ============================================ */
 
 function filterProjects(category) {
+    const projectCards = getElements('.project-card');
+    
     projectCards.forEach(card => {
         const cardCategory = card.getAttribute('data-category') || '';
         
@@ -541,19 +553,279 @@ function filterProjects(category) {
     });
 }
 
-// Filter button click handlers
-filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-        filterBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        
-        const filter = btn.getAttribute('data-filter');
-        filterProjects(filter);
+function setupProjectFilters() {
+    const filterBtns = getElements('.filter-btn');
+    
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            const filter = btn.getAttribute('data-filter');
+            filterProjects(filter);
+        });
     });
-});
+}
 
 /* ============================================
-   14. TESTIMONIALS SWIPER
+   14. PROJECT SHARE FEATURE
+============================================ */
+
+function getRandomQuote() {
+    return shareQuotes[Math.floor(Math.random() * shareQuotes.length)];
+}
+
+function generateShareURL(projectId) {
+    const baseURL = window.location.origin + window.location.pathname;
+    return `${baseURL}?project=${projectId}#project-${projectId}`;
+}
+
+function openShareModal(projectData) {
+    const shareModal = getElement('shareModal');
+    const shareProjectName = getElement('shareProjectName');
+    const shareQuoteEl = getElement('shareQuote');
+    const sharePreviewTitle = getElement('sharePreviewTitle');
+    const sharePreviewDesc = getElement('sharePreviewDesc');
+    const sharePreviewImg = getElement('sharePreviewImg');
+    const shareLinkInput = getElement('shareLink');
+    
+    if (!shareModal) return;
+    
+    currentShareProject = projectData;
+    
+    // Set modal data
+    if (shareProjectName) shareProjectName.textContent = projectData.name;
+    if (sharePreviewTitle) sharePreviewTitle.textContent = projectData.name;
+    if (sharePreviewDesc) sharePreviewDesc.textContent = projectData.desc;
+    
+    // Set share link
+    const shareURL = generateShareURL(projectData.id);
+    if (shareLinkInput) shareLinkInput.value = shareURL;
+    currentShareProject.url = shareURL;
+    
+    // Set preview image
+    const projectCard = getElement(`project-${projectData.id}`);
+    if (projectCard) {
+        const img = projectCard.querySelector('.project-image img');
+        if (img && sharePreviewImg) {
+            currentShareProject.image = img.src;
+            sharePreviewImg.innerHTML = `<img src="${img.src}" alt="${projectData.name}">`;
+        }
+    }
+    
+    // Set random quote
+    if (shareQuoteEl) shareQuoteEl.textContent = getRandomQuote();
+    
+    // Show modal
+    shareModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeShareModal() {
+    const shareModal = getElement('shareModal');
+    if (shareModal) {
+        shareModal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+}
+
+async function copyShareLink() {
+    const shareLinkInput = getElement('shareLink');
+    const copyShareLinkBtn = getElement('copyShareLink');
+    
+    if (!shareLinkInput) return;
+    
+    try {
+        await navigator.clipboard.writeText(shareLinkInput.value);
+        
+        if (copyShareLinkBtn) {
+            copyShareLinkBtn.classList.add('copied');
+            copyShareLinkBtn.innerHTML = '<i class="fas fa-check"></i><span>Copied!</span>';
+            
+            setTimeout(() => {
+                copyShareLinkBtn.classList.remove('copied');
+                copyShareLinkBtn.innerHTML = '<i class="fas fa-copy"></i><span>Copy</span>';
+            }, 2000);
+        }
+        
+        showToast('success', 'Link Copied!', 'Share link copied to clipboard');
+    } catch (err) {
+        shareLinkInput.select();
+        document.execCommand('copy');
+        showToast('success', 'Link Copied!', 'Share link copied to clipboard');
+    }
+}
+
+function getShareText() {
+    const shareQuoteEl = getElement('shareQuote');
+    const quote = shareQuoteEl ? shareQuoteEl.textContent : 'Check this out!';
+    return `${quote}\n\n🚀 ${currentShareProject.name}\n${currentShareProject.desc}\n\n👨‍💻 By Abhishek Kumar\n🔗 `;
+}
+
+function shareToWhatsApp() {
+    const text = encodeURIComponent(getShareText() + currentShareProject.url);
+    window.open(`https://wa.me/?text=${text}`, '_blank');
+}
+
+function shareToTwitter() {
+    const shareQuoteEl = getElement('shareQuote');
+    const quote = shareQuoteEl ? shareQuoteEl.textContent : '';
+    const text = encodeURIComponent(`${quote} 🚀\n\n${currentShareProject.name} by @abhishek\n`);
+    const url = encodeURIComponent(currentShareProject.url);
+    window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank');
+}
+
+function shareToFacebook() {
+    const url = encodeURIComponent(currentShareProject.url);
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+}
+
+function shareToLinkedIn() {
+    const url = encodeURIComponent(currentShareProject.url);
+    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank');
+}
+
+function shareToTelegram() {
+    const text = encodeURIComponent(getShareText());
+    const url = encodeURIComponent(currentShareProject.url);
+    window.open(`https://t.me/share/url?url=${url}&text=${text}`, '_blank');
+}
+
+async function shareNativeHandler() {
+    const shareQuoteEl = getElement('shareQuote');
+    const quote = shareQuoteEl ? shareQuoteEl.textContent : '';
+    
+    if (navigator.share) {
+        try {
+            await navigator.share({
+                title: currentShareProject.name,
+                text: `${quote} - ${currentShareProject.name} by Abhishek Kumar`,
+                url: currentShareProject.url
+            });
+        } catch (err) {
+            console.log('Share cancelled');
+        }
+    } else {
+        copyShareLink();
+    }
+}
+
+function checkSharedProject() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const projectId = urlParams.get('project');
+    
+    if (projectId) {
+        const projectCard = getElement(`project-${projectId}`);
+        
+        if (projectCard) {
+            setTimeout(() => {
+                const header = getElement('header');
+                const headerHeight = header ? header.offsetHeight : 80;
+                const projectPosition = projectCard.getBoundingClientRect().top + window.scrollY - headerHeight - 50;
+                
+                window.scrollTo({
+                    top: projectPosition,
+                    behavior: 'smooth'
+                });
+                
+                setTimeout(() => {
+                    projectCard.classList.add('shared-highlight');
+                    
+                    setTimeout(() => {
+                        projectCard.classList.remove('shared-highlight');
+                        
+                        const cleanURL = window.location.origin + window.location.pathname + '#projects';
+                        window.history.replaceState({}, document.title, cleanURL);
+                    }, 3500);
+                }, 500);
+                
+            }, 1000);
+        }
+    }
+}
+
+function setupProjectShare() {
+    // Share button clicks
+    const shareBtns = getElements('.share-btn');
+    shareBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const projectData = {
+                id: btn.dataset.projectId,
+                name: btn.dataset.projectName,
+                desc: btn.dataset.projectDesc
+            };
+            
+            openShareModal(projectData);
+        });
+    });
+    
+    // Modal close
+    const shareModalClose = getElement('shareModalClose');
+    if (shareModalClose) {
+        shareModalClose.addEventListener('click', closeShareModal);
+    }
+    
+    const shareModal = getElement('shareModal');
+    if (shareModal) {
+        const overlay = shareModal.querySelector('.share-modal-overlay');
+        if (overlay) {
+            overlay.addEventListener('click', closeShareModal);
+        }
+    }
+    
+    // Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeShareModal();
+        }
+    });
+    
+    // Refresh quote
+    const refreshQuoteBtn = getElement('refreshQuote');
+    if (refreshQuoteBtn) {
+        refreshQuoteBtn.addEventListener('click', () => {
+            const shareQuoteEl = getElement('shareQuote');
+            if (shareQuoteEl) {
+                shareQuoteEl.textContent = getRandomQuote();
+            }
+            refreshQuoteBtn.style.transform = 'rotate(360deg)';
+            setTimeout(() => {
+                refreshQuoteBtn.style.transform = '';
+            }, 300);
+        });
+    }
+    
+    // Copy link
+    const copyShareLinkBtn = getElement('copyShareLink');
+    if (copyShareLinkBtn) {
+        copyShareLinkBtn.addEventListener('click', copyShareLink);
+    }
+    
+    // Social share buttons
+    const shareWhatsApp = getElement('shareWhatsApp');
+    const shareTwitter = getElement('shareTwitter');
+    const shareFacebook = getElement('shareFacebook');
+    const shareLinkedIn = getElement('shareLinkedIn');
+    const shareTelegram = getElement('shareTelegram');
+    const shareNative = getElement('shareNative');
+    
+    if (shareWhatsApp) shareWhatsApp.addEventListener('click', shareToWhatsApp);
+    if (shareTwitter) shareTwitter.addEventListener('click', shareToTwitter);
+    if (shareFacebook) shareFacebook.addEventListener('click', shareToFacebook);
+    if (shareLinkedIn) shareLinkedIn.addEventListener('click', shareToLinkedIn);
+    if (shareTelegram) shareTelegram.addEventListener('click', shareToTelegram);
+    if (shareNative) shareNative.addEventListener('click', shareNativeHandler);
+    
+    // Check for shared project on load
+    checkSharedProject();
+    setTimeout(checkSharedProject, 2000);
+}
+
+/* ============================================
+   15. TESTIMONIALS SWIPER
 ============================================ */
 
 function initTestimonialsSwiper() {
@@ -591,16 +863,13 @@ function initTestimonialsSwiper() {
     console.log('✅ Swiper initialized');
 }
 
-// Initialize after DOM is ready
-document.addEventListener('DOMContentLoaded', initTestimonialsSwiper);
-
 /* ============================================
-   15. TIMELINE ANIMATION
+   16. TIMELINE ANIMATION
 ============================================ */
 
-function animateTimeline() {
+function initTimeline() {
     const timeline = document.querySelector('.timeline');
-    const timelineProgress = document.getElementById('timelineProgress');
+    const timelineProgress = getElement('timelineProgress');
     
     if (!timeline || !timelineProgress) return;
     
@@ -623,74 +892,78 @@ function animateTimeline() {
     updateTimeline();
 }
 
-animateTimeline();
-
 /* ============================================
-   16. AGE VERIFICATION MODAL
+   17. AGE VERIFICATION MODAL
 ============================================ */
 
-function showAgeModal() {
-    if (ageModal) {
-        ageModal.classList.add('active');
-        document.body.classList.add('no-scroll');
-    }
-}
-
-function hideAgeModal() {
-    if (ageModal) {
-        ageModal.classList.remove('active');
-        document.body.classList.remove('no-scroll');
-    }
-}
-
-function handleAgeVerification(verified) {
-    hideAgeModal();
+function setupAgeVerification() {
+    const ageModal = getElement('ageModal');
+    const verifyAgeBtn = getElement('verifyAgeBtn');
+    const ageConfirm = getElement('ageConfirm');
+    const ageDeny = getElement('ageDeny');
     
-    if (verified) {
-        const adultContent = document.getElementById('adultProjectContent');
+    function showAgeModal() {
+        if (ageModal) {
+            ageModal.classList.add('active');
+            document.body.classList.add('no-scroll');
+        }
+    }
+    
+    function hideAgeModal() {
+        if (ageModal) {
+            ageModal.classList.remove('active');
+            document.body.classList.remove('no-scroll');
+        }
+    }
+    
+    function handleAgeVerification(verified) {
+        hideAgeModal();
+        
+        if (verified) {
+            const adultContent = getElement('adultProjectContent');
+            const blurOverlay = document.querySelector('.fun-card-blur');
+            
+            if (adultContent) adultContent.classList.remove('hidden');
+            if (blurOverlay) blurOverlay.classList.add('hidden');
+            
+            sessionStorage.setItem('ageVerified', 'true');
+            showToast('success', 'Verified', 'Age verification successful');
+        } else {
+            showToast('info', 'Access Denied', 'You must be 18+ to view this content');
+        }
+    }
+    
+    if (verifyAgeBtn) {
+        verifyAgeBtn.addEventListener('click', showAgeModal);
+    }
+    
+    if (ageConfirm) {
+        ageConfirm.addEventListener('click', () => handleAgeVerification(true));
+    }
+    
+    if (ageDeny) {
+        ageDeny.addEventListener('click', () => handleAgeVerification(false));
+    }
+    
+    if (ageModal) {
+        const overlay = ageModal.querySelector('.modal-overlay');
+        if (overlay) {
+            overlay.addEventListener('click', hideAgeModal);
+        }
+    }
+    
+    // Check if already verified
+    if (sessionStorage.getItem('ageVerified') === 'true') {
+        const adultContent = getElement('adultProjectContent');
         const blurOverlay = document.querySelector('.fun-card-blur');
         
         if (adultContent) adultContent.classList.remove('hidden');
         if (blurOverlay) blurOverlay.classList.add('hidden');
-        
-        sessionStorage.setItem('ageVerified', 'true');
-        showToast('success', 'Verified', 'Age verification successful');
-    } else {
-        showToast('info', 'Access Denied', 'You must be 18+ to view this content');
     }
-}
-
-// Event listeners
-if (verifyAgeBtn) {
-    verifyAgeBtn.addEventListener('click', showAgeModal);
-}
-
-if (ageConfirm) {
-    ageConfirm.addEventListener('click', () => handleAgeVerification(true));
-}
-
-if (ageDeny) {
-    ageDeny.addEventListener('click', () => handleAgeVerification(false));
-}
-
-if (ageModal) {
-    const overlay = ageModal.querySelector('.modal-overlay');
-    if (overlay) {
-        overlay.addEventListener('click', hideAgeModal);
-    }
-}
-
-// Check if already verified
-if (sessionStorage.getItem('ageVerified') === 'true') {
-    const adultContent = document.getElementById('adultProjectContent');
-    const blurOverlay = document.querySelector('.fun-card-blur');
-    
-    if (adultContent) adultContent.classList.remove('hidden');
-    if (blurOverlay) blurOverlay.classList.add('hidden');
 }
 
 /* ============================================
-   17. COPY TO CLIPBOARD
+   18. COPY TO CLIPBOARD
 ============================================ */
 
 async function copyToClipboard(text) {
@@ -704,7 +977,6 @@ async function copyToClipboard(text) {
         textarea.style.opacity = '0';
         document.body.appendChild(textarea);
         textarea.select();
-        
         try {
             document.execCommand('copy');
             document.body.removeChild(textarea);
@@ -716,33 +988,36 @@ async function copyToClipboard(text) {
     }
 }
 
-// Copy button handlers
-copyBtns.forEach(btn => {
-    btn.addEventListener('click', async () => {
-        const textToCopy = btn.getAttribute('data-copy');
-        const success = await copyToClipboard(textToCopy);
-        
-        if (success) {
-            const originalIcon = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-check"></i><span class="copy-tooltip">Copied!</span>';
+function setupCopyButtons() {
+    const copyBtns = getElements('.copy-btn');
+    
+    copyBtns.forEach(btn => {
+        btn.addEventListener('click', async () => {
+            const textToCopy = btn.getAttribute('data-copy');
+            const success = await copyToClipboard(textToCopy);
             
-            showToast('success', 'Copied!', 'Text copied to clipboard');
-            
-            setTimeout(() => {
-                btn.innerHTML = originalIcon;
-            }, 2000);
-        } else {
-            showToast('error', 'Failed', 'Could not copy to clipboard');
-        }
+            if (success) {
+                const originalHTML = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i><span class="copy-tooltip">Copied!</span>';
+                
+                showToast('success', 'Copied!', 'Text copied to clipboard');
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                }, 2000);
+            } else {
+                showToast('error', 'Failed', 'Could not copy to clipboard');
+            }
+        });
     });
-});
+}
 
 /* ============================================
-   18. TOAST NOTIFICATIONS
+   19. TOAST NOTIFICATIONS
 ============================================ */
 
 function showToast(type = 'info', title = '', message = '', duration = 4000) {
-    const container = document.getElementById('toastContainer');
+    const container = getElement('toastContainer');
     if (!container) {
         console.log('Toast:', type, title, message);
         return;
@@ -795,47 +1070,25 @@ function removeToast(toast) {
 window.showToast = showToast;
 
 /* ============================================
-   19. BACK TO TOP BUTTON
-============================================ */
-
-function handleBackToTop() {
-    if (!backToTop) return;
-    
-    const scrollY = window.scrollY;
-    
-    if (scrollY > 500) {
-        backToTop.classList.add('visible');
-    } else {
-        backToTop.classList.remove('visible');
-    }
-}
-
-if (backToTop) {
-    window.addEventListener('scroll', handleBackToTop);
-    
-    backToTop.addEventListener('click', () => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    });
-}
-
-/* ============================================
    20. FLOATING CONTACT BUTTON
 ============================================ */
 
-if (floatingMainBtn && floatingContact) {
-    floatingMainBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        floatingContact.classList.toggle('active');
-    });
+function setupFloatingContact() {
+    const floatingContact = getElement('floatingContact');
+    const floatingMainBtn = getElement('floatingMainBtn');
     
-    document.addEventListener('click', (e) => {
-        if (!floatingContact.contains(e.target)) {
-            floatingContact.classList.remove('active');
-        }
-    });
+    if (floatingMainBtn && floatingContact) {
+        floatingMainBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            floatingContact.classList.toggle('active');
+        });
+        
+        document.addEventListener('click', (e) => {
+            if (!floatingContact.contains(e.target)) {
+                floatingContact.classList.remove('active');
+            }
+        });
+    }
 }
 
 /* ============================================
@@ -843,7 +1096,7 @@ if (floatingMainBtn && floatingContact) {
 ============================================ */
 
 function initParallax() {
-    const blobs = document.querySelectorAll('.gradient-blob');
+    const blobs = getElements('.gradient-blob');
     
     if (blobs.length === 0 || window.innerWidth < 768) return;
     
@@ -858,13 +1111,13 @@ function initParallax() {
     });
 }
 
-initParallax();
-
 /* ============================================
    22. PROFILE CARD TILT EFFECT
 ============================================ */
 
 function initProfileCardTilt() {
+    const profileCard = getElement('profileCard');
+    
     if (!profileCard || window.innerWidth < 1024) return;
     
     profileCard.addEventListener('mousemove', (e) => {
@@ -896,14 +1149,9 @@ function initProfileCardTilt() {
     });
 }
 
-initProfileCardTilt();
-
 /* ============================================
    23. EASTER EGG (KONAMI CODE)
 ============================================ */
-
-const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
-let konamiIndex = 0;
 
 function activateEasterEgg() {
     document.body.classList.add('easter-egg-active');
@@ -937,7 +1185,7 @@ function createConfetti() {
         setTimeout(() => confetti.remove(), 5000);
     }
     
-    if (!document.getElementById('confetti-style')) {
+    if (!getElement('confetti-style')) {
         const style = document.createElement('style');
         style.id = 'confetti-style';
         style.textContent = `
@@ -952,24 +1200,30 @@ function createConfetti() {
     }
 }
 
-document.addEventListener('keydown', (e) => {
-    if (e.code === konamiCode[konamiIndex]) {
-        konamiIndex++;
-        
-        if (konamiIndex === konamiCode.length) {
-            activateEasterEgg();
+function setupKonamiCode() {
+    document.addEventListener('keydown', (e) => {
+        if (e.code === konamiCode[konamiIndex]) {
+            konamiIndex++;
+            
+            if (konamiIndex === konamiCode.length) {
+                activateEasterEgg();
+                konamiIndex = 0;
+            }
+        } else {
             konamiIndex = 0;
         }
-    } else {
-        konamiIndex = 0;
-    }
-});
+    });
+}
 
 /* ============================================
    24. CONTACT FORM HANDLING
 ============================================ */
 
-if (contactForm) {
+function setupContactForm() {
+    const contactForm = getElement('contactForm');
+    
+    if (!contactForm) return;
+    
     contactForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         
@@ -1030,7 +1284,6 @@ function initGSAPAnimations() {
         return;
     }
     
-    // Hero animations
     gsap.from('.hero-tag', { opacity: 0, y: 30, duration: 0.8, delay: 0.2 });
     gsap.from('.hero-title', { opacity: 0, y: 50, duration: 1, delay: 0.4 });
     gsap.from('.hero-role', { opacity: 0, y: 30, duration: 0.8, delay: 0.6 });
@@ -1049,7 +1302,7 @@ function initGSAPAnimations() {
 ============================================ */
 
 function initParticles() {
-    const particlesContainer = document.getElementById('particles');
+    const particlesContainer = getElement('particles');
     if (!particlesContainer) return;
     
     const particleCount = 30;
@@ -1077,8 +1330,7 @@ function initParticles() {
         particlesContainer.appendChild(particle);
     }
     
-    // Add particle animation if not exists
-    if (!document.getElementById('particle-style')) {
+    if (!getElement('particle-style')) {
         const style = document.createElement('style');
         style.id = 'particle-style';
         style.textContent = `
@@ -1105,319 +1357,93 @@ function initParticles() {
    28. UTILITY FUNCTIONS
 ============================================ */
 
-// Get current year for footer
-if (currentYear) {
-    currentYear.textContent = new Date().getFullYear();
+function setCurrentYear() {
+    const currentYear = getElement('currentYear');
+    if (currentYear) {
+        currentYear.textContent = new Date().getFullYear();
+    }
 }
 
-// Console easter egg
+function debounce(func, wait = 100) {
+    let timeout;
+    return function(...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+}
+
+// Handle resize
+window.addEventListener('resize', debounce(() => {
+    if (window.innerWidth > 1024) {
+        initProfileCardTilt();
+    }
+    
+    if (typeof AOS !== 'undefined') {
+        AOS.refresh();
+    }
+}, 250));
+
+/* ============================================
+   29. CONSOLE EASTER EGG
+============================================ */
+
 console.log(`
 %c╔═══════════════════════════════════════════╗
 ║   👋 Hello, Developer!                    ║
 ║   Built with ❤️ by Abhishek Kumar         ║
 ║   📧 abhishekyadav954698@gmail.com        ║
+║   🌐 github.com/erabhishek12              ║
 ╚═══════════════════════════════════════════╝
 `, 'color: #667eea; font-weight: bold;');
 
 /* ============================================
-   INITIALIZATION ON DOM READY
+   30. MAIN INITIALIZATION
 ============================================ */
 
-document.addEventListener('DOMContentLoaded', () => {
+function initializeApp() {
     console.log('🚀 Portfolio initializing...');
     
-    // Add no-scroll for preloader
+    // Set body to no-scroll for preloader
     document.body.classList.add('no-scroll');
     
     // Initialize theme
     initTheme();
     
-    // Initialize scroll-based features
+    // Setup all features
+    setupThemeToggle();
+    setupNavigation();
+    setupScrollEffects();
+    setupSmoothScroll();
+    setupProjectFilters();
+    setupProjectShare();
+    setupAgeVerification();
+    setupCopyButtons();
+    setupFloatingContact();
+    setupContactForm();
+    setupKonamiCode();
+    
+    // Initialize animations
+    initCustomCursor();
+    initCounterAnimation();
+    initSkillBars();
+    initTimeline();
+    initParallax();
+    initProfileCardTilt();
+    
+    // Initialize Swiper
+    initTestimonialsSwiper();
+    
+    // Set current year
+    setCurrentYear();
+    
+    // Initial scroll effects
     handleHeaderScroll();
     updateActiveNavLink();
     handleBackToTop();
     updateScrollProgress();
     
-    console.log('✅ Initial setup complete');
-});
-/* ============================================
-   PROJECT SHARE FEATURE - COMPLETE JAVASCRIPT
-============================================ */
-
-// Share Quotes Array
-const shareQuotes = [
-    "Check out this amazing project! 🚀",
-    "This is what creativity looks like! ✨",
-    "Wow! You need to see this project! 🔥",
-    "Built with passion and code! 💻",
-    "Innovation at its finest! 🌟",
-    "This project blew my mind! 🤯",
-    "Talent + Hard work = This masterpiece! 💪",
-    "From idea to reality - Check this out! 💡",
-    "When coding becomes art! 🎨",
-    "Future developer in action! 🎯",
-    "This deserves your attention! 👀",
-    "Impressive work by a student developer! 📚",
-    "Simple yet powerful! ⚡",
-    "Clean code, beautiful design! 🎭",
-    "Technology meets creativity! 🔮"
-];
-
-// DOM Elements
-const shareModal = document.getElementById('shareModal');
-const shareModalClose = document.getElementById('shareModalClose');
-const shareProjectName = document.getElementById('shareProjectName');
-const shareQuoteEl = document.getElementById('shareQuote');
-const refreshQuoteBtn = document.getElementById('refreshQuote');
-const sharePreviewImg = document.getElementById('sharePreviewImg');
-const sharePreviewTitle = document.getElementById('sharePreviewTitle');
-const sharePreviewDesc = document.getElementById('sharePreviewDesc');
-const shareLinkInput = document.getElementById('shareLink');
-const copyShareLinkBtn = document.getElementById('copyShareLink');
-const shareWhatsApp = document.getElementById('shareWhatsApp');
-const shareTwitter = document.getElementById('shareTwitter');
-const shareFacebook = document.getElementById('shareFacebook');
-const shareLinkedIn = document.getElementById('shareLinkedIn');
-const shareTelegram = document.getElementById('shareTelegram');
-const shareNative = document.getElementById('shareNative');
-
-// Current Project Data
-let currentProject = {
-    id: '',
-    name: '',
-    desc: '',
-    url: '',
-    image: ''
-};
-
-// Get Random Quote
-function getRandomQuote() {
-    return shareQuotes[Math.floor(Math.random() * shareQuotes.length)];
+    console.log('✅ All features initialized');
 }
 
-// Generate Share URL
-function generateShareURL(projectId) {
-    const baseURL = window.location.origin + window.location.pathname;
-    return `${baseURL}?project=${projectId}#project-${projectId}`;
-}
-
-// Open Share Modal
-function openShareModal(projectData) {
-    currentProject = projectData;
-    
-    // Set modal data
-    shareProjectName.textContent = projectData.name;
-    sharePreviewTitle.textContent = projectData.name;
-    sharePreviewDesc.textContent = projectData.desc;
-    
-    // Set share link
-    const shareURL = generateShareURL(projectData.id);
-    shareLinkInput.value = shareURL;
-    currentProject.url = shareURL;
-    
-    // Set preview image
-    const projectCard = document.getElementById(`project-${projectData.id}`);
-    if (projectCard) {
-        const img = projectCard.querySelector('.project-image img');
-        if (img) {
-            currentProject.image = img.src;
-            sharePreviewImg.innerHTML = `<img src="${img.src}" alt="${projectData.name}">`;
-        }
-    }
-    
-    // Set random quote
-    shareQuoteEl.textContent = getRandomQuote();
-    
-    // Show modal
-    shareModal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-}
-
-// Close Share Modal
-function closeShareModal() {
-    shareModal.classList.remove('active');
-    document.body.style.overflow = '';
-}
-
-// Copy Share Link
-async function copyShareLink() {
-    try {
-        await navigator.clipboard.writeText(shareLinkInput.value);
-        
-        // Update button
-        copyShareLinkBtn.classList.add('copied');
-        copyShareLinkBtn.innerHTML = '<i class="fas fa-check"></i><span>Copied!</span>';
-        
-        showToast('success', 'Link Copied!', 'Share link copied to clipboard');
-        
-        setTimeout(() => {
-            copyShareLinkBtn.classList.remove('copied');
-            copyShareLinkBtn.innerHTML = '<i class="fas fa-copy"></i><span>Copy</span>';
-        }, 2000);
-    } catch (err) {
-        // Fallback
-        shareLinkInput.select();
-        document.execCommand('copy');
-        showToast('success', 'Link Copied!', 'Share link copied to clipboard');
-    }
-}
-
-// Generate Share Text
-function getShareText() {
-    const quote = shareQuoteEl.textContent;
-    return `${quote}\n\n🚀 ${currentProject.name}\n${currentProject.desc}\n\n👨‍💻 By Abhishek Kumar\n🔗 `;
-}
-
-// Share Functions
-function shareToWhatsApp() {
-    const text = encodeURIComponent(getShareText() + currentProject.url);
-    window.open(`https://wa.me/?text=${text}`, '_blank');
-}
-
-function shareToTwitter() {
-    const text = encodeURIComponent(`${shareQuoteEl.textContent} 🚀\n\n${currentProject.name} by @abhishek\n`);
-    const url = encodeURIComponent(currentProject.url);
-    window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank');
-}
-
-function shareToFacebook() {
-    const url = encodeURIComponent(currentProject.url);
-    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
-}
-
-function shareToLinkedIn() {
-    const url = encodeURIComponent(currentProject.url);
-    const title = encodeURIComponent(currentProject.name);
-    const summary = encodeURIComponent(currentProject.desc);
-    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank');
-}
-
-function shareToTelegram() {
-    const text = encodeURIComponent(getShareText());
-    const url = encodeURIComponent(currentProject.url);
-    window.open(`https://t.me/share/url?url=${url}&text=${text}`, '_blank');
-}
-
-async function shareNativeHandler() {
-    if (navigator.share) {
-        try {
-            await navigator.share({
-                title: currentProject.name,
-                text: `${shareQuoteEl.textContent} - ${currentProject.name} by Abhishek Kumar`,
-                url: currentProject.url
-            });
-        } catch (err) {
-            console.log('Share cancelled');
-        }
-    } else {
-        copyShareLink();
-    }
-}
-
-// Check for Shared Project on Page Load
-function checkSharedProject() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const projectId = urlParams.get('project');
-    
-    if (projectId) {
-        const projectCard = document.getElementById(`project-${projectId}`);
-        
-        if (projectCard) {
-            // Wait for page to load
-            setTimeout(() => {
-                // Scroll to project
-                const headerHeight = document.getElementById('header')?.offsetHeight || 80;
-                const projectPosition = projectCard.getBoundingClientRect().top + window.scrollY - headerHeight - 50;
-                
-                window.scrollTo({
-                    top: projectPosition,
-                    behavior: 'smooth'
-                });
-                
-                // Add highlight animation
-                setTimeout(() => {
-                    projectCard.classList.add('shared-highlight');
-                    
-                    // Remove highlight class after animation
-                    setTimeout(() => {
-                        projectCard.classList.remove('shared-highlight');
-                        
-                        // Clean URL without reloading
-                        const cleanURL = window.location.origin + window.location.pathname + '#projects';
-                        window.history.replaceState({}, document.title, cleanURL);
-                    }, 3500);
-                }, 500);
-                
-            }, 1000);
-        }
-    }
-}
-
-// Event Listeners for Share Buttons
-document.querySelectorAll('.share-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        
-        const projectData = {
-            id: btn.dataset.projectId,
-            name: btn.dataset.projectName,
-            desc: btn.dataset.projectDesc
-        };
-        
-        openShareModal(projectData);
-    });
-});
-
-// Modal Close Events
-if (shareModalClose) {
-    shareModalClose.addEventListener('click', closeShareModal);
-}
-
-if (shareModal) {
-    shareModal.querySelector('.share-modal-overlay').addEventListener('click', closeShareModal);
-}
-
-// Escape key to close
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && shareModal?.classList.contains('active')) {
-        closeShareModal();
-    }
-});
-
-// Refresh Quote
-if (refreshQuoteBtn) {
-    refreshQuoteBtn.addEventListener('click', () => {
-        shareQuoteEl.textContent = getRandomQuote();
-        refreshQuoteBtn.style.transform = 'rotate(360deg)';
-        setTimeout(() => {
-            refreshQuoteBtn.style.transform = '';
-        }, 300);
-    });
-}
-
-// Copy Link Button
-if (copyShareLinkBtn) {
-    copyShareLinkBtn.addEventListener('click', copyShareLink);
-}
-
-// Social Share Buttons
-if (shareWhatsApp) shareWhatsApp.addEventListener('click', shareToWhatsApp);
-if (shareTwitter) shareTwitter.addEventListener('click', shareToTwitter);
-if (shareFacebook) shareFacebook.addEventListener('click', shareToFacebook);
-if (shareLinkedIn) shareLinkedIn.addEventListener('click', shareToLinkedIn);
-if (shareTelegram) shareTelegram.addEventListener('click', shareToTelegram);
-if (shareNative) shareNative.addEventListener('click', shareNativeHandler);
-
-// Check for shared project on load
-document.addEventListener('DOMContentLoaded', checkSharedProject);
-
-// Also check after preloader hides
-setTimeout(checkSharedProject, 2000);
-
-console.log('✅ Share feature initialized');
-
-
-})(); 
-
-
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', initializeApp);
