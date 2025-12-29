@@ -1,34 +1,4 @@
-/* ============================================
-   ABHISHEK KUMAR - PORTFOLIO WEBSITE
-   Complete JavaScript - All Features Included
-   
-   Features:
-   - Preloader
-   - Custom Cursor
-   - Theme Toggle
-   - Navigation & Mobile Menu
-   - Scroll Progress Bar
-   - Typing Animation
-   - Counter Animation
-   - Skill Bars Animation
-   - Project Filtering
-   - Project Share Feature
-   - Testimonials Swiper
-   - Timeline Animation
-   - Age Verification
-   - Copy to Clipboard
-   - Toast Notifications
-   - Back to Top Button
-   - Floating Contact Button
-   - Parallax Effects
-   - Profile Card Tilt
-   - Easter Egg (Konami Code)
-   - Contact Form
-   - AOS & GSAP Animations
-   
-   Author: Abhishek Kumar
-   Version: 2.0.0 - Complete Edition
-============================================ */
+
 
 'use strict';
 
@@ -1447,3 +1417,4 @@ function initializeApp() {
 
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', initializeApp);
+
