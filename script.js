@@ -1,8 +1,3 @@
-/* ============================================
-   ABHISHEK KUMAR - PORTFOLIO WEBSITE
-   JavaScript - FIXED VERSION
-   Version: 1.1.0 (Preloader Fixed)
-============================================ */
 (function() {
    
 'use strict';
@@ -89,7 +84,7 @@ const currentYear = document.getElementById('currentYear');
 
 let preloaderHidden = false;
 
-function hidePreloader() {
+function preloaderElement() {
     if (preloaderHidden) return; // Prevent multiple calls
     preloaderHidden = true;
     
@@ -1424,4 +1419,5 @@ console.log('✅ Share feature initialized');
 
 
 })(); 
+
 
