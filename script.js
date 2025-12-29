@@ -3,7 +3,8 @@
    JavaScript - FIXED VERSION
    Version: 1.1.0 (Preloader Fixed)
 ============================================ */
-
+(function() {
+   
 'use strict';
 
 /* ============================================
@@ -1422,4 +1423,5 @@ setTimeout(checkSharedProject, 2000);
 console.log('✅ Share feature initialized');
 
 
+})(); 
 
