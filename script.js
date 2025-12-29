@@ -1144,3 +1144,279 @@ document.addEventListener('DOMContentLoaded', () => {
     
     console.log('✅ Initial setup complete');
 });
+/* ============================================
+   PROJECT SHARE FEATURE - COMPLETE JAVASCRIPT
+============================================ */
+
+// Share Quotes Array
+const shareQuotes = [
+    "Check out this amazing project! 🚀",
+    "This is what creativity looks like! ✨",
+    "Wow! You need to see this project! 🔥",
+    "Built with passion and code! 💻",
+    "Innovation at its finest! 🌟",
+    "This project blew my mind! 🤯",
+    "Talent + Hard work = This masterpiece! 💪",
+    "From idea to reality - Check this out! 💡",
+    "When coding becomes art! 🎨",
+    "Future developer in action! 🎯",
+    "This deserves your attention! 👀",
+    "Impressive work by a student developer! 📚",
+    "Simple yet powerful! ⚡",
+    "Clean code, beautiful design! 🎭",
+    "Technology meets creativity! 🔮"
+];
+
+// DOM Elements
+const shareModal = document.getElementById('shareModal');
+const shareModalClose = document.getElementById('shareModalClose');
+const shareProjectName = document.getElementById('shareProjectName');
+const shareQuoteEl = document.getElementById('shareQuote');
+const refreshQuoteBtn = document.getElementById('refreshQuote');
+const sharePreviewImg = document.getElementById('sharePreviewImg');
+const sharePreviewTitle = document.getElementById('sharePreviewTitle');
+const sharePreviewDesc = document.getElementById('sharePreviewDesc');
+const shareLinkInput = document.getElementById('shareLink');
+const copyShareLinkBtn = document.getElementById('copyShareLink');
+const shareWhatsApp = document.getElementById('shareWhatsApp');
+const shareTwitter = document.getElementById('shareTwitter');
+const shareFacebook = document.getElementById('shareFacebook');
+const shareLinkedIn = document.getElementById('shareLinkedIn');
+const shareTelegram = document.getElementById('shareTelegram');
+const shareNative = document.getElementById('shareNative');
+
+// Current Project Data
+let currentProject = {
+    id: '',
+    name: '',
+    desc: '',
+    url: '',
+    image: ''
+};
+
+// Get Random Quote
+function getRandomQuote() {
+    return shareQuotes[Math.floor(Math.random() * shareQuotes.length)];
+}
+
+// Generate Share URL
+function generateShareURL(projectId) {
+    const baseURL = window.location.origin + window.location.pathname;
+    return `${baseURL}?project=${projectId}#project-${projectId}`;
+}
+
+// Open Share Modal
+function openShareModal(projectData) {
+    currentProject = projectData;
+    
+    // Set modal data
+    shareProjectName.textContent = projectData.name;
+    sharePreviewTitle.textContent = projectData.name;
+    sharePreviewDesc.textContent = projectData.desc;
+    
+    // Set share link
+    const shareURL = generateShareURL(projectData.id);
+    shareLinkInput.value = shareURL;
+    currentProject.url = shareURL;
+    
+    // Set preview image
+    const projectCard = document.getElementById(`project-${projectData.id}`);
+    if (projectCard) {
+        const img = projectCard.querySelector('.project-image img');
+        if (img) {
+            currentProject.image = img.src;
+            sharePreviewImg.innerHTML = `<img src="${img.src}" alt="${projectData.name}">`;
+        }
+    }
+    
+    // Set random quote
+    shareQuoteEl.textContent = getRandomQuote();
+    
+    // Show modal
+    shareModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+// Close Share Modal
+function closeShareModal() {
+    shareModal.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+// Copy Share Link
+async function copyShareLink() {
+    try {
+        await navigator.clipboard.writeText(shareLinkInput.value);
+        
+        // Update button
+        copyShareLinkBtn.classList.add('copied');
+        copyShareLinkBtn.innerHTML = '<i class="fas fa-check"></i><span>Copied!</span>';
+        
+        showToast('success', 'Link Copied!', 'Share link copied to clipboard');
+        
+        setTimeout(() => {
+            copyShareLinkBtn.classList.remove('copied');
+            copyShareLinkBtn.innerHTML = '<i class="fas fa-copy"></i><span>Copy</span>';
+        }, 2000);
+    } catch (err) {
+        // Fallback
+        shareLinkInput.select();
+        document.execCommand('copy');
+        showToast('success', 'Link Copied!', 'Share link copied to clipboard');
+    }
+}
+
+// Generate Share Text
+function getShareText() {
+    const quote = shareQuoteEl.textContent;
+    return `${quote}\n\n🚀 ${currentProject.name}\n${currentProject.desc}\n\n👨‍💻 By Abhishek Kumar\n🔗 `;
+}
+
+// Share Functions
+function shareToWhatsApp() {
+    const text = encodeURIComponent(getShareText() + currentProject.url);
+    window.open(`https://wa.me/?text=${text}`, '_blank');
+}
+
+function shareToTwitter() {
+    const text = encodeURIComponent(`${shareQuoteEl.textContent} 🚀\n\n${currentProject.name} by @abhishek\n`);
+    const url = encodeURIComponent(currentProject.url);
+    window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank');
+}
+
+function shareToFacebook() {
+    const url = encodeURIComponent(currentProject.url);
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+}
+
+function shareToLinkedIn() {
+    const url = encodeURIComponent(currentProject.url);
+    const title = encodeURIComponent(currentProject.name);
+    const summary = encodeURIComponent(currentProject.desc);
+    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank');
+}
+
+function shareToTelegram() {
+    const text = encodeURIComponent(getShareText());
+    const url = encodeURIComponent(currentProject.url);
+    window.open(`https://t.me/share/url?url=${url}&text=${text}`, '_blank');
+}
+
+async function shareNativeHandler() {
+    if (navigator.share) {
+        try {
+            await navigator.share({
+                title: currentProject.name,
+                text: `${shareQuoteEl.textContent} - ${currentProject.name} by Abhishek Kumar`,
+                url: currentProject.url
+            });
+        } catch (err) {
+            console.log('Share cancelled');
+        }
+    } else {
+        copyShareLink();
+    }
+}
+
+// Check for Shared Project on Page Load
+function checkSharedProject() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const projectId = urlParams.get('project');
+    
+    if (projectId) {
+        const projectCard = document.getElementById(`project-${projectId}`);
+        
+        if (projectCard) {
+            // Wait for page to load
+            setTimeout(() => {
+                // Scroll to project
+                const headerHeight = document.getElementById('header')?.offsetHeight || 80;
+                const projectPosition = projectCard.getBoundingClientRect().top + window.scrollY - headerHeight - 50;
+                
+                window.scrollTo({
+                    top: projectPosition,
+                    behavior: 'smooth'
+                });
+                
+                // Add highlight animation
+                setTimeout(() => {
+                    projectCard.classList.add('shared-highlight');
+                    
+                    // Remove highlight class after animation
+                    setTimeout(() => {
+                        projectCard.classList.remove('shared-highlight');
+                        
+                        // Clean URL without reloading
+                        const cleanURL = window.location.origin + window.location.pathname + '#projects';
+                        window.history.replaceState({}, document.title, cleanURL);
+                    }, 3500);
+                }, 500);
+                
+            }, 1000);
+        }
+    }
+}
+
+// Event Listeners for Share Buttons
+document.querySelectorAll('.share-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const projectData = {
+            id: btn.dataset.projectId,
+            name: btn.dataset.projectName,
+            desc: btn.dataset.projectDesc
+        };
+        
+        openShareModal(projectData);
+    });
+});
+
+// Modal Close Events
+if (shareModalClose) {
+    shareModalClose.addEventListener('click', closeShareModal);
+}
+
+if (shareModal) {
+    shareModal.querySelector('.share-modal-overlay').addEventListener('click', closeShareModal);
+}
+
+// Escape key to close
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && shareModal?.classList.contains('active')) {
+        closeShareModal();
+    }
+});
+
+// Refresh Quote
+if (refreshQuoteBtn) {
+    refreshQuoteBtn.addEventListener('click', () => {
+        shareQuoteEl.textContent = getRandomQuote();
+        refreshQuoteBtn.style.transform = 'rotate(360deg)';
+        setTimeout(() => {
+            refreshQuoteBtn.style.transform = '';
+        }, 300);
+    });
+}
+
+// Copy Link Button
+if (copyShareLinkBtn) {
+    copyShareLinkBtn.addEventListener('click', copyShareLink);
+}
+
+// Social Share Buttons
+if (shareWhatsApp) shareWhatsApp.addEventListener('click', shareToWhatsApp);
+if (shareTwitter) shareTwitter.addEventListener('click', shareToTwitter);
+if (shareFacebook) shareFacebook.addEventListener('click', shareToFacebook);
+if (shareLinkedIn) shareLinkedIn.addEventListener('click', shareToLinkedIn);
+if (shareTelegram) shareTelegram.addEventListener('click', shareToTelegram);
+if (shareNative) shareNative.addEventListener('click', shareNativeHandler);
+
+// Check for shared project on load
+document.addEventListener('DOMContentLoaded', checkSharedProject);
+
+// Also check after preloader hides
+setTimeout(checkSharedProject, 2000);
+
+console.log('✅ Share feature initialized');
