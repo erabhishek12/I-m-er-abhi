@@ -1,0 +1,200 @@
+/* ==========================================================================
+   ABOUT PAGE SPECIFIC
+   ========================================================================== */
+.about-main-grid {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: var(--space-2xl);
+  align-items: start;
+}
+
+/* ==========================================================================
+   FLOATING 3D ID CARD
+   A real lanyard-badge card that hovers, drifts, and tilts toward the
+   cursor using CSS 3D transforms driven from JS (id-card.js). Falls back
+   to a gentle idle float if JS/motion is unavailable.
+   ========================================================================== */
+.id-card-stage {
+  position: relative;
+  perspective: 1400px;
+  padding-top: var(--space-2xl);
+  display: flex;
+  justify-content: center;
+}
+.id-card-stage::before {
+  /* lanyard hole anchor line */
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: var(--space-2xl);
+  background: repeating-linear-gradient(var(--text-tertiary) 0 6px, transparent 6px 12px);
+  opacity: 0.5;
+}
+
+.id-card {
+  width: min(320px, 82vw);
+  transform-style: preserve-3d;
+  animation: idCardFloat 6s ease-in-out infinite;
+  will-change: transform;
+  cursor: pointer;
+}
+@keyframes idCardFloat {
+  0%, 100% { transform: translateY(0) rotateZ(-2deg); }
+  50% { transform: translateY(-18px) rotateZ(2deg); }
+}
+
+.id-card-inner {
+  position: relative;
+  border-radius: var(--radius-lg);
+  background: var(--bg-raised);
+  border: 1px solid var(--border-strong);
+  box-shadow: 0 40px 80px -30px rgba(0,0,0,0.5), 0 10px 30px -12px rgba(0,0,0,0.4);
+  padding: var(--space-lg);
+  overflow: hidden;
+  transform-style: preserve-3d;
+}
+
+.id-card-strap {
+  position: absolute;
+  top: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 46px;
+  height: 14px;
+  border-radius: 0 0 8px 8px;
+  background: var(--bg-raised-2);
+  border: 1px solid var(--border-strong);
+  border-top: none;
+}
+.id-card-strap::after {
+  content: "";
+  position: absolute;
+  top: 3px; left: 50%;
+  transform: translateX(-50%);
+  width: 16px; height: 6px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1px solid var(--border-strong);
+}
+
+.id-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-md);
+}
+.id-card-logo {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+}
+.id-card-logo span { color: var(--accent); }
+.id-card-chip {
+  width: 28px; height: 20px;
+  border-radius: 4px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  opacity: 0.85;
+}
+
+.id-card-photo {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  aspect-ratio: 4/5;
+  border: 1px solid var(--border);
+  margin-bottom: var(--space-md);
+}
+.id-card-photo img { width: 100%; height: 100%; object-fit: cover; }
+
+.id-card-info h4 { font-size: var(--fs-h4); margin-bottom: 2px; }
+.id-card-info span { font-size: var(--fs-small); color: var(--text-secondary); }
+
+.id-card-barcode {
+  margin-top: var(--space-md);
+  height: 28px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--text-primary) 0px, var(--text-primary) 2px,
+    transparent 2px, transparent 5px,
+    var(--text-primary) 5px, var(--text-primary) 6px,
+    transparent 6px, transparent 10px
+  );
+  opacity: 0.75;
+}
+
+.id-card-badge {
+  position: absolute;
+  top: var(--space-lg);
+  right: var(--space-lg);
+  background: var(--accent);
+  color: var(--accent-contrast);
+  border-radius: var(--radius-sm);
+  padding: 4px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+  transform: translateZ(40px);
+}
+.id-card-badge .exp-number { font-family: var(--font-display); font-weight: 800; font-size: 1rem; }
+.id-card-badge .exp-text { font-size: 0.55rem; text-transform: uppercase; letter-spacing: 0.05em; }
+
+/* Holographic shine sweep that follows tilt (position set via JS) */
+.id-card-shine {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 20%, rgba(255,255,255,0.28) 42%, rgba(255,255,255,0.02) 50%, transparent 65%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+.id-card:hover .id-card-shine,
+.id-card.is-active .id-card-shine { opacity: 1; }
+
+@media (max-width: 900px) {
+  .about-main-grid { grid-template-columns: 1fr; }
+  .id-card-stage { padding-top: var(--space-lg); }
+}
+
+.about-counters {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-lg);
+  margin-top: var(--space-3xl);
+  text-align: center;
+}
+.counter-item i { color: var(--accent); font-size: 1.5rem; margin-bottom: var(--space-sm); display: inline-block; }
+.counter-item .stat-value { display: block; font-size: clamp(1.75rem, 1.4rem + 1.6vw, 2.5rem); font-family: var(--font-display); font-weight: 700; }
+.counter-item p { font-size: var(--fs-small); margin-top: 4px; }
+@media (max-width: 700px) {
+  .about-counters { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ---------- Skills ---------- */
+.skills-grid { grid-template-columns: repeat(3, 1fr); }
+.skill-category {
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  transition: transform var(--dur-base) var(--ease-out-expo), border-color var(--dur-base), box-shadow var(--dur-base);
+}
+.skill-category:hover {
+  transform: translateY(-6px);
+  border-color: var(--accent);
+  box-shadow: 0 20px 50px -24px var(--accent-glow);
+}
+.category-header { display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-md); }
+.category-header i { color: var(--accent); font-size: 1.1rem; }
+.category-header h3 { font-size: var(--fs-h4); }
+.skill-list { display: flex; flex-direction: column; gap: var(--space-sm); }
+.skill-row { display: grid; grid-template-columns: 100px 1fr 40px; align-items: center; gap: var(--space-sm); font-size: var(--fs-small); }
+.skill-bar { height: 6px; background: var(--border); border-radius: 4px; overflow: hidden; }
+.skill-bar > div { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-2)); border-radius: 4px; transition: width 1.2s var(--ease-out-expo); }
+.skill-pct { font-size: var(--fs-micro); color: var(--text-tertiary); text-align: right; }
+@media (max-width: 900px) {
+  .skills-grid { grid-template-columns: 1fr; }
+  .skill-row { grid-template-columns: 90px 1fr 36px; }
+}

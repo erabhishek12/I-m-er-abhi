@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("ak-theme");
+        if (t) document.documentElement.setAttribute("data-theme", t);
+        else if (window.matchMedia("(prefers-color-scheme: light)").matches)
+          document.documentElement.setAttribute("data-theme", "light");
+      } catch (e) {}
+    })();
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About — Abhishek Kumar</title>
+  <meta name="description" content="B.Tech CSE student, self-taught web developer, and builder of 16+ real-world web products. Learn about Abhishek Kumar's journey, skills, and values." />
+  <link rel="canonical" href="https://erabhi.in/about.html" />
+
+  <meta property="og:type" content="profile" />
+  <meta property="og:title" content="About — Abhishek Kumar" />
+  <meta property="og:description" content="The story, skills and journey behind the work — from first HTML file to 16 shipped products." />
+  <meta property="og:image" content="https://erabhi.in/assets/images/og/default-og.jpg" />
+  <meta property="og:url" content="https://erabhi.in/about.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="icon" type="image/png" href="assets/icons/favicon.png" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#08090a" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Caveat:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <link rel="stylesheet" href="assets/css/tokens.css" />
+  <style>
+    /* Critical inline safety-net: keeps header/nav from ever rendering
+       broken if external stylesheets fail to load for any reason. */
+    .nav-links{display:flex;align-items:center;gap:2rem}
+    .mobile-nav{position:fixed;inset:0;transform:translateY(-100%);z-index:750}
+    .mobile-nav.is-open{transform:translateY(0)}
+    @media (max-width:900px){.nav-links{display:none}.nav-toggle{display:inline-flex}}
+  </style>
+
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/components.css" />
+  <link rel="stylesheet" href="assets/css/animations.css" />
+  <link rel="stylesheet" href="assets/css/inner-pages.css" />
+  <link rel="stylesheet" href="assets/css/about.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="noise-overlay" aria-hidden="true"></div>
+  <div class="preloader" data-preloader>
+    <div class="preloader-mark">
+      <span class="signature-text">Abhishek<span class="signature-dot">.</span></span>
+      <div class="preloader-bar"><div class="preloader-bar-fill" data-preloader-fill></div></div>
+    </div>
+  </div>
+  <div class="scroll-progress" data-scroll-progress></div>
+
+  <header class="site-header" data-header>
+    <div class="container nav-inner">
+      <a href="index.html" class="logo">AK<span class="logo-dot">.</span></a>
+      <nav class="nav-links">
+        <a href="index.html" data-nav-link>Home</a>
+        <a href="about.html" data-nav-link>About</a>
+        <a href="projects.html" data-nav-link>Projects</a>
+        <a href="services.html" data-nav-link>Services</a>
+        <a href="blog.html" data-nav-link>Blog</a>
+        <a href="contact.html" data-nav-link>Contact</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+          <i class="fa-solid fa-sun icon-sun" aria-hidden="true"></i>
+          <i class="fa-solid fa-moon icon-moon" aria-hidden="true"></i>
+        </button>
+        <a href="contact.html" class="btn btn-primary" data-magnetic><span>Book A Call</span><i class="fa-solid fa-arrow-up-right" aria-hidden="true"></i></a>
+        <button class="nav-toggle" data-nav-toggle aria-label="Open menu"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-nav" data-mobile-nav>
+    <button class="mobile-nav-close" data-mobile-nav-close aria-label="Close menu"><i class="fa-solid fa-xmark"></i></button>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="projects.html">Projects</a>
+      <a href="services.html">Services</a>
+      <a href="blog.html">Blog</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+
+  <main id="main">
+    <!-- ============ PAGE HERO ============ -->
+    <section class="page-hero">
+      <div class="container">
+        <span class="eyebrow" data-reveal>Introduction</span>
+        <h1 data-reveal data-delay="100">Hi, I'm Abhishek — <span class="gradient-text">I build things for the web.</span></h1>
+        <p class="lead" data-reveal data-delay="200" style="max-width:640px;">
+          A 2nd-year B.Tech Computer Science student who learned to code out
+          of curiosity, and turned that curiosity into a working freelance
+          practice with 16 shipped products.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ ABOUT MAIN ============ -->
+    <section class="section about-main">
+      <div class="container about-main-grid">
+        <div class="about-image-col" data-reveal="left">
+          <div class="id-card-stage">
+            <div class="id-card" id="idCard" data-tilt>
+              <div class="id-card-inner">
+                <div class="id-card-strap"></div>
+                <div class="id-card-top">
+                  <span class="id-card-logo">AK<span>.</span></span>
+                  <span class="id-card-chip"></span>
+                </div>
+                <div class="id-card-photo">
+                  <img src="assets/images/profile/id-card-photo.jpg" alt="Abhishek Kumar" loading="eager" />
+                </div>
+                <div class="id-card-info">
+                  <h4>Abhishek Kumar</h4>
+                  <span>Web Developer &middot; B.Tech CSE</span>
+                  <div class="id-card-barcode" aria-hidden="true"></div>
+                </div>
+                <div class="id-card-badge">
+                  <span class="exp-number">2<sup>nd</sup></span>
+                  <span class="exp-text">Year</span>
+                </div>
+                <div class="id-card-shine"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="about-content-col" data-reveal="right" data-delay="100">
+          <h2>Hello! I'm <span class="gradient-text">Abhishek Kumar</span></h2>
+          <p>
+            I'm a passionate second-year B.Tech Computer Science student at
+            <strong>Adwaita Mission Institute of Technology (A.M.I.T Shivdham)</strong>.
+            My journey in tech started with plain curiosity — opening dev
+            tools on random websites just to see how things worked — and
+            grew into a genuine love for building considered digital
+            experiences.
+          </p>
+          <p>
+            I'm currently deepening my web development practice, exploring
+            the fundamentals of cybersecurity, and experimenting with AI/ML
+            concepts. I believe the fastest way to learn is by shipping —
+            which is why I've already completed <strong>16 real projects</strong>,
+            ranging from offline-first study tools to a full-stack luxury
+            e-commerce platform for a paying client.
+          </p>
+          <p>
+            When I'm not coding, I'm usually exploring new frameworks,
+            reading about product design, or debugging something at 1am
+            with a very large cup of coffee. ☕
+          </p>
+
+          <div class="info-cards">
+            <div class="info-card">
+              <i class="fa-solid fa-graduation-cap" aria-hidden="true"></i>
+              <div><h4>Education</h4><p>B.Tech CSE (2024–2028)</p></div>
+            </div>
+            <div class="info-card">
+              <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+              <div><h4>Location</h4><p>Bihar, India</p></div>
+            </div>
+            <div class="info-card">
+              <i class="fa-solid fa-briefcase" aria-hidden="true"></i>
+              <div><h4>Status</h4><p>Open to Opportunities</p></div>
+            </div>
+          </div>
+
+          <div class="about-actions">
+            <a href="contact.html" class="btn btn-primary" data-magnetic><i class="fa-solid fa-paper-plane" aria-hidden="true"></i><span>Let's Talk</span></a>
+            <a href="https://drive.google.com/file/d/1pputGGvQ60Wy90YSBqdvdCiQUCj5w7Pl/view?usp=sharing" class="btn btn-secondary" target="_blank" rel="noopener" download data-magnetic><i class="fa-solid fa-download" aria-hidden="true"></i><span>Download Résumé</span></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Counters -->
+      <div class="container about-counters" data-reveal data-delay="200">
+        <div class="counter-item">
+          <i class="fa-solid fa-diagram-project" aria-hidden="true"></i>
+          <span class="stat-value" data-counter data-target="16" data-suffix="+">0</span>
+          <p>Projects Built</p>
+        </div>
+        <div class="counter-item">
+          <i class="fa-solid fa-clock" aria-hidden="true"></i>
+          <span class="stat-value" data-counter data-target="100" data-suffix="+">0</span>
+          <p>Learning Hours / Month</p>
+        </div>
+        <div class="counter-item">
+          <i class="fa-solid fa-mug-hot" aria-hidden="true"></i>
+          <span class="stat-value">∞</span>
+          <p>Cups of Coffee</p>
+        </div>
+        <div class="counter-item">
+          <i class="fa-solid fa-heart" aria-hidden="true"></i>
+          <span class="stat-value" data-counter data-target="100" data-suffix="%">0</span>
+          <p>Passion</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SKILLS ============ -->
+    <section class="section skills-section">
+      <div class="container">
+        <div class="section-header" data-reveal>
+          <span class="eyebrow">Abilities</span>
+          <h2>Skills &amp; <span class="gradient-text">Technologies</span></h2>
+          <p>Tools I reach for daily, and the ones I'm actively growing into.</p>
+        </div>
+        <div class="grid skills-grid">
+          <div class="skill-category" data-reveal data-delay="0">
+            <div class="category-header"><i class="fa-solid fa-laptop-code" aria-hidden="true"></i><h3>Frontend</h3></div>
+            <div class="skill-list">
+              <div class="skill-row"><span>HTML5</span><div class="skill-bar"><div style="width:85%"></div></div><span class="skill-pct">85%</span></div>
+              <div class="skill-row"><span>CSS3</span><div class="skill-bar"><div style="width:80%"></div></div><span class="skill-pct">80%</span></div>
+              <div class="skill-row"><span>JavaScript</span><div class="skill-bar"><div style="width:65%"></div></div><span class="skill-pct">65%</span></div>
+            </div>
+          </div>
+          <div class="skill-category" data-reveal data-delay="100">
+            <div class="category-header"><i class="fa-solid fa-server" aria-hidden="true"></i><h3>Languages</h3></div>
+            <div class="skill-list">
+              <div class="skill-row"><span>Python</span><div class="skill-bar"><div style="width:45%"></div></div><span class="skill-pct">45%</span></div>
+              <div class="skill-row"><span>C Programming</span><div class="skill-bar"><div style="width:50%"></div></div><span class="skill-pct">50%</span></div>
+            </div>
+          </div>
+          <div class="skill-category" data-reveal data-delay="200">
+            <div class="category-header"><i class="fa-solid fa-toolbox" aria-hidden="true"></i><h3>Tools &amp; Exploring</h3></div>
+            <div class="skill-list">
+              <div class="skill-row"><span>Cybersecurity</span><div class="skill-bar"><div style="width:40%"></div></div><span class="skill-pct">40%</span></div>
+              <div class="skill-row"><span>UI/UX Design</span><div class="skill-bar"><div style="width:55%"></div></div><span class="skill-pct">55%</span></div>
+              <div class="skill-row"><span>Git &amp; GitHub</span><div class="skill-bar"><div style="width:65%"></div></div><span class="skill-pct">65%</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tech-icons-row" data-reveal data-delay="300">
+          <div class="tech-icon" data-tooltip="HTML5"><i class="fa-brands fa-html5" aria-hidden="true"></i></div>
+          <div class="tech-icon" data-tooltip="CSS3"><i class="fa-brands fa-css3-alt" aria-hidden="true"></i></div>
+          <div class="tech-icon" data-tooltip="JavaScript"><i class="fa-brands fa-js" aria-hidden="true"></i></div>
+          <div class="tech-icon" data-tooltip="Python"><i class="fa-brands fa-python" aria-hidden="true"></i></div>
+          <div class="tech-icon" data-tooltip="Git"><i class="fa-brands fa-git-alt" aria-hidden="true"></i></div>
+          <div class="tech-icon" data-tooltip="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i></div>
+          <div class="tech-icon" data-tooltip="VS Code"><i class="fa-solid fa-code" aria-hidden="true"></i></div>
+          <div class="tech-icon" data-tooltip="Node.js"><i class="fa-brands fa-node" aria-hidden="true"></i></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ JOURNEY / TIMELINE ============ -->
+    <section class="section journey-section">
+      <div class="container">
+        <div class="section-header" data-reveal>
+          <span class="eyebrow">My Path</span>
+          <h2>Learning <span class="gradient-text">Journey</span></h2>
+          <p>My roadmap from first HTML tag to full-stack client work.</p>
+        </div>
+        <div class="timeline">
+          <div class="timeline-item completed" data-reveal="left">
+            <div class="timeline-marker"><i class="fa-solid fa-check" aria-hidden="true"></i></div>
+            <div class="timeline-content">
+              <span class="timeline-badge completed">Completed</span>
+              <h3>HTML &amp; CSS Basics</h3>
+              <p>Mastered the fundamentals of web structure and styling. Built multiple static websites and landing pages.</p>
+              <span class="timeline-date">2024</span>
+            </div>
+          </div>
+          <div class="timeline-item completed" data-reveal="right" data-delay="100">
+            <div class="timeline-marker"><i class="fa-solid fa-check" aria-hidden="true"></i></div>
+            <div class="timeline-content">
+              <span class="timeline-badge completed">Completed</span>
+              <h3>JavaScript Fundamentals</h3>
+              <p>Learned core JavaScript — DOM manipulation, events, functions, and basic algorithms.</p>
+              <span class="timeline-date">2024</span>
+            </div>
+          </div>
+          <div class="timeline-item learning" data-reveal="left" data-delay="200">
+            <div class="timeline-marker"><i class="fa-solid fa-spinner" aria-hidden="true"></i></div>
+            <div class="timeline-content">
+              <span class="timeline-badge learning">In Progress</span>
+              <h3>Advanced JavaScript &amp; APIs</h3>
+              <p>Diving into async programming, API integration, and interactive web applications.</p>
+              <div class="progress-line"><div style="width:65%"></div></div>
+              <span class="timeline-date">2025</span>
+            </div>
+          </div>
+          <div class="timeline-item learning" data-reveal="right" data-delay="300">
+            <div class="timeline-marker"><i class="fa-solid fa-spinner" aria-hidden="true"></i></div>
+            <div class="timeline-content">
+              <span class="timeline-badge learning">In Progress</span>
+              <h3>Cybersecurity Fundamentals</h3>
+              <p>Exploring network security, ethical hacking basics, and security best practices.</p>
+              <div class="progress-line"><div style="width:35%"></div></div>
+              <span class="timeline-date">2025</span>
+            </div>
+          </div>
+          <div class="timeline-item planned" data-reveal="left" data-delay="400">
+            <div class="timeline-marker"><i class="fa-solid fa-clock" aria-hidden="true"></i></div>
+            <div class="timeline-content">
+              <span class="timeline-badge planned">Planned</span>
+              <h3>Python &amp; Data Structures</h3>
+              <p>Next up: mastering Python for AI/ML and strengthening core computer-science fundamentals.</p>
+              <span class="timeline-date">2025–26</span>
+            </div>
+          </div>
+          <div class="timeline-item planned" data-reveal="right" data-delay="500">
+            <div class="timeline-marker"><i class="fa-solid fa-clock" aria-hidden="true"></i></div>
+            <div class="timeline-content">
+              <span class="timeline-badge planned">Planned</span>
+              <h3>Full-Stack Development</h3>
+              <p>Goal: become a confident full-stack developer with React, Node.js, and database management.</p>
+              <span class="timeline-date">2026–27</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="education-cards" data-reveal data-delay="200">
+          <div class="education-card">
+            <i class="fa-solid fa-university" aria-hidden="true"></i>
+            <div>
+              <h4>B.Tech — Computer Science &amp; Engineering</h4>
+              <p>Adwaita Mission Institute of Technology (A.M.I.T Shivdham)</p>
+              <span class="edu-duration">2024 – 2028 · Current</span>
+            </div>
+          </div>
+          <div class="education-card">
+            <i class="fa-solid fa-school" aria-hidden="true"></i>
+            <div>
+              <h4>Senior Secondary Education</h4>
+              <p>M.D.N High School — Science Stream</p>
+              <span class="edu-duration">Completed</span>
+            </div>
+          </div>
+          <div class="education-card">
+            <i class="fa-solid fa-school" aria-hidden="true"></i>
+            <div>
+              <h4>Secondary School Education</h4>
+              <p>B.D.B.T.G.H School, Darpa</p>
+              <span class="edu-duration">Completed</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TESTIMONIALS ============ -->
+    <section class="section testimonials-section">
+      <div class="container">
+        <div class="section-header center" data-reveal>
+          <span class="eyebrow">Feedback</span>
+          <h2>What people <span class="gradient-text">say</span></h2>
+        </div>
+        <div class="grid testimonials-grid">
+          <div class="testimonial-card" data-reveal data-delay="0">
+            <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+            <p>"Abhishek is a dedicated and passionate learner. His enthusiasm for technology and willingness to explore new concepts is truly commendable."</p>
+            <div class="testimonial-author">
+              <img src="https://i.postimg.cc/GmKdh4X5/IMG-20250128-020501.jpg" alt="Prof. Chandan Trigunit" loading="lazy" />
+              <div><strong>Prof. Chandan Trigunit</strong><span>Faculty, A.M.I.T Shivdham</span></div>
+            </div>
+          </div>
+          <div class="testimonial-card" data-reveal data-delay="100">
+            <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+            <p>"Working with Abhishek on projects has been great. He's always eager to learn and brings creative solutions to problems — a reliable teammate."</p>
+            <div class="testimonial-author">
+              <img src="https://i.postimg.cc/nh29bcBH/IMG-20250128-021330.jpg" alt="Chandan Kumar" loading="lazy" />
+              <div><strong>Chandan Kumar</strong><span>Fellow Student &amp; Friend</span></div>
+            </div>
+          </div>
+          <div class="testimonial-card" data-reveal data-delay="200">
+            <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i></div>
+            <p>"Abhishek's dedication to learning is inspiring. His Study Hub app has been genuinely helpful for many students in our batch."</p>
+            <div class="testimonial-author">
+              <img src="https://i.postimg.cc/R0q7gnyr/IMG-20250128-022026.jpg" alt="Ajit Kumar" loading="lazy" />
+              <div><strong>Ajit Kumar</strong><span>Classmate</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CTA ============ -->
+    <section class="cta-banner">
+      <div class="container cta-banner-inner" data-reveal="scale">
+        <span class="eyebrow" style="color:var(--accent-2)">Like what you see?</span>
+        <h2>Let's build your<br />next idea together.</h2>
+        <a href="contact.html" class="btn btn-primary" data-magnetic><span>Get in touch</span><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <h3>Let's build something together.</h3>
+          <p>Open to freelance projects, internships, and interesting collaborations.</p>
+          <a href="mailto:abhishekyadav954698@gmail.com" class="footer-email">abhishekyadav954698@gmail.com</a>
+        </div>
+        <div class="footer-col">
+          <h4>Site</h4>
+          <ul><li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li><li><a href="projects.html">Projects</a></li><li><a href="services.html">Services</a></li></ul>
+        </div>
+        <div class="footer-col">
+          <h4>More</h4>
+          <ul><li><a href="blog.html">Blog</a></li><li><a href="contact.html">Contact</a></li><li><a href="support.html">Support / Buy Me a Coffee</a></li><li><a href="https://drive.google.com/file/d/1pputGGvQ60Wy90YSBqdvdCiQUCj5w7Pl/view?usp=sharing" target="_blank" rel="noopener">Resume</a></li></ul>
+        </div>
+        <div class="footer-col">
+          <h4>Connect</h4>
+          <ul><li><a href="https://github.com/erabhishek12" target="_blank" rel="noopener">GitHub</a></li><li><a href="https://www.instagram.com/naturelensbyabhi" target="_blank" rel="noopener">Instagram</a></li><li><a href="https://wa.me/919546983729" target="_blank" rel="noopener">WhatsApp</a></li></ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span data-year></span> Abhishek Kumar. All rights reserved.</span>
+        <div class="footer-socials">
+          <a href="https://github.com/erabhishek12" target="_blank" rel="noopener" aria-label="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i></a>
+          <a href="https://www.instagram.com/naturelensbyabhi" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
+          <a href="https://wa.me/919546983729" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></a>
+          <a href="mailto:abhishekyadav954698@gmail.com" aria-label="Email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-to-top" data-back-to-top aria-label="Back to top"><i class="fa-solid fa-arrow-up" aria-hidden="true"></i></button>
+  <div class="toast-container"></div>
+
+  <script src="assets/js/theme.js"></script>
+  <script src="assets/js/cursor.js"></script>
+  <script src="assets/js/nav.js"></script>
+  <script src="assets/js/reveal.js"></script>
+  <script src="assets/js/counters.js"></script>
+  <script src="assets/js/magnetic.js"></script>
+  <script src="assets/js/misc.js"></script>
+  <script src="assets/js/id-card.js"></script>
+</body>
+</html>

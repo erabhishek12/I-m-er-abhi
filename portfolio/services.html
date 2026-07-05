@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("ak-theme");
+        if (t) document.documentElement.setAttribute("data-theme", t);
+        else if (window.matchMedia("(prefers-color-scheme: light)").matches)
+          document.documentElement.setAttribute("data-theme", "light");
+      } catch (e) {}
+    })();
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Services — Abhishek Kumar</title>
+  <meta name="description" content="Web development, business tools, AI-assisted products and security-minded builds — services offered by Abhishek Kumar for clients and small businesses." />
+  <link rel="canonical" href="https://erabhi.in/services.html" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Services — Abhishek Kumar" />
+  <meta property="og:description" content="Web development, business tools, AI-assisted products and security-minded builds." />
+  <meta property="og:image" content="https://erabhi.in/assets/images/og/default-og.jpg" />
+  <meta property="og:url" content="https://erabhi.in/services.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="icon" type="image/png" href="assets/icons/favicon.png" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#08090a" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Caveat:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <link rel="stylesheet" href="assets/css/tokens.css" />
+  <style>
+    /* Critical inline safety-net: keeps header/nav from ever rendering
+       broken if external stylesheets fail to load for any reason. */
+    .nav-links{display:flex;align-items:center;gap:2rem}
+    .mobile-nav{position:fixed;inset:0;transform:translateY(-100%);z-index:750}
+    .mobile-nav.is-open{transform:translateY(0)}
+    @media (max-width:900px){.nav-links{display:none}.nav-toggle{display:inline-flex}}
+  </style>
+
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/components.css" />
+  <link rel="stylesheet" href="assets/css/animations.css" />
+  <link rel="stylesheet" href="assets/css/inner-pages.css" />
+  <link rel="stylesheet" href="assets/css/services.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="noise-overlay" aria-hidden="true"></div>
+  <div class="preloader" data-preloader>
+    <div class="preloader-mark">
+      <span class="signature-text">Abhishek<span class="signature-dot">.</span></span>
+      <div class="preloader-bar"><div class="preloader-bar-fill" data-preloader-fill></div></div>
+    </div>
+  </div>
+  <div class="scroll-progress" data-scroll-progress></div>
+
+  <header class="site-header" data-header>
+    <div class="container nav-inner">
+      <a href="index.html" class="logo">AK<span class="logo-dot">.</span></a>
+      <nav class="nav-links">
+        <a href="index.html" data-nav-link>Home</a>
+        <a href="about.html" data-nav-link>About</a>
+        <a href="projects.html" data-nav-link>Projects</a>
+        <a href="services.html" data-nav-link>Services</a>
+        <a href="blog.html" data-nav-link>Blog</a>
+        <a href="contact.html" data-nav-link>Contact</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+          <i class="fa-solid fa-sun icon-sun" aria-hidden="true"></i>
+          <i class="fa-solid fa-moon icon-moon" aria-hidden="true"></i>
+        </button>
+        <a href="contact.html" class="btn btn-primary" data-magnetic><span>Book A Call</span><i class="fa-solid fa-arrow-up-right" aria-hidden="true"></i></a>
+        <button class="nav-toggle" data-nav-toggle aria-label="Open menu"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-nav" data-mobile-nav>
+    <button class="mobile-nav-close" data-mobile-nav-close aria-label="Close menu"><i class="fa-solid fa-xmark"></i></button>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="projects.html">Projects</a>
+      <a href="services.html">Services</a>
+      <a href="blog.html">Blog</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+
+  <main id="main">
+    <section class="page-hero">
+      <div class="container">
+        <span class="eyebrow" data-reveal>What I Do</span>
+        <h1 data-reveal data-delay="100">Services built around <span class="gradient-text">real problems.</span></h1>
+        <p class="lead" data-reveal data-delay="200" style="max-width:640px;">
+          I work with students, shopkeepers, and small businesses to turn
+          real, specific needs into fast, functional web products —
+          not generic templates.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="services-list">
+          <div class="service-row" data-reveal>
+            <div class="service-row-number">01</div>
+            <div class="service-row-body">
+              <h3>Web Development</h3>
+              <p>End-to-end websites and web apps — from landing pages to full institutional or business platforms — built with clean, maintainable code and genuine attention to performance.</p>
+              <div class="service-row-tags">
+                <span class="chip">Responsive Design</span>
+                <span class="chip">PWA</span>
+                <span class="chip">Performance Optimisation</span>
+              </div>
+            </div>
+          </div>
+          <div class="service-row" data-reveal data-delay="100">
+            <div class="service-row-number">02</div>
+            <div class="service-row-body">
+              <h3>Business & Shop Tools</h3>
+              <p>Practical digital tools for shopkeepers and small businesses — Khata Book ledgers, smart billing systems, inventory helpers — designed for real, non-technical users on real devices.</p>
+              <div class="service-row-tags">
+                <span class="chip">Offline-First</span>
+                <span class="chip">Local Storage</span>
+                <span class="chip">Simple UX</span>
+              </div>
+            </div>
+          </div>
+          <div class="service-row" data-reveal data-delay="200">
+            <div class="service-row-number">03</div>
+            <div class="service-row-body">
+              <h3>AI-Assisted Products</h3>
+              <p>Lightweight, purposeful AI integrations — study assistants, conversational interfaces, and generative content tools that add real value rather than novelty.</p>
+              <div class="service-row-tags">
+                <span class="chip">Prompt Engineering</span>
+                <span class="chip">LLM Integration</span>
+                <span class="chip">Chat UX</span>
+              </div>
+            </div>
+          </div>
+          <div class="service-row" data-reveal data-delay="300">
+            <div class="service-row-number">04</div>
+            <div class="service-row-body">
+              <h3>E-Commerce & Client Platforms</h3>
+              <p>Full-stack builds for businesses that need more than a static site — authentication, product catalogues, and admin dashboards that owners can manage independently.</p>
+              <div class="service-row-tags">
+                <span class="chip">Authentication</span>
+                <span class="chip">Admin Dashboards</span>
+                <span class="chip">Full-Stack</span>
+              </div>
+            </div>
+          </div>
+          <div class="service-row" data-reveal data-delay="400">
+            <div class="service-row-number">05</div>
+            <div class="service-row-body">
+              <h3>Security-Minded Development</h3>
+              <p>Applying practical cybersecurity fundamentals throughout every build — because protecting user and client data isn't optional, it's part of doing the job properly.</p>
+              <div class="service-row-tags">
+                <span class="chip">Secure Auth</span>
+                <span class="chip">Data Privacy</span>
+                <span class="chip">Best Practices</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PROCESS ============ -->
+    <section class="section process-section">
+      <div class="container">
+        <div class="section-header center" data-reveal>
+          <span class="eyebrow">How I Work</span>
+          <h2>A simple, transparent <span class="gradient-text">process.</span></h2>
+        </div>
+        <div class="grid process-grid">
+          <div class="process-step" data-reveal data-delay="0">
+            <span class="process-num">01</span>
+            <h3>Discover</h3>
+            <p>A conversation to understand your actual goals, users, and constraints — not just a feature list.</p>
+          </div>
+          <div class="process-step" data-reveal data-delay="100">
+            <span class="process-num">02</span>
+            <h3>Design</h3>
+            <p>Structure and visual direction proposed and refined with you before any code is written.</p>
+          </div>
+          <div class="process-step" data-reveal data-delay="200">
+            <span class="process-num">03</span>
+            <h3>Build</h3>
+            <p>Clean, tested implementation with regular check-ins so there are no surprises at delivery.</p>
+          </div>
+          <div class="process-step" data-reveal data-delay="300">
+            <span class="process-num">04</span>
+            <h3>Launch & Support</h3>
+            <p>Deployment, a walkthrough of how everything works, and support after launch when you need it.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-banner">
+      <div class="container cta-banner-inner" data-reveal="scale">
+        <span class="eyebrow" style="color:var(--accent-2)">Ready to start?</span>
+        <h2>Tell me about<br />your project.</h2>
+        <a href="contact.html" class="btn btn-primary" data-magnetic><span>Get in touch</span><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <h3>Let's build something together.</h3>
+          <p>Open to freelance projects, internships, and interesting collaborations.</p>
+          <a href="mailto:abhishekyadav954698@gmail.com" class="footer-email">abhishekyadav954698@gmail.com</a>
+        </div>
+        <div class="footer-col">
+          <h4>Site</h4>
+          <ul><li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li><li><a href="projects.html">Projects</a></li><li><a href="services.html">Services</a></li></ul>
+        </div>
+        <div class="footer-col">
+          <h4>More</h4>
+          <ul><li><a href="blog.html">Blog</a></li><li><a href="contact.html">Contact</a></li><li><a href="support.html">Support / Buy Me a Coffee</a></li><li><a href="https://drive.google.com/file/d/1pputGGvQ60Wy90YSBqdvdCiQUCj5w7Pl/view?usp=sharing" target="_blank" rel="noopener">Resume</a></li></ul>
+        </div>
+        <div class="footer-col">
+          <h4>Connect</h4>
+          <ul><li><a href="https://github.com/erabhishek12" target="_blank" rel="noopener">GitHub</a></li><li><a href="https://www.instagram.com/naturelensbyabhi" target="_blank" rel="noopener">Instagram</a></li><li><a href="https://wa.me/919546983729" target="_blank" rel="noopener">WhatsApp</a></li></ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span data-year></span> Abhishek Kumar. All rights reserved.</span>
+        <div class="footer-socials">
+          <a href="https://github.com/erabhishek12" target="_blank" rel="noopener" aria-label="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i></a>
+          <a href="https://www.instagram.com/naturelensbyabhi" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
+          <a href="https://wa.me/919546983729" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></a>
+          <a href="mailto:abhishekyadav954698@gmail.com" aria-label="Email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-to-top" data-back-to-top aria-label="Back to top"><i class="fa-solid fa-arrow-up" aria-hidden="true"></i></button>
+  <div class="toast-container"></div>
+
+  <script src="assets/js/theme.js"></script>
+  <script src="assets/js/cursor.js"></script>
+  <script src="assets/js/nav.js"></script>
+  <script src="assets/js/reveal.js"></script>
+  <script src="assets/js/magnetic.js"></script>
+  <script src="assets/js/misc.js"></script>
+</body>
+</html>

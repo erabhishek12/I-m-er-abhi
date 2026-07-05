@@ -1,0 +1,205 @@
+# -*- coding: utf-8 -*-
+"""
+Rich narrative content for each of the 16 case-study pages.
+Keyed by project id (must match assets/js/data/projects-data.js).
+"""
+
+CASE_STUDIES = {
+    "study-hub": {
+        "overview": "Every semester, the same problem repeated itself: notes scattered across WhatsApp groups, videos buried in Telegram channels, and previous-year papers passed around as blurry phone photos. <strong>Study Hub</strong> was built to fix that — a single, offline-first place for students to find what they need, when their connection doesn't cooperate.",
+        "challenge": "College Wi-Fi is unreliable, mobile data is expensive for many students, and existing study-material groups were unorganised and impossible to search. Students needed a way to access verified notes, video lectures and previous-year question papers without waiting on a slow connection every single time.",
+        "approach": [
+            "Interviewed classmates about their actual study habits — when they studied, on what device, and what they searched for most.",
+            "Designed a content structure organised by subject and semester rather than by upload date, so material stays findable months later.",
+            "Built a Progressive Web App from the ground up so it installs like a native app and caches content for offline access.",
+            "Added a lightweight login system so returning students could pick up exactly where they left off.",
+        ],
+        "solution": "Study Hub ships as an installable PWA with service-worker caching, meaning notes and previously viewed videos remain accessible even with zero signal. The interface is deliberately minimal — subject folders, a search bar, and a progress tracker — because the goal was speed, not spectacle.",
+        "outcome": "Study Hub is now used by dozens of students in my batch as their default reference point before exams, and it became the proof-of-concept that led directly to my first paid client project.",
+        "role_detail": "I owned this project end-to-end — research, information architecture, UI design, and full front-end implementation, including the offline caching strategy.",
+    },
+    "javasourcecode": {
+        "overview": "JavaSourceCode was my first paid client engagement — a study platform built for a client who wanted zero friction between a student and the material they needed. No accounts, no logins, no waiting.",
+        "challenge": "The client's existing material was spread across a Google Drive folder with confusing nested subfolders. New visitors bounced immediately because they couldn't find anything without being told exactly where to click.",
+        "approach": [
+            "Audited the existing content and proposed a flattened, subject-first navigation structure.",
+            "Removed the login requirement entirely, prioritising instant access over personalisation.",
+            "Built a fast, lightweight PWA shell so pages loaded quickly even on shared college Wi-Fi.",
+            "Set up a simple content update workflow the client could manage without touching code.",
+        ],
+        "solution": "A clean, login-free study portal where any visitor lands directly on searchable subject pages. The entire experience was built to answer one question as fast as possible: \"where's the material I need?\"",
+        "outcome": "This was the project that taught me how to manage a real client relationship — gathering requirements, setting expectations, and delivering on a deadline. It remains live and actively used.",
+        "role_detail": "As the freelance developer, I handled client communication, technical planning, and full implementation from a blank repository to a deployed site.",
+    },
+    "ub-institute": {
+        "overview": "UB Institute needed a website that matched the credibility of the coaching they actually deliver — prospective students were judging the institute's quality by its (outdated) web presence before ever visiting in person.",
+        "challenge": "The brief was broad — \"make us look professional\" — with no existing design system, brand guidelines, or content ready to go. I had to define the structure as much as the visuals.",
+        "approach": [
+            "Ran a short discovery conversation with the client to define their core offerings, target audience and tone.",
+            "Sketched a sitemap covering courses, admissions, and contact — the three things prospective students actually look for.",
+            "Built a component-based CSS system so the client's team could reuse styled sections consistently as content grew.",
+            "Optimised images and layout for fast loading on the mobile connections most prospective students actually use.",
+        ],
+        "solution": "A clean, trustworthy institutional website with clear course information, an admissions pathway, and consistent branding throughout — built entirely from scratch to the client's specification.",
+        "outcome": "The institute now has a professional, credible front door that matches the quality of their in-person teaching, live at their own domain.",
+        "role_detail": "Full freelance engagement — requirements gathering, design, and development, delivered directly to the client's live domain.",
+    },
+    "nazrana-enterprises": {
+        "overview": "A local business needed more than a digital business card — they needed a site that could actually represent their products and make it easy for customers to reach out.",
+        "challenge": "Limited existing brand assets and a tight turnaround meant I had to move fast from brief to build without sacrificing polish.",
+        "approach": [
+            "Defined a simple three-section structure: what they offer, why customers trust them, and how to get in touch.",
+            "Built a clean product presentation layout that could scale as the client added new offerings.",
+            "Kept the codebase lightweight and dependency-free for fast load times and easy long-term maintenance.",
+        ],
+        "solution": "A fully functional business website with clear product presentation and multiple contact pathways, matched to the client's brand and delivered on schedule.",
+        "outcome": "Nazrana Enterprises now has a live, professional web presence that supports their existing customer relationships and helps new customers find them.",
+        "role_detail": "Freelance web developer — from client brief to final deployed website.",
+    },
+    "amit-shivdham": {
+        "overview": "My own college's website felt like it was working against the students it was meant to serve — so I rebuilt it as a self-initiated project to prove what a modern, student-friendly version could look like.",
+        "challenge": "The original site had outdated information architecture, inconsistent visual design, and wasn't optimised for the mobile devices most students actually use to check timetables and notices.",
+        "approach": [
+            "Mapped out the information students and prospective applicants actually search for, and restructured navigation around it.",
+            "Built a fresh, modern visual design system consistent across every page.",
+            "Prioritised mobile performance, since most current students check the site from their phones between classes.",
+        ],
+        "solution": "A ground-up redesign of the college website with a cleaner information architecture, consistent modern styling, and a mobile-first build.",
+        "outcome": "The project became one of my strongest portfolio pieces and a talking point in later client conversations — proof I could take on an entire institutional site independently.",
+        "role_detail": "Self-initiated solo project — research, design and full development.",
+    },
+    "mehandi-kala": {
+        "overview": "Vedika Mehandi Design needed a portfolio that did justice to genuinely intricate, detailed artwork — a site where the imagery could breathe and the craft could speak for itself.",
+        "challenge": "Mehandi artwork is highly detailed and photo-dependent; a cluttered or slow layout would undercut the perceived quality of the work itself.",
+        "approach": [
+            "Chose a gallery-first layout that puts artwork front and centre with generous whitespace around each piece.",
+            "Selected a warm, editorial colour palette that complemented the artwork rather than competing with it.",
+            "Optimised image loading so the gallery-heavy homepage still loads quickly.",
+        ],
+        "solution": "A warm, image-led portfolio site structured around a clean gallery grid, letting the artist's actual work carry the visual weight of the page.",
+        "outcome": "The client received a portfolio worthy of showcasing to prospective clients — elegant, fast, and entirely focused on the art.",
+        "role_detail": "Freelance web developer, working directly with the artist to select and present her portfolio.",
+    },
+    "virtual-gf": {
+        "overview": "An experimental project built purely to understand conversational AI — how to structure prompts, maintain context across a conversation, and give a chatbot something resembling a consistent personality.",
+        "challenge": "Off-the-shelf chatbot demos tend to feel robotic or forget context after a couple of exchanges. The challenge was making a lightweight front-end feel more natural without a heavy backend.",
+        "approach": [
+            "Explored prompt engineering techniques to give the AI consistent tone and memory of recent messages.",
+            "Built a simple, chat-style front-end focused entirely on the conversation, with no unnecessary UI noise.",
+            "Iterated on response formatting to make replies feel more natural and less like raw API output.",
+        ],
+        "solution": "A playful conversational AI interface that demonstrates practical prompt-engineering and front-end integration with LLM APIs.",
+        "outcome": "This project deepened my understanding of AI integration patterns that I later reused in more serious tools, like the A&K Study Helper AI.",
+        "role_detail": "Solo R&D project exploring conversational AI UX and prompt design.",
+    },
+    "abhik-compiler": {
+        "overview": "Students in my program constantly needed to test small snippets of code without installing a full IDE. ABHI&K Compiler is a browser-based answer to that — write, run, done.",
+        "challenge": "Running arbitrary code safely in-browser typically means relying on a third-party execution API, and the front-end needed to handle multiple languages with a consistent, fast experience.",
+        "approach": [
+            "Integrated a code execution API supporting multiple languages behind a single, unified interface.",
+            "Built a familiar code-editor experience with syntax highlighting and a clear output console.",
+            "Deployed on Vercel for fast global load times with zero server maintenance on my end.",
+        ],
+        "solution": "A clean, install-free online compiler supporting multiple programming languages, so students can test code from any device with a browser.",
+        "outcome": "Now a genuinely useful daily tool for classmates who need to quickly verify a snippet without opening a full development environment.",
+        "role_detail": "Solo developer — architecture, API integration, and front-end build.",
+    },
+    "calculator-vault": {
+        "outcome": "A fun proof-of-concept that's become a genuinely used utility among friends who wanted a low-key way to keep certain files private on shared or borrowed devices.",
+        "overview": "What if a calculator wasn't just a calculator? This project hides a fully functional private media vault behind an everyday, unassuming utility app.",
+        "challenge": "The app needed to work as a completely convincing, functional calculator first — the vault feature only reveals itself through a specific interaction, and had to stay genuinely hidden from casual use.",
+        "approach": [
+            "Built a fully working calculator UI and logic layer as the primary, convincing surface of the app.",
+            "Implemented a password-gated vault accessible only through a deliberate, non-obvious interaction.",
+            "Used client-side storage to keep vault contents private and local to the device.",
+        ],
+        "solution": "A working calculator app with a genuinely hidden, password-protected vault for private photos and files — privacy-first design disguised as an everyday tool.",
+        "role_detail": "Solo personal project exploring UI misdirection and client-side privacy patterns.",
+    },
+    "study-helper-ai": {
+        "overview": "Building on what I learned from Virtual GF, A&K Study Helper AI applies conversational AI to something more useful — helping students summarise topics and answer academic questions on demand.",
+        "challenge": "Generic AI chat tools aren't tuned for academic use — they ramble, lose focus, or give answers that are hard to study from. The interface also needed to feel purpose-built for studying, not just another chatbot skin.",
+        "approach": [
+            "Refined prompts specifically for academic summarisation and Q&A use cases.",
+            "Designed a study-first interface with topic organisation alongside the chat itself.",
+            "Tested extensively with real coursework questions from my own classes to tune response quality.",
+        ],
+        "solution": "An AI-powered study assistant that helps students get clear, focused answers and summaries without replacing the work of actually understanding the material.",
+        "outcome": "Used by classmates as a quick first-pass study aid before deeper review — a practical, everyday application of AI rather than a novelty.",
+        "role_detail": "Solo developer — prompt design, UX, and front-end integration with AI APIs.",
+    },
+    "multi-tool-box": {
+        "overview": "Instead of bookmarking a dozen different single-purpose utility websites, Multi Tool Box bundles over 35 everyday tools — converters, generators, calculators — into one fast, ad-light app.",
+        "challenge": "Each individual tool is simple, but keeping 35+ of them consistent, fast, and genuinely useful (not just a gimmick collection) required real architectural discipline.",
+        "approach": [
+            "Designed a consistent component pattern so every tool shares the same interaction language.",
+            "Prioritised load speed by keeping the app dependency-light and avoiding unnecessary frameworks.",
+            "Organised tools into clear categories so the right one is always a couple of clicks away.",
+        ],
+        "solution": "A single, cohesive web app housing 35+ genuinely useful utilities, unified under one consistent, fast interface.",
+        "outcome": "Now my own daily-driver for quick conversions and calculations — proof that small tools add up to real, everyday value.",
+        "role_detail": "Solo developer — product structure, UI system, and implementation of all 35+ tools.",
+    },
+    "see-your-future": {
+        "overview": "A playful entertainment project exploring how far generative, AI-flavoured copywriting can go in creating a genuinely fun, shareable experience.",
+        "challenge": "The whole product is the writing — if the 'predictions' feel generic or repetitive, the experience falls flat immediately.",
+        "approach": [
+            "Wrote a large, varied bank of playful predictive copy blended with lightweight generative logic.",
+            "Designed a simple, satisfying reveal interaction to make each result feel like a small moment.",
+            "Kept the whole experience mobile-first, since it's designed to be shared and opened on a phone.",
+        ],
+        "solution": "A lighthearted 'future predictor' web app that blends fun copywriting with simple generative logic for a genuinely shareable experience.",
+        "outcome": "A useful exercise in UX writing and generative content design — skills that carry over directly into more serious AI-driven products.",
+        "role_detail": "Solo personal project — concept, copywriting, and development.",
+    },
+    "naam-jaap-counter": {
+        "overview": "Built for a specific, personal use case: a distraction-free counter for naam jaap spiritual practice, where the app itself should disappear into the ritual rather than demand attention.",
+        "challenge": "Most counter apps are cluttered with ads, settings, and unnecessary features that break focus during a practice that's meant to be calming and repetitive.",
+        "approach": [
+            "Stripped the interface down to a single large touch target and a clear running count.",
+            "Chose calming visuals and avoided any element that could pull attention away from the practice.",
+            "Made the whole app installable and fully offline so it never depends on a connection.",
+        ],
+        "solution": "A minimal, focused digital counter with large touch targets and zero visual clutter, designed to disappear into the practice it supports.",
+        "outcome": "A small project with an outsized emotional impact — genuinely used daily by family members for their own practice.",
+        "role_detail": "Solo personal project — concept, design, and development.",
+    },
+    "dudh-wala": {
+        "overview": "Dudh Wala was built for a real person doing real work: village milk vendors who were tracking daily collection, customer accounts, and payments by hand in notebooks.",
+        "challenge": "The end users are not tech-savvy and often use low-end phones with patchy connectivity. The app needed to be simpler than the notebook it was replacing, not more complicated.",
+        "approach": [
+            "Spent time understanding the actual daily workflow of a milk vendor before writing a line of code.",
+            "Designed an interface with large, simple inputs suited to quick daily use, not a dashboard full of options.",
+            "Used local storage so the app works fully offline in areas with unreliable connectivity.",
+        ],
+        "solution": "A simple, powerful ledger app that lets village milk vendors track daily collection, customer accounts, and payments from their phone — with zero internet dependency.",
+        "outcome": "A meaningful example of using development skills for genuinely useful, real-world impact beyond typical student or client projects.",
+        "role_detail": "Solo developer and designer — end-to-end concept, UX and implementation.",
+    },
+    "dukan-wala": {
+        "overview": "Dukan Wala takes the lessons from Dudh Wala further — a full digital toolkit for neighbourhood shopkeepers, combining billing, ledgers, and even AI-assisted marketing into one offline-friendly app.",
+        "challenge": "Shopkeepers needed several distinct capabilities — a Khata Book ledger, smart billing, a traditional Taraju-style calculator, voice-based product entry, secure QR storage, and even AI-generated marketing posters — unified without becoming overwhelming.",
+        "approach": [
+            "Prioritised features based on real shopkeeper pain points: unpaid credit tracking, fast billing, and simple marketing.",
+            "Integrated voice input for product entry, since typing product names all day is slow and error-prone.",
+            "Added an AI marketing studio and festival poster generator so shopkeepers could create promotional content without design skills.",
+            "Built offline-first with cloud sync so data isn't lost when connectivity drops.",
+        ],
+        "solution": "A comprehensive digital assistant for shopkeepers — Khata Book, smart billing, Taraju calculator, voice product entry, QR vault, AI marketing studio, and festival poster generator, all working offline with cloud sync.",
+        "outcome": "One of my most ambitious personal builds — demonstrating that thoughtful, AI-assisted tools can genuinely simplify small business operations.",
+        "role_detail": "Solo developer and designer — product strategy, UX, and full-stack implementation including AI feature integration.",
+    },
+    "khushi-jewellers": {
+        "overview": "Khushi Jewellers is my most complete client engagement to date — a full-stack luxury e-commerce platform that had to feel as premium online as the jewellery does in person.",
+        "challenge": "Luxury retail demands a different bar entirely: the visual design has to feel editorial and considered, while the underlying platform needed real e-commerce functionality — authentication, catalogue management, and an admin panel the owner could run without any technical help.",
+        "approach": [
+            "Designed a premium, editorial visual language suited to fine jewellery — generous whitespace, refined typography, and considered imagery presentation.",
+            "Built secure user authentication and a complete product catalogue with wishlist functionality.",
+            "Developed a full admin dashboard so the store owner can manage products, collections, offers, and site content independently.",
+            "Optimised performance and responsiveness across devices to match the quality expected of a luxury brand.",
+        ],
+        "solution": "A full-stack luxury jewellery e-commerce platform with secure authentication, a complete product catalogue, wishlist functionality, and a comprehensive admin dashboard — all wrapped in a premium, editorial interface.",
+        "outcome": "My flagship project to date, and the clearest proof point of my ability to own a complete client engagement — from visual design through to a working admin backend.",
+        "role_detail": "Full-stack developer and designer — sole owner of the project from initial concept through to deployed, client-managed platform.",
+    },
+}

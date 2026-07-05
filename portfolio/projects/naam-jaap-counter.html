@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("ak-theme");
+        if (t) document.documentElement.setAttribute("data-theme", t);
+        else if (window.matchMedia("(prefers-color-scheme: light)").matches)
+          document.documentElement.setAttribute("data-theme", "light");
+      } catch (e) {}
+    })();
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Naam Jaap Counter — Case Study | Abhishek Kumar</title>
+  <meta name="description" content="A minimal, focused spiritual counting app" />
+  <link rel="canonical" href="https://erabhi.in/projects/naam-jaap-counter.html" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Naam Jaap Counter — Case Study | Abhishek Kumar" />
+  <meta property="og:description" content="A minimal, focused spiritual counting app" />
+  <meta property="og:image" content="https://erabhi.in/assets/images/projects/radha.png" />
+  <meta property="og:url" content="https://erabhi.in/projects/naam-jaap-counter.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Naam Jaap Counter — Case Study" />
+  <meta name="twitter:description" content="A minimal, focused spiritual counting app" />
+  <meta name="twitter:image" content="https://erabhi.in/assets/images/projects/radha.png" />
+
+  <link rel="icon" type="image/png" href="../assets/icons/favicon.png" />
+  <link rel="manifest" href="../manifest.json" />
+  <meta name="theme-color" content="#08090a" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Caveat:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <link rel="stylesheet" href="../assets/css/tokens.css" />
+  <style>
+    /* Critical inline safety-net: keeps header/nav from ever rendering
+       broken if external stylesheets fail to load for any reason. */
+    .nav-links{display:flex;align-items:center;gap:2rem}
+    .mobile-nav{position:fixed;inset:0;transform:translateY(-100%);z-index:750}
+    .mobile-nav.is-open{transform:translateY(0)}
+    @media (max-width:900px){.nav-links{display:none}.nav-toggle{display:inline-flex}}
+  </style>
+
+  <link rel="stylesheet" href="../assets/css/base.css" />
+  <link rel="stylesheet" href="../assets/css/components.css" />
+  <link rel="stylesheet" href="../assets/css/animations.css" />
+  <link rel="stylesheet" href="../assets/css/inner-pages.css" />
+  <link rel="stylesheet" href="../assets/css/case-study.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="noise-overlay" aria-hidden="true"></div>
+  <div class="preloader" data-preloader>
+    <div class="preloader-mark">
+      <span class="signature-text">Abhishek<span class="signature-dot">.</span></span>
+      <div class="preloader-bar"><div class="preloader-bar-fill" data-preloader-fill></div></div>
+    </div>
+  </div>
+  <div class="scroll-progress" data-scroll-progress></div>
+
+  <header class="site-header" data-header>
+    <div class="container nav-inner">
+      <a href="../index.html" class="logo">AK<span class="logo-dot">.</span></a>
+      <nav class="nav-links">
+        <a href="../index.html">Home</a>
+        <a href="../about.html">About</a>
+        <a href="../projects.html" class="active">Projects</a>
+        <a href="../services.html">Services</a>
+        <a href="../blog.html">Blog</a>
+        <a href="../contact.html">Contact</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+          <i class="fa-solid fa-sun icon-sun" aria-hidden="true"></i>
+          <i class="fa-solid fa-moon icon-moon" aria-hidden="true"></i>
+        </button>
+        <a href="../contact.html" class="btn btn-primary" data-magnetic><span>Book A Call</span><i class="fa-solid fa-arrow-up-right" aria-hidden="true"></i></a>
+        <button class="nav-toggle" data-nav-toggle aria-label="Open menu"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-nav" data-mobile-nav>
+    <button class="mobile-nav-close" data-mobile-nav-close aria-label="Close menu"><i class="fa-solid fa-xmark"></i></button>
+    <nav class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../about.html">About</a>
+      <a href="../projects.html">Projects</a>
+      <a href="../services.html">Services</a>
+      <a href="../blog.html">Blog</a>
+      <a href="../contact.html">Contact</a>
+    </nav>
+  </div>
+
+  <main id="main">
+    <section class="cs-hero">
+      <div class="container">
+        <div class="breadcrumbs" data-reveal>
+          <a href="../projects.html">Projects</a> <span>/</span> <span>Naam Jaap Counter</span>
+        </div>
+        <div class="cs-hero-top">
+          <div class="cs-title-block" data-reveal>
+            <span class="eyebrow">Spiritual</span>
+            <h1>Naam Jaap Counter</h1>
+            <p class="lead">A minimal, focused spiritual counting app</p>
+            <div class="cs-tags"><span class="chip chip-accent">Personal</span><span class="chip chip-accent">Spiritual</span><span class="chip chip-accent">Minimal UI</span></div>
+            <div class="cs-actions">
+              <a href="https://erabhishek12.github.io/radha-radha-naam-jaap-promo/" target="_blank" rel="noopener" class="btn btn-primary" data-magnetic><span>View Live Site</span><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+              <a href="https://github.com/erabhishek12" target="_blank" rel="noopener" class="btn btn-secondary" data-magnetic><i class="fa-brands fa-github" aria-hidden="true"></i><span>Source</span></a>
+              <button type="button" class="btn-icon-circle" data-share="native" data-share-title="Naam Jaap Counter — Case Study by Abhishek Kumar" data-share-text="A minimal, focused spiritual counting app" aria-label="Share this case study"><i class="fa-solid fa-share-nodes" aria-hidden="true"></i></button>
+            </div>
+            <div class="share-row" style="margin-top:var(--space-md)">
+              <button class="share-btn-icon whatsapp" data-share="whatsapp" data-share-title="Naam Jaap Counter — Abhishek Kumar" aria-label="Share on WhatsApp"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></button>
+              <button class="share-btn-icon twitter" data-share="twitter" data-share-title="Naam Jaap Counter — Abhishek Kumar" aria-label="Share on Twitter"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></button>
+              <button class="share-btn-icon linkedin" data-share="linkedin" data-share-title="Naam Jaap Counter — Abhishek Kumar" aria-label="Share on LinkedIn"><i class="fa-brands fa-linkedin-in" aria-hidden="true"></i></button>
+              <button class="share-btn-icon copy" data-share="copy" aria-label="Copy link"><i class="fa-solid fa-link" aria-hidden="true"></i></button>
+            </div>
+          </div>
+          <div class="cs-meta-list" data-reveal="right">
+            <div class="cs-meta-item"><span>Client</span><span>Personal Project</span></div>
+            <div class="cs-meta-item"><span>Role</span><span>Solo Developer</span></div>
+            <div class="cs-meta-item"><span>Year</span><span>2025</span></div>
+          </div>
+        </div>
+        <div class="cs-hero-image" data-reveal="scale" data-delay="150">
+          <img src="../assets/images/projects/radha.png" alt="Naam Jaap Counter project preview" loading="eager" />
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0">
+      <div class="container cs-body">
+        <div class="cs-content" data-reveal>
+          <h2>Overview</h2>
+          <p>Built for a specific, personal use case: a distraction-free counter for naam jaap spiritual practice, where the app itself should disappear into the ritual rather than demand attention.</p>
+
+          <h2>The Challenge</h2>
+          <p>Most counter apps are cluttered with ads, settings, and unnecessary features that break focus during a practice that's meant to be calming and repetitive.</p>
+
+          <h2>Approach</h2>
+          <ul><li>Stripped the interface down to a single large touch target and a clear running count.</li><li>Chose calming visuals and avoided any element that could pull attention away from the practice.</li><li>Made the whole app installable and fully offline so it never depends on a connection.</li></ul>
+
+          <h2>The Solution</h2>
+          <p>A minimal, focused digital counter with large touch targets and zero visual clutter, designed to disappear into the practice it supports.</p>
+
+          <div class="cs-outcome-block">
+            <h2>Outcome</h2>
+            <p>A small project with an outsized emotional impact — genuinely used daily by family members for their own practice.</p>
+          </div>
+        </div>
+
+        <aside class="cs-sidebar" data-reveal="right">
+          <div class="cs-sidebar-card">
+            <h4>Tech Stack</h4>
+            <div class="cs-stack-list"><span class="chip">HTML5</span><span class="chip">CSS3</span><span class="chip">JavaScript</span></div>
+          </div>
+          <div class="cs-sidebar-card">
+            <h4>My Role</h4>
+            <p style="font-size:var(--fs-small); color:var(--text-secondary)">Solo personal project — concept, design, and development.</p>
+          </div>
+          <div class="cs-sidebar-card">
+            <h4>Links</h4>
+            <div style="display:flex; flex-direction:column; gap:8px;">
+              <a class="view-link" href="https://erabhishek12.github.io/radha-radha-naam-jaap-promo/" target="_blank" rel="noopener">Live Site <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+              <a class="view-link" href="https://github.com/erabhishek12" target="_blank" rel="noopener">GitHub <i class="fa-brands fa-github" aria-hidden="true"></i></a>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="container">
+        <div class="cs-nav">
+        <a href="see-your-future.html">
+          <span class="nav-label">Previous</span>
+          <span class="nav-title">See Your Future</span>
+        </a>
+        <a href="dudh-wala.html">
+          <span class="nav-label">Next</span>
+          <span class="nav-title">Dudh Wala</span>
+        </a></div>
+      </div>
+    </section>
+
+    <section class="section related-section">
+      <div class="container">
+        <div class="section-header" data-reveal>
+          <span class="eyebrow">Keep Exploring</span>
+          <h2>More <span class="gradient-text">Projects</span></h2>
+        </div>
+        <div class="grid related-projects" data-related-projects data-current-id="naam-jaap-counter" data-base-path="../"></div>
+      </div>
+    </section>
+
+    <section class="cta-banner">
+      <div class="container cta-banner-inner" data-reveal="scale">
+        <span class="eyebrow" style="color:var(--accent-2)">Like this project?</span>
+        <h2>Let's build yours<br />next.</h2>
+        <a href="../contact.html" class="btn btn-primary" data-magnetic><span>Start a project</span><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <h3>Let's build something together.</h3>
+          <p>Open to freelance projects, internships, and interesting collaborations.</p>
+          <a href="mailto:abhishekyadav954698@gmail.com" class="footer-email">abhishekyadav954698@gmail.com</a>
+        </div>
+        <div class="footer-col">
+          <h4>Site</h4>
+          <ul><li><a href="../index.html">Home</a></li><li><a href="../about.html">About</a></li><li><a href="../projects.html">Projects</a></li><li><a href="../services.html">Services</a></li></ul>
+        </div>
+        <div class="footer-col">
+          <h4>More</h4>
+          <ul><li><a href="../blog.html">Blog</a></li><li><a href="../contact.html">Contact</a></li><li><a href="../support.html">Support / Buy Me a Coffee</a></li><li><a href="https://drive.google.com/file/d/1pputGGvQ60Wy90YSBqdvdCiQUCj5w7Pl/view?usp=sharing" target="_blank" rel="noopener">Resume</a></li></ul>
+        </div>
+        <div class="footer-col">
+          <h4>Connect</h4>
+          <ul><li><a href="https://github.com/erabhishek12" target="_blank" rel="noopener">GitHub</a></li><li><a href="https://www.instagram.com/naturelensbyabhi" target="_blank" rel="noopener">Instagram</a></li><li><a href="https://wa.me/919546983729" target="_blank" rel="noopener">WhatsApp</a></li></ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span data-year></span> Abhishek Kumar. All rights reserved.</span>
+        <div class="footer-socials">
+          <a href="https://github.com/erabhishek12" target="_blank" rel="noopener" aria-label="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i></a>
+          <a href="https://www.instagram.com/naturelensbyabhi" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
+          <a href="https://wa.me/919546983729" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></a>
+          <a href="mailto:abhishekyadav954698@gmail.com" aria-label="Email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-to-top" data-back-to-top aria-label="Back to top"><i class="fa-solid fa-arrow-up" aria-hidden="true"></i></button>
+  <div class="toast-container"></div>
+
+  <script src="../assets/js/data/projects-data.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/cursor.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/reveal.js"></script>
+  <script src="../assets/js/magnetic.js"></script>
+  <script src="../assets/js/share.js"></script>
+  <script src="../assets/js/misc.js"></script>
+  <script src="../assets/js/projects-render.js"></script>
+</body>
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("ak-theme");
+        if (t) document.documentElement.setAttribute("data-theme", t);
+        else if (window.matchMedia("(prefers-color-scheme: light)").matches)
+          document.documentElement.setAttribute("data-theme", "light");
+      } catch (e) {}
+    })();
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Study Hub — Case Study | Abhishek Kumar</title>
+  <meta name="description" content="Offline-first study companion for engineering students" />
+  <link rel="canonical" href="https://erabhi.in/projects/study-hub.html" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Study Hub — Case Study | Abhishek Kumar" />
+  <meta property="og:description" content="Offline-first study companion for engineering students" />
+  <meta property="og:image" content="https://erabhi.in/assets/images/projects/sh.png" />
+  <meta property="og:url" content="https://erabhi.in/projects/study-hub.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Study Hub — Case Study" />
+  <meta name="twitter:description" content="Offline-first study companion for engineering students" />
+  <meta name="twitter:image" content="https://erabhi.in/assets/images/projects/sh.png" />
+
+  <link rel="icon" type="image/png" href="../assets/icons/favicon.png" />
+  <link rel="manifest" href="../manifest.json" />
+  <meta name="theme-color" content="#08090a" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Caveat:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <link rel="stylesheet" href="../assets/css/tokens.css" />
+  <style>
+    /* Critical inline safety-net: keeps header/nav from ever rendering
+       broken if external stylesheets fail to load for any reason. */
+    .nav-links{display:flex;align-items:center;gap:2rem}
+    .mobile-nav{position:fixed;inset:0;transform:translateY(-100%);z-index:750}
+    .mobile-nav.is-open{transform:translateY(0)}
+    @media (max-width:900px){.nav-links{display:none}.nav-toggle{display:inline-flex}}
+  </style>
+
+  <link rel="stylesheet" href="../assets/css/base.css" />
+  <link rel="stylesheet" href="../assets/css/components.css" />
+  <link rel="stylesheet" href="../assets/css/animations.css" />
+  <link rel="stylesheet" href="../assets/css/inner-pages.css" />
+  <link rel="stylesheet" href="../assets/css/case-study.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="noise-overlay" aria-hidden="true"></div>
+  <div class="preloader" data-preloader>
+    <div class="preloader-mark">
+      <span class="signature-text">Abhishek<span class="signature-dot">.</span></span>
+      <div class="preloader-bar"><div class="preloader-bar-fill" data-preloader-fill></div></div>
+    </div>
+  </div>
+  <div class="scroll-progress" data-scroll-progress></div>
+
+  <header class="site-header" data-header>
+    <div class="container nav-inner">
+      <a href="../index.html" class="logo">AK<span class="logo-dot">.</span></a>
+      <nav class="nav-links">
+        <a href="../index.html">Home</a>
+        <a href="../about.html">About</a>
+        <a href="../projects.html" class="active">Projects</a>
+        <a href="../services.html">Services</a>
+        <a href="../blog.html">Blog</a>
+        <a href="../contact.html">Contact</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+          <i class="fa-solid fa-sun icon-sun" aria-hidden="true"></i>
+          <i class="fa-solid fa-moon icon-moon" aria-hidden="true"></i>
+        </button>
+        <a href="../contact.html" class="btn btn-primary" data-magnetic><span>Book A Call</span><i class="fa-solid fa-arrow-up-right" aria-hidden="true"></i></a>
+        <button class="nav-toggle" data-nav-toggle aria-label="Open menu"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-nav" data-mobile-nav>
+    <button class="mobile-nav-close" data-mobile-nav-close aria-label="Close menu"><i class="fa-solid fa-xmark"></i></button>
+    <nav class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../about.html">About</a>
+      <a href="../projects.html">Projects</a>
+      <a href="../services.html">Services</a>
+      <a href="../blog.html">Blog</a>
+      <a href="../contact.html">Contact</a>
+    </nav>
+  </div>
+
+  <main id="main">
+    <section class="cs-hero">
+      <div class="container">
+        <div class="breadcrumbs" data-reveal>
+          <a href="../projects.html">Projects</a> <span>/</span> <span>Study Hub</span>
+        </div>
+        <div class="cs-hero-top">
+          <div class="cs-title-block" data-reveal>
+            <span class="eyebrow">Featured</span>
+            <h1>Study Hub</h1>
+            <p class="lead">Offline-first study companion for engineering students</p>
+            <div class="cs-tags"><span class="chip chip-accent">PWA</span><span class="chip chip-accent">Web App</span><span class="chip chip-accent">Education</span></div>
+            <div class="cs-actions">
+              <a href="https://erabhishek12.github.io/study-hub-promo" target="_blank" rel="noopener" class="btn btn-primary" data-magnetic><span>View Live Site</span><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+              <a href="https://github.com/erabhishek12" target="_blank" rel="noopener" class="btn btn-secondary" data-magnetic><i class="fa-brands fa-github" aria-hidden="true"></i><span>Source</span></a>
+              <button type="button" class="btn-icon-circle" data-share="native" data-share-title="Study Hub — Case Study by Abhishek Kumar" data-share-text="Offline-first study companion for engineering students" aria-label="Share this case study"><i class="fa-solid fa-share-nodes" aria-hidden="true"></i></button>
+            </div>
+            <div class="share-row" style="margin-top:var(--space-md)">
+              <button class="share-btn-icon whatsapp" data-share="whatsapp" data-share-title="Study Hub — Abhishek Kumar" aria-label="Share on WhatsApp"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></button>
+              <button class="share-btn-icon twitter" data-share="twitter" data-share-title="Study Hub — Abhishek Kumar" aria-label="Share on Twitter"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></button>
+              <button class="share-btn-icon linkedin" data-share="linkedin" data-share-title="Study Hub — Abhishek Kumar" aria-label="Share on LinkedIn"><i class="fa-brands fa-linkedin-in" aria-hidden="true"></i></button>
+              <button class="share-btn-icon copy" data-share="copy" aria-label="Copy link"><i class="fa-solid fa-link" aria-hidden="true"></i></button>
+            </div>
+          </div>
+          <div class="cs-meta-list" data-reveal="right">
+            <div class="cs-meta-item"><span>Client</span><span>Personal / Student Community</span></div>
+            <div class="cs-meta-item"><span>Role</span><span>Solo Developer & Designer</span></div>
+            <div class="cs-meta-item"><span>Year</span><span>2024</span></div>
+          </div>
+        </div>
+        <div class="cs-hero-image" data-reveal="scale" data-delay="150">
+          <img src="../assets/images/projects/sh.png" alt="Study Hub project preview" loading="eager" />
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0">
+      <div class="container cs-body">
+        <div class="cs-content" data-reveal>
+          <h2>Overview</h2>
+          <p>Every semester, the same problem repeated itself: notes scattered across WhatsApp groups, videos buried in Telegram channels, and previous-year papers passed around as blurry phone photos. <strong>Study Hub</strong> was built to fix that — a single, offline-first place for students to find what they need, when their connection doesn't cooperate.</p>
+
+          <h2>The Challenge</h2>
+          <p>College Wi-Fi is unreliable, mobile data is expensive for many students, and existing study-material groups were unorganised and impossible to search. Students needed a way to access verified notes, video lectures and previous-year question papers without waiting on a slow connection every single time.</p>
+
+          <h2>Approach</h2>
+          <ul><li>Interviewed classmates about their actual study habits — when they studied, on what device, and what they searched for most.</li><li>Designed a content structure organised by subject and semester rather than by upload date, so material stays findable months later.</li><li>Built a Progressive Web App from the ground up so it installs like a native app and caches content for offline access.</li><li>Added a lightweight login system so returning students could pick up exactly where they left off.</li></ul>
+
+          <h2>The Solution</h2>
+          <p>Study Hub ships as an installable PWA with service-worker caching, meaning notes and previously viewed videos remain accessible even with zero signal. The interface is deliberately minimal — subject folders, a search bar, and a progress tracker — because the goal was speed, not spectacle.</p>
+
+          <div class="cs-outcome-block">
+            <h2>Outcome</h2>
+            <p>Study Hub is now used by dozens of students in my batch as their default reference point before exams, and it became the proof-of-concept that led directly to my first paid client project.</p>
+          </div>
+        </div>
+
+        <aside class="cs-sidebar" data-reveal="right">
+          <div class="cs-sidebar-card">
+            <h4>Tech Stack</h4>
+            <div class="cs-stack-list"><span class="chip">HTML5</span><span class="chip">CSS3</span><span class="chip">JavaScript</span><span class="chip">LocalStorage</span><span class="chip">Service Workers</span></div>
+          </div>
+          <div class="cs-sidebar-card">
+            <h4>My Role</h4>
+            <p style="font-size:var(--fs-small); color:var(--text-secondary)">I owned this project end-to-end — research, information architecture, UI design, and full front-end implementation, including the offline caching strategy.</p>
+          </div>
+          <div class="cs-sidebar-card">
+            <h4>Links</h4>
+            <div style="display:flex; flex-direction:column; gap:8px;">
+              <a class="view-link" href="https://erabhishek12.github.io/study-hub-promo" target="_blank" rel="noopener">Live Site <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+              <a class="view-link" href="https://github.com/erabhishek12" target="_blank" rel="noopener">GitHub <i class="fa-brands fa-github" aria-hidden="true"></i></a>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="container">
+        <div class="cs-nav">
+        <a href="khushi-jewellers.html">
+          <span class="nav-label">Previous</span>
+          <span class="nav-title">Khushi Jewellers</span>
+        </a>
+        <a href="javasourcecode.html">
+          <span class="nav-label">Next</span>
+          <span class="nav-title">JavaSourceCode</span>
+        </a></div>
+      </div>
+    </section>
+
+    <section class="section related-section">
+      <div class="container">
+        <div class="section-header" data-reveal>
+          <span class="eyebrow">Keep Exploring</span>
+          <h2>More <span class="gradient-text">Projects</span></h2>
+        </div>
+        <div class="grid related-projects" data-related-projects data-current-id="study-hub" data-base-path="../"></div>
+      </div>
+    </section>
+
+    <section class="cta-banner">
+      <div class="container cta-banner-inner" data-reveal="scale">
+        <span class="eyebrow" style="color:var(--accent-2)">Like this project?</span>
+        <h2>Let's build yours<br />next.</h2>
+        <a href="../contact.html" class="btn btn-primary" data-magnetic><span>Start a project</span><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <h3>Let's build something together.</h3>
+          <p>Open to freelance projects, internships, and interesting collaborations.</p>
+          <a href="mailto:abhishekyadav954698@gmail.com" class="footer-email">abhishekyadav954698@gmail.com</a>
+        </div>
+        <div class="footer-col">
+          <h4>Site</h4>
+          <ul><li><a href="../index.html">Home</a></li><li><a href="../about.html">About</a></li><li><a href="../projects.html">Projects</a></li><li><a href="../services.html">Services</a></li></ul>
+        </div>
+        <div class="footer-col">
+          <h4>More</h4>
+          <ul><li><a href="../blog.html">Blog</a></li><li><a href="../contact.html">Contact</a></li><li><a href="../support.html">Support / Buy Me a Coffee</a></li><li><a href="https://drive.google.com/file/d/1pputGGvQ60Wy90YSBqdvdCiQUCj5w7Pl/view?usp=sharing" target="_blank" rel="noopener">Resume</a></li></ul>
+        </div>
+        <div class="footer-col">
+          <h4>Connect</h4>
+          <ul><li><a href="https://github.com/erabhishek12" target="_blank" rel="noopener">GitHub</a></li><li><a href="https://www.instagram.com/naturelensbyabhi" target="_blank" rel="noopener">Instagram</a></li><li><a href="https://wa.me/919546983729" target="_blank" rel="noopener">WhatsApp</a></li></ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span data-year></span> Abhishek Kumar. All rights reserved.</span>
+        <div class="footer-socials">
+          <a href="https://github.com/erabhishek12" target="_blank" rel="noopener" aria-label="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i></a>
+          <a href="https://www.instagram.com/naturelensbyabhi" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
+          <a href="https://wa.me/919546983729" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></a>
+          <a href="mailto:abhishekyadav954698@gmail.com" aria-label="Email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-to-top" data-back-to-top aria-label="Back to top"><i class="fa-solid fa-arrow-up" aria-hidden="true"></i></button>
+  <div class="toast-container"></div>
+
+  <script src="../assets/js/data/projects-data.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/cursor.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/reveal.js"></script>
+  <script src="../assets/js/magnetic.js"></script>
+  <script src="../assets/js/share.js"></script>
+  <script src="../assets/js/misc.js"></script>
+  <script src="../assets/js/projects-render.js"></script>
+</body>
+</html>
