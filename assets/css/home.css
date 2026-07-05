@@ -204,7 +204,6 @@
   .hero-intro { margin-top: var(--space-sm); }
   .hero-meta-row { margin-top: var(--space-xl); gap: var(--space-lg); }
 }
-
 /* ---------- Marquee section ---------- */
 .marquee-section {
   padding-block: var(--space-xl);
