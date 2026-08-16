@@ -1,0 +1,17 @@
+{
+  "generatedAt": "2026-08-16T16:50:57.722Z",
+  "tracks": [
+    {
+      "id": 1,
+      "file": "1.mp3",
+      "title": "1",
+      "url": "/assets/music/1.mp3"
+    },
+    {
+      "id": 2,
+      "file": "2.mp3",
+      "title": "2",
+      "url": "/assets/music/2.mp3"
+    }
+  ]
+}
