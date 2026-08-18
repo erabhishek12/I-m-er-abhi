@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-08-18T05:22:30.321Z",
+  "generatedAt": "2026-08-18T05:43:49.640Z",
   "tracks": [
     {
       "id": 1,
       "file": "1.mp3",
       "title": "1",
-      "url": "/assets/music/1.mp3"
+      "url": "/AK/assets/music/1.mp3"
     },
     {
       "id": 2,
       "file": "2.mp3",
       "title": "2",
-      "url": "/assets/music/2.mp3"
+      "url": "/AK/assets/music/2.mp3"
     }
   ]
 }
