@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-68 -*-
 import os
 
 TEMPLATE = open("/home/user/portfolio/blog/why-i-build-for-real-people.html", encoding="utf-8").read()
