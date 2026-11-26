@@ -2,35 +2,102 @@ name: Supabase availability heartbeat
 
 on:
   schedule:
-    - cron: '17 3 */3 * *'
+    # Daily at 09:17 UTC
+    - cron: '17 9 * * *'
   workflow_dispatch:
 
 permissions:
   contents: read
+  issues: write
 
 jobs:
   heartbeat:
     runs-on: ubuntu-latest
-    timeout-minutes: 3
-
+    timeout-minutes: 8
     steps:
-      - name: Call Supabase heartbeat
+      - name: Validate required secrets
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
-
         run: |
           set -euo pipefail
+          test -n "$SUPABASE_URL" || { echo "SUPABASE_URL is missing"; exit 1; }
+          test -n "$SUPABASE_PUBLISHABLE_KEY" || { echo "SUPABASE_PUBLISHABLE_KEY is missing"; exit 1; }
+          case "$SUPABASE_URL" in
+            https://*.supabase.co) ;;
+            *) echo "SUPABASE_URL format is invalid: $SUPABASE_URL"; exit 1 ;;
+          esac
 
-          response=$(curl --fail-with-body --silent --show-error \
-            --retry 3 \
-            --retry-all-errors \
-            --retry-delay 5 \
-            --request POST \
-            --header "apikey: $SUPABASE_PUBLISHABLE_KEY" \
-            --header "Authorization: Bearer $SUPABASE_PUBLISHABLE_KEY" \
-            --header "Content-Type: application/json" \
-            --data '{}' \
-            "$SUPABASE_URL/rest/v1/rpc/keepalive")
+      - name: Call database heartbeat three times
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
+        run: |
+          set -euo pipefail
+          host=$(echo "$SUPABASE_URL" | sed -E 's#https://([^/]+).*#\1#')
+          echo "Checking DNS for: $host"
+          getent hosts "$host" || true
 
-          echo "Heartbeat response: $response"
+          for attempt in 1 2 3; do
+            echo "Database heartbeat $attempt of 3"
+            response=$(curl --fail-with-body --silent --show-error \
+              --connect-timeout 20 \
+              --max-time 60 \
+              --retry 5 \
+              --retry-all-errors \
+              --retry-delay 15 \
+              --request POST \
+              --header "apikey: $SUPABASE_PUBLISHABLE_KEY" \
+              --header "Authorization: Bearer $SUPABASE_PUBLISHABLE_KEY" \
+              --header "Content-Type: application/json" \
+              --data '{}' \
+              "$SUPABASE_URL/rest/v1/rpc/keepalive")
+            echo "Heartbeat response: $response"
+            sleep 3
+          done
+
+  alert-on-failure:
+    needs: heartbeat
+    if: failure()
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      contents: read
+    steps:
+      - name: Create or update heartbeat alert issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = 'Supabase heartbeat failed';
+            const body = [
+              'The scheduled Supabase heartbeat failed.',
+              '',
+              `Workflow run: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+              '',
+              'Check in this order:',
+              '1. Open Supabase Dashboard and resume the project if paused.',
+              '2. Verify the SUPABASE_URL repository secret.',
+              '3. Verify the SUPABASE_PUBLISHABLE_KEY repository secret.',
+              '4. Re-run this workflow manually.'
+            ].join('\n');
+            const { data: allIssues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open'
+            });
+            const issues = allIssues.filter(issue => issue.title === title);
+            if (issues.length) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issues[0].number,
+                body
+              });
+            } else {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title,
+                body
+              });
+            }
